@@ -10,7 +10,7 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/alekc/provider-minio/apis/null/v1alpha1"
+	v1alpha1 "github.com/alekc/provider-minio/apis/bucket/v1alpha1"
 	v1alpha1apis "github.com/alekc/provider-minio/apis/v1alpha1"
 	v1beta1 "github.com/alekc/provider-minio/apis/v1beta1"
 )

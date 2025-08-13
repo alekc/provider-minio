@@ -9,7 +9,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	resource "github.com/alekc/provider-minio/internal/controller/null/resource"
+	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
 )
 
@@ -17,7 +17,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
+		bucket.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
