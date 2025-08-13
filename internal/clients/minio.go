@@ -63,10 +63,22 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+		// List of credential keys to check and assign
+		keys := []string{
+			"minio_server",
+			"minio_user",
+			"minio_password",
+			"minio_region",
+			"minio_api_version",
+			"minio_ssl",
+		}
+
+		ps.Configuration = map[string]any{}
+		for _, k := range keys {
+			if v, ok := creds[k]; ok {
+				ps.Configuration[k] = v
+			}
+		}
 		return ps, nil
 	}
 }

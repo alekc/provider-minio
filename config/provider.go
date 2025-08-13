@@ -7,10 +7,9 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"github.com/alekc/provider-minio/config/bucket"
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
-
-	"github.com/alekc/provider-minio/config/null"
 )
 
 const (
@@ -36,7 +35,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		bucket.Configure,
 	} {
 		configure(pc)
 	}
