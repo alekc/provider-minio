@@ -368,63 +368,123 @@ func (mg *GroupUserAttachment) SetWriteConnectionSecretToReference(r *xpv1.Secre
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicies of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) GetManagementPolicies() xpv1.ManagementPolicies {
+// GetManagementPolicies of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) GetManagementPolicies() xpv1.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
-// GetProviderConfigReference of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicies of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) SetManagementPolicies(r xpv1.ManagementPolicies) {
+// SetManagementPolicies of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) SetManagementPolicies(r xpv1.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
-// SetProviderConfigReference of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
-// SetPublishConnectionDetailsTo of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetPublishConnectionDetailsTo of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetPublishConnectionDetailsTo of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 

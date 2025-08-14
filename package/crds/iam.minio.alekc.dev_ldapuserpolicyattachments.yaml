@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: ldapgrouppolicyattachments.iam.minio.alekc.dev
+  name: ldapuserpolicyattachments.iam.minio.alekc.dev
 spec:
   group: iam.minio.alekc.dev
   names:
@@ -12,10 +12,10 @@ spec:
     - crossplane
     - managed
     - minio
-    kind: LDAPGroupPolicyAttachment
-    listKind: LDAPGroupPolicyAttachmentList
-    plural: ldapgrouppolicyattachments
-    singular: ldapgrouppolicyattachment
+    kind: LDAPUserPolicyAttachment
+    listKind: LDAPUserPolicyAttachmentList
+    plural: ldapuserpolicyattachments
+    singular: ldapuserpolicyattachment
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,9 +34,9 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: LDAPGroupPolicyAttachment is the Schema for the LDAPGroupPolicyAttachments
-          API. Attaches LDAP group to a policy. Can be used against both built-in
-          and user-defined policies.
+        description: LDAPUserPolicyAttachment is the Schema for the LDAPUserPolicyAttachments
+          API. Attaches LDAP user to a policy. Can be used against both built-in and
+          user-defined policies.
         properties:
           apiVersion:
             description: |-
@@ -56,8 +56,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: LDAPGroupPolicyAttachmentSpec defines the desired state of
-              LDAPGroupPolicyAttachment
+            description: LDAPUserPolicyAttachmentSpec defines the desired state of
+              LDAPUserPolicyAttachment
             properties:
               deletionPolicy:
                 default: Delete
@@ -75,15 +75,10 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  groupDn:
-                    description: |-
-                      (String) The distinguished name (dn) of group to attach policy to
-                      The distinguished name (dn) of group to attach policy to
-                    type: string
                   policyName:
                     description: |-
-                      (String) Name of policy to attach to group
-                      Name of policy to attach to group
+                      (String) Name of policy to attach to user
+                      Name of policy to attach to user
                     type: string
                   policyNameRef:
                     description: Reference to a Policy in policy to populate policyName.
@@ -159,6 +154,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  userDn:
+                    description: |-
+                      (String) The dn of user to attach policy to
+                      The dn of user to attach policy to
+                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -173,15 +173,10 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  groupDn:
-                    description: |-
-                      (String) The distinguished name (dn) of group to attach policy to
-                      The distinguished name (dn) of group to attach policy to
-                    type: string
                   policyName:
                     description: |-
-                      (String) Name of policy to attach to group
-                      Name of policy to attach to group
+                      (String) Name of policy to attach to user
+                      Name of policy to attach to user
                     type: string
                   policyNameRef:
                     description: Reference to a Policy in policy to populate policyName.
@@ -257,6 +252,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  userDn:
+                    description: |-
+                      (String) The dn of user to attach policy to
+                      The dn of user to attach policy to
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -426,28 +426,28 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.groupDn is a required parameter
+            - message: spec.forProvider.userDn is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.groupDn)
-                || (has(self.initProvider) && has(self.initProvider.groupDn))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.userDn)
+                || (has(self.initProvider) && has(self.initProvider.userDn))'
           status:
-            description: LDAPGroupPolicyAttachmentStatus defines the observed state
-              of LDAPGroupPolicyAttachment.
+            description: LDAPUserPolicyAttachmentStatus defines the observed state
+              of LDAPUserPolicyAttachment.
             properties:
               atProvider:
                 properties:
-                  groupDn:
-                    description: |-
-                      (String) The distinguished name (dn) of group to attach policy to
-                      The distinguished name (dn) of group to attach policy to
-                    type: string
                   id:
                     description: (String) The ID of this resource.
                     type: string
                   policyName:
                     description: |-
-                      (String) Name of policy to attach to group
-                      Name of policy to attach to group
+                      (String) Name of policy to attach to user
+                      Name of policy to attach to user
+                    type: string
+                  userDn:
+                    description: |-
+                      (String) The dn of user to attach policy to
+                      The dn of user to attach policy to
                     type: string
                 type: object
               conditions:

@@ -321,8 +321,50 @@ func (mg *GroupUserAttachment) ResolveReferences(ctx context.Context, c client.R
 	return nil
 }
 
-// ResolveReferences of this LdapGroupPolicyAttachment.
-func (mg *LdapGroupPolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this LDAPGroupPolicyAttachment.
+func (mg *LDAPGroupPolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.PolicyName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.PolicyNameRef,
+		Selector:     mg.Spec.ForProvider.PolicyNameSelector,
+		To: reference.To{
+			List:    &v1alpha1.PolicyList{},
+			Managed: &v1alpha1.Policy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.PolicyName")
+	}
+	mg.Spec.ForProvider.PolicyName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.PolicyNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.PolicyName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.PolicyNameRef,
+		Selector:     mg.Spec.InitProvider.PolicyNameSelector,
+		To: reference.To{
+			List:    &v1alpha1.PolicyList{},
+			Managed: &v1alpha1.Policy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.PolicyName")
+	}
+	mg.Spec.InitProvider.PolicyName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.PolicyNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this LDAPUserPolicyAttachment.
+func (mg *LDAPUserPolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse

@@ -25,7 +25,10 @@ func (tr *GroupPolicyAttachment) Hub() {}
 func (tr *GroupUserAttachment) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *LdapGroupPolicyAttachment) Hub() {}
+func (tr *LDAPGroupPolicyAttachment) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *LDAPUserPolicyAttachment) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *PolicyAttachment) Hub() {}

@@ -62,8 +62,17 @@ func (l *GroupUserAttachmentList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this LdapGroupPolicyAttachmentList.
-func (l *LdapGroupPolicyAttachmentList) GetItems() []resource.Managed {
+// GetItems of this LDAPGroupPolicyAttachmentList.
+func (l *LDAPGroupPolicyAttachmentList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this LDAPUserPolicyAttachmentList.
+func (l *LDAPUserPolicyAttachmentList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

@@ -13,14 +13,10 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type LDAPGroupPolicyAttachmentInitParameters struct {
+type LDAPUserPolicyAttachmentInitParameters struct {
 
-	// (String) The distinguished name (dn) of group to attach policy to
-	// The distinguished name (dn) of group to attach policy to
-	GroupDn *string `json:"groupDn,omitempty" tf:"group_dn,omitempty"`
-
-	// (String) Name of policy to attach to group
-	// Name of policy to attach to group
+	// (String) Name of policy to attach to user
+	// Name of policy to attach to user
 	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/policy/v1alpha1.Policy
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
 
@@ -31,31 +27,30 @@ type LDAPGroupPolicyAttachmentInitParameters struct {
 	// Selector for a Policy in policy to populate policyName.
 	// +kubebuilder:validation:Optional
 	PolicyNameSelector *v1.Selector `json:"policyNameSelector,omitempty" tf:"-"`
+
+	// (String) The dn of user to attach policy to
+	// The dn of user to attach policy to
+	UserDn *string `json:"userDn,omitempty" tf:"user_dn,omitempty"`
 }
 
-type LDAPGroupPolicyAttachmentObservation struct {
-
-	// (String) The distinguished name (dn) of group to attach policy to
-	// The distinguished name (dn) of group to attach policy to
-	GroupDn *string `json:"groupDn,omitempty" tf:"group_dn,omitempty"`
+type LDAPUserPolicyAttachmentObservation struct {
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (String) Name of policy to attach to group
-	// Name of policy to attach to group
+	// (String) Name of policy to attach to user
+	// Name of policy to attach to user
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
+
+	// (String) The dn of user to attach policy to
+	// The dn of user to attach policy to
+	UserDn *string `json:"userDn,omitempty" tf:"user_dn,omitempty"`
 }
 
-type LDAPGroupPolicyAttachmentParameters struct {
+type LDAPUserPolicyAttachmentParameters struct {
 
-	// (String) The distinguished name (dn) of group to attach policy to
-	// The distinguished name (dn) of group to attach policy to
-	// +kubebuilder:validation:Optional
-	GroupDn *string `json:"groupDn,omitempty" tf:"group_dn,omitempty"`
-
-	// (String) Name of policy to attach to group
-	// Name of policy to attach to group
+	// (String) Name of policy to attach to user
+	// Name of policy to attach to user
 	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/policy/v1alpha1.Policy
 	// +kubebuilder:validation:Optional
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
@@ -67,12 +62,17 @@ type LDAPGroupPolicyAttachmentParameters struct {
 	// Selector for a Policy in policy to populate policyName.
 	// +kubebuilder:validation:Optional
 	PolicyNameSelector *v1.Selector `json:"policyNameSelector,omitempty" tf:"-"`
+
+	// (String) The dn of user to attach policy to
+	// The dn of user to attach policy to
+	// +kubebuilder:validation:Optional
+	UserDn *string `json:"userDn,omitempty" tf:"user_dn,omitempty"`
 }
 
-// LDAPGroupPolicyAttachmentSpec defines the desired state of LDAPGroupPolicyAttachment
-type LDAPGroupPolicyAttachmentSpec struct {
+// LDAPUserPolicyAttachmentSpec defines the desired state of LDAPUserPolicyAttachment
+type LDAPUserPolicyAttachmentSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     LDAPGroupPolicyAttachmentParameters `json:"forProvider"`
+	ForProvider     LDAPUserPolicyAttachmentParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -83,50 +83,50 @@ type LDAPGroupPolicyAttachmentSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider LDAPGroupPolicyAttachmentInitParameters `json:"initProvider,omitempty"`
+	InitProvider LDAPUserPolicyAttachmentInitParameters `json:"initProvider,omitempty"`
 }
 
-// LDAPGroupPolicyAttachmentStatus defines the observed state of LDAPGroupPolicyAttachment.
-type LDAPGroupPolicyAttachmentStatus struct {
+// LDAPUserPolicyAttachmentStatus defines the observed state of LDAPUserPolicyAttachment.
+type LDAPUserPolicyAttachmentStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        LDAPGroupPolicyAttachmentObservation `json:"atProvider,omitempty"`
+	AtProvider        LDAPUserPolicyAttachmentObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// LDAPGroupPolicyAttachment is the Schema for the LDAPGroupPolicyAttachments API. Attaches LDAP group to a policy. Can be used against both built-in and user-defined policies.
+// LDAPUserPolicyAttachment is the Schema for the LDAPUserPolicyAttachments API. Attaches LDAP user to a policy. Can be used against both built-in and user-defined policies.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,minio}
-type LDAPGroupPolicyAttachment struct {
+type LDAPUserPolicyAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.groupDn) || (has(self.initProvider) && has(self.initProvider.groupDn))",message="spec.forProvider.groupDn is a required parameter"
-	Spec   LDAPGroupPolicyAttachmentSpec   `json:"spec"`
-	Status LDAPGroupPolicyAttachmentStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.userDn) || (has(self.initProvider) && has(self.initProvider.userDn))",message="spec.forProvider.userDn is a required parameter"
+	Spec   LDAPUserPolicyAttachmentSpec   `json:"spec"`
+	Status LDAPUserPolicyAttachmentStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// LDAPGroupPolicyAttachmentList contains a list of LDAPGroupPolicyAttachments
-type LDAPGroupPolicyAttachmentList struct {
+// LDAPUserPolicyAttachmentList contains a list of LDAPUserPolicyAttachments
+type LDAPUserPolicyAttachmentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []LDAPGroupPolicyAttachment `json:"items"`
+	Items           []LDAPUserPolicyAttachment `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	LDAPGroupPolicyAttachment_Kind             = "LDAPGroupPolicyAttachment"
-	LDAPGroupPolicyAttachment_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: LDAPGroupPolicyAttachment_Kind}.String()
-	LDAPGroupPolicyAttachment_KindAPIVersion   = LDAPGroupPolicyAttachment_Kind + "." + CRDGroupVersion.String()
-	LDAPGroupPolicyAttachment_GroupVersionKind = CRDGroupVersion.WithKind(LDAPGroupPolicyAttachment_Kind)
+	LDAPUserPolicyAttachment_Kind             = "LDAPUserPolicyAttachment"
+	LDAPUserPolicyAttachment_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: LDAPUserPolicyAttachment_Kind}.String()
+	LDAPUserPolicyAttachment_KindAPIVersion   = LDAPUserPolicyAttachment_Kind + "." + CRDGroupVersion.String()
+	LDAPUserPolicyAttachment_GroupVersionKind = CRDGroupVersion.WithKind(LDAPUserPolicyAttachment_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&LDAPGroupPolicyAttachment{}, &LDAPGroupPolicyAttachmentList{})
+	SchemeBuilder.Register(&LDAPUserPolicyAttachment{}, &LDAPUserPolicyAttachmentList{})
 }

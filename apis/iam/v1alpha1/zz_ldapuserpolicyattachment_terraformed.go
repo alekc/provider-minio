@@ -14,18 +14,18 @@ import (
 	"github.com/crossplane/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this LDAPGroupPolicyAttachment
-func (mg *LDAPGroupPolicyAttachment) GetTerraformResourceType() string {
-	return "minio_iam_ldap_group_policy_attachment"
+// GetTerraformResourceType returns Terraform resource type for this LDAPUserPolicyAttachment
+func (mg *LDAPUserPolicyAttachment) GetTerraformResourceType() string {
+	return "minio_iam_ldap_user_policy_attachment"
 }
 
-// GetConnectionDetailsMapping for this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) GetObservation() (map[string]any, error) {
+// GetObservation of this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -34,8 +34,8 @@ func (tr *LDAPGroupPolicyAttachment) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) SetObservation(obs map[string]any) error {
+// SetObservation for this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -43,16 +43,16 @@ func (tr *LDAPGroupPolicyAttachment) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) GetID() string {
+// GetID returns ID of underlying Terraform resource of this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) GetParameters() (map[string]any, error) {
+// GetParameters of this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -61,8 +61,8 @@ func (tr *LDAPGroupPolicyAttachment) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) SetParameters(params map[string]any) error {
+// SetParameters for this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -70,8 +70,8 @@ func (tr *LDAPGroupPolicyAttachment) SetParameters(params map[string]any) error 
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// GetInitParameters of this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) GetInitParameters() (map[string]any, error) {
+// GetInitParameters of this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) GetInitParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
 	if err != nil {
 		return nil, err
@@ -80,8 +80,8 @@ func (tr *LDAPGroupPolicyAttachment) GetInitParameters() (map[string]any, error)
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// GetInitParameters of this LDAPGroupPolicyAttachment
-func (tr *LDAPGroupPolicyAttachment) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
+// GetInitParameters of this LDAPUserPolicyAttachment
+func (tr *LDAPUserPolicyAttachment) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
 	params, err := tr.GetParameters()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get parameters for resource '%q'", tr.GetName())
@@ -110,10 +110,10 @@ func (tr *LDAPGroupPolicyAttachment) GetMergedParameters(shouldMergeInitProvider
 	return params, nil
 }
 
-// LateInitialize this LDAPGroupPolicyAttachment using its observed tfState.
+// LateInitialize this LDAPUserPolicyAttachment using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *LDAPGroupPolicyAttachment) LateInitialize(attrs []byte) (bool, error) {
-	params := &LDAPGroupPolicyAttachmentParameters{}
+func (tr *LDAPUserPolicyAttachment) LateInitialize(attrs []byte) (bool, error) {
+	params := &LDAPUserPolicyAttachmentParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -124,6 +124,6 @@ func (tr *LDAPGroupPolicyAttachment) LateInitialize(attrs []byte) (bool, error) 
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *LDAPGroupPolicyAttachment) GetTerraformSchemaVersion() int {
+func (tr *LDAPUserPolicyAttachment) GetTerraformSchemaVersion() int {
 	return 0
 }
