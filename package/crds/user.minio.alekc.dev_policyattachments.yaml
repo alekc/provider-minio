@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: userpolicyattachments.user.alekc.dev
+  name: policyattachments.user.minio.alekc.dev
 spec:
-  group: user.alekc.dev
+  group: user.minio.alekc.dev
   names:
     categories:
     - crossplane
     - managed
     - minio
-    kind: UserPolicyAttachment
-    listKind: UserPolicyAttachmentList
-    plural: userpolicyattachments
-    singular: userpolicyattachment
+    kind: PolicyAttachment
+    listKind: PolicyAttachmentList
+    plural: policyattachments
+    singular: policyattachment
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: UserPolicyAttachment is the Schema for the UserPolicyAttachments
-          API.
+        description: PolicyAttachment is the Schema for the PolicyAttachments API.
         properties:
           apiVersion:
             description: |-
@@ -55,7 +54,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: UserPolicyAttachmentSpec defines the desired state of UserPolicyAttachment
+            description: PolicyAttachmentSpec defines the desired state of PolicyAttachment
             properties:
               deletionPolicy:
                 default: Delete
@@ -572,8 +571,7 @@ spec:
             - forProvider
             type: object
           status:
-            description: UserPolicyAttachmentStatus defines the observed state of
-              UserPolicyAttachment.
+            description: PolicyAttachmentStatus defines the observed state of PolicyAttachment.
             properties:
               atProvider:
                 properties:

@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: policies.policy.alekc.dev
+  name: users.user.minio.alekc.dev
 spec:
-  group: policy.alekc.dev
+  group: user.minio.alekc.dev
   names:
     categories:
     - crossplane
     - managed
     - minio
-    kind: Policy
-    listKind: PolicyList
-    plural: policies
-    singular: policy
+    kind: User
+    listKind: UserList
+    plural: users
+    singular: user
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Policy is the Schema for the Policys API.
+        description: User is the Schema for the Users API.
         properties:
           apiVersion:
             description: |-
@@ -54,7 +54,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: PolicySpec defines the desired state of Policy
+            description: UserSpec defines the desired state of User
             properties:
               deletionPolicy:
                 default: Delete
@@ -72,21 +72,51 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  disableUser:
+                    description: |-
+                      (Boolean) Disable user access. Defaults to false.
+                      Disable user
+                    type: boolean
+                  forceDestroy:
+                    description: When true, any group memberships will be removed
+                      during deletion even if they cause errors
+                    type: boolean
                   name:
                     description: |-
-                      (String) Name of the policy. Conflicts with name_prefix.
-                      Name of the policy. Conflicts with `name_prefix`.
+                      (String) Name of the user
+                      Name of the user
                     type: string
-                  namePrefix:
+                  secretSecretRef:
+                    description: (String, Sensitive) The user's secret key. If not
+                      provided, one will be generated. Can be updated.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: value map of tags.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  updateSecret:
                     description: |-
-                      (String) Prefix to the generated policy name. Do not use with name.
-                      Prefix to the generated policy name. Do not use with `name`.
-                    type: string
-                  policy:
-                    description: |-
-                      (String) Policy JSON string
-                      Policy JSON string
-                    type: string
+                      (Boolean) When true, generates a new secret key for the user. Defaults to false.
+                      Rotate Minio User Secret Key
+                    type: boolean
+                required:
+                - name
                 type: object
               initProvider:
                 description: |-
@@ -101,21 +131,44 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  name:
+                  disableUser:
                     description: |-
-                      (String) Name of the policy. Conflicts with name_prefix.
-                      Name of the policy. Conflicts with `name_prefix`.
-                    type: string
-                  namePrefix:
+                      (Boolean) Disable user access. Defaults to false.
+                      Disable user
+                    type: boolean
+                  forceDestroy:
+                    description: When true, any group memberships will be removed
+                      during deletion even if they cause errors
+                    type: boolean
+                  secretSecretRef:
+                    description: (String, Sensitive) The user's secret key. If not
+                      provided, one will be generated. Can be updated.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: value map of tags.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  updateSecret:
                     description: |-
-                      (String) Prefix to the generated policy name. Do not use with name.
-                      Prefix to the generated policy name. Do not use with `name`.
-                    type: string
-                  policy:
-                    description: |-
-                      (String) Policy JSON string
-                      Policy JSON string
-                    type: string
+                      (Boolean) When true, generates a new secret key for the user. Defaults to false.
+                      Rotate Minio User Secret Key
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -284,34 +337,42 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.policy is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.policy)
-                || (has(self.initProvider) && has(self.initProvider.policy))'
           status:
-            description: PolicyStatus defines the observed state of Policy.
+            description: UserStatus defines the observed state of User.
             properties:
               atProvider:
                 properties:
+                  disableUser:
+                    description: |-
+                      (Boolean) Disable user access. Defaults to false.
+                      Disable user
+                    type: boolean
+                  forceDestroy:
+                    description: When true, any group memberships will be removed
+                      during deletion even if they cause errors
+                    type: boolean
                   id:
-                    description: (String) The ID of this resource.
+                    description: (String) The ID of this resource (same as name).
                     type: string
                   name:
                     description: |-
-                      (String) Name of the policy. Conflicts with name_prefix.
-                      Name of the policy. Conflicts with `name_prefix`.
+                      (String) Name of the user
+                      Name of the user
                     type: string
-                  namePrefix:
+                  status:
+                    description: (String) Current status of the user (enabled/disabled).
+                    type: string
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: value map of tags.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  updateSecret:
                     description: |-
-                      (String) Prefix to the generated policy name. Do not use with name.
-                      Prefix to the generated policy name. Do not use with `name`.
-                    type: string
-                  policy:
-                    description: |-
-                      (String) Policy JSON string
-                      Policy JSON string
-                    type: string
+                      (Boolean) When true, generates a new secret key for the user. Defaults to false.
+                      Rotate Minio User Secret Key
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

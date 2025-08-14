@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type UserPolicyAttachmentInitParameters struct {
+type PolicyAttachmentInitParameters struct {
 
 	// (String) Name of policy to attach to user
 	// Name of policy to attach to user
@@ -42,7 +42,7 @@ type UserPolicyAttachmentInitParameters struct {
 	UserNameSelector *v1.Selector `json:"userNameSelector,omitempty" tf:"-"`
 }
 
-type UserPolicyAttachmentObservation struct {
+type PolicyAttachmentObservation struct {
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -56,7 +56,7 @@ type UserPolicyAttachmentObservation struct {
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 }
 
-type UserPolicyAttachmentParameters struct {
+type PolicyAttachmentParameters struct {
 
 	// (String) Name of policy to attach to user
 	// Name of policy to attach to user
@@ -87,10 +87,10 @@ type UserPolicyAttachmentParameters struct {
 	UserNameSelector *v1.Selector `json:"userNameSelector,omitempty" tf:"-"`
 }
 
-// UserPolicyAttachmentSpec defines the desired state of UserPolicyAttachment
-type UserPolicyAttachmentSpec struct {
+// PolicyAttachmentSpec defines the desired state of PolicyAttachment
+type PolicyAttachmentSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     UserPolicyAttachmentParameters `json:"forProvider"`
+	ForProvider     PolicyAttachmentParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -101,49 +101,49 @@ type UserPolicyAttachmentSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider UserPolicyAttachmentInitParameters `json:"initProvider,omitempty"`
+	InitProvider PolicyAttachmentInitParameters `json:"initProvider,omitempty"`
 }
 
-// UserPolicyAttachmentStatus defines the observed state of UserPolicyAttachment.
-type UserPolicyAttachmentStatus struct {
+// PolicyAttachmentStatus defines the observed state of PolicyAttachment.
+type PolicyAttachmentStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        UserPolicyAttachmentObservation `json:"atProvider,omitempty"`
+	AtProvider        PolicyAttachmentObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// UserPolicyAttachment is the Schema for the UserPolicyAttachments API.
+// PolicyAttachment is the Schema for the PolicyAttachments API.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,minio}
-type UserPolicyAttachment struct {
+type PolicyAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              UserPolicyAttachmentSpec   `json:"spec"`
-	Status            UserPolicyAttachmentStatus `json:"status,omitempty"`
+	Spec              PolicyAttachmentSpec   `json:"spec"`
+	Status            PolicyAttachmentStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// UserPolicyAttachmentList contains a list of UserPolicyAttachments
-type UserPolicyAttachmentList struct {
+// PolicyAttachmentList contains a list of PolicyAttachments
+type PolicyAttachmentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []UserPolicyAttachment `json:"items"`
+	Items           []PolicyAttachment `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	UserPolicyAttachment_Kind             = "UserPolicyAttachment"
-	UserPolicyAttachment_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: UserPolicyAttachment_Kind}.String()
-	UserPolicyAttachment_KindAPIVersion   = UserPolicyAttachment_Kind + "." + CRDGroupVersion.String()
-	UserPolicyAttachment_GroupVersionKind = CRDGroupVersion.WithKind(UserPolicyAttachment_Kind)
+	PolicyAttachment_Kind             = "PolicyAttachment"
+	PolicyAttachment_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: PolicyAttachment_Kind}.String()
+	PolicyAttachment_KindAPIVersion   = PolicyAttachment_Kind + "." + CRDGroupVersion.String()
+	PolicyAttachment_GroupVersionKind = CRDGroupVersion.WithKind(PolicyAttachment_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&UserPolicyAttachment{}, &UserPolicyAttachmentList{})
+	SchemeBuilder.Register(&PolicyAttachment{}, &PolicyAttachmentList{})
 }

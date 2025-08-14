@@ -14,8 +14,8 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this UserPolicyAttachment.
-func (mg *UserPolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this PolicyAttachment.
+func (mg *PolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse

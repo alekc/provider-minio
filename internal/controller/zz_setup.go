@@ -12,8 +12,8 @@ import (
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
 	policy "github.com/alekc/provider-minio/internal/controller/policy/policy"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
+	policyattachment "github.com/alekc/provider-minio/internal/controller/user/policyattachment"
 	user "github.com/alekc/provider-minio/internal/controller/user/user"
-	userpolicyattachment "github.com/alekc/provider-minio/internal/controller/user/userpolicyattachment"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -23,8 +23,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		bucket.Setup,
 		policy.Setup,
 		providerconfig.Setup,
+		policyattachment.Setup,
 		user.Setup,
-		userpolicyattachment.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

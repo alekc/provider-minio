@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: buckets.bucket.alekc.dev
+  name: policies.policy.minio.alekc.dev
 spec:
-  group: bucket.alekc.dev
+  group: policy.minio.alekc.dev
   names:
     categories:
     - crossplane
     - managed
     - minio
-    kind: Bucket
-    listKind: BucketList
-    plural: buckets
-    singular: bucket
+    kind: Policy
+    listKind: PolicyList
+    plural: policies
+    singular: policy
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Bucket is the Schema for the Buckets API.
+        description: Policy is the Schema for the Policys API.
         properties:
           apiVersion:
             description: |-
@@ -54,7 +54,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: BucketSpec defines the desired state of Bucket
+            description: PolicySpec defines the desired state of Policy
             properties:
               deletionPolicy:
                 default: Delete
@@ -72,31 +72,21 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  acl:
+                  name:
                     description: |-
-                      (String) Bucket's Access Control List (default: private)
-                      Bucket's Access Control List (default: private)
+                      (String) Name of the policy. Conflicts with name_prefix.
+                      Name of the policy. Conflicts with `name_prefix`.
                     type: string
-                  bucket:
+                  namePrefix:
                     description: |-
-                      (String) Name of the bucket
-                      Name of the bucket
+                      (String) Prefix to the generated policy name. Do not use with name.
+                      Prefix to the generated policy name. Do not use with `name`.
                     type: string
-                  forceDestroy:
+                  policy:
                     description: |-
-                      (Boolean) Force destroy the bucket (default: false)
-                      Force destroy the bucket (default: false)
-                    type: boolean
-                  objectLocking:
-                    description: |-
-                      (Boolean) Enable object locking for the bucket (default: false)
-                      Enable object locking for the bucket (default: false)
-                    type: boolean
-                  quota:
-                    description: |-
-                      (Number) Quota of the bucket
-                      Quota of the bucket
-                    type: number
+                      (String) Policy JSON string
+                      Policy JSON string
+                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -111,26 +101,21 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  acl:
+                  name:
                     description: |-
-                      (String) Bucket's Access Control List (default: private)
-                      Bucket's Access Control List (default: private)
+                      (String) Name of the policy. Conflicts with name_prefix.
+                      Name of the policy. Conflicts with `name_prefix`.
                     type: string
-                  forceDestroy:
+                  namePrefix:
                     description: |-
-                      (Boolean) Force destroy the bucket (default: false)
-                      Force destroy the bucket (default: false)
-                    type: boolean
-                  objectLocking:
+                      (String) Prefix to the generated policy name. Do not use with name.
+                      Prefix to the generated policy name. Do not use with `name`.
+                    type: string
+                  policy:
                     description: |-
-                      (Boolean) Enable object locking for the bucket (default: false)
-                      Enable object locking for the bucket (default: false)
-                    type: boolean
-                  quota:
-                    description: |-
-                      (Number) Quota of the bucket
-                      Quota of the bucket
-                    type: number
+                      (String) Policy JSON string
+                      Policy JSON string
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -299,49 +284,34 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.policy is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.policy)
+                || (has(self.initProvider) && has(self.initProvider.policy))'
           status:
-            description: BucketStatus defines the observed state of Bucket.
+            description: PolicyStatus defines the observed state of Policy.
             properties:
               atProvider:
                 properties:
-                  acl:
-                    description: |-
-                      (String) Bucket's Access Control List (default: private)
-                      Bucket's Access Control List (default: private)
-                    type: string
-                  arn:
-                    description: |-
-                      (String) ARN of the bucket
-                      ARN of the bucket
-                    type: string
-                  bucket:
-                    description: |-
-                      (String) Name of the bucket
-                      Name of the bucket
-                    type: string
-                  bucketDomainName:
-                    description: |-
-                      (String) The bucket domain name
-                      The bucket domain name
-                    type: string
-                  forceDestroy:
-                    description: |-
-                      (Boolean) Force destroy the bucket (default: false)
-                      Force destroy the bucket (default: false)
-                    type: boolean
                   id:
                     description: (String) The ID of this resource.
                     type: string
-                  objectLocking:
+                  name:
                     description: |-
-                      (Boolean) Enable object locking for the bucket (default: false)
-                      Enable object locking for the bucket (default: false)
-                    type: boolean
-                  quota:
+                      (String) Name of the policy. Conflicts with name_prefix.
+                      Name of the policy. Conflicts with `name_prefix`.
+                    type: string
+                  namePrefix:
                     description: |-
-                      (Number) Quota of the bucket
-                      Quota of the bucket
-                    type: number
+                      (String) Prefix to the generated policy name. Do not use with name.
+                      Prefix to the generated policy name. Do not use with `name`.
+                    type: string
+                  policy:
+                    description: |-
+                      (String) Policy JSON string
+                      Policy JSON string
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.
