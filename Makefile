@@ -63,6 +63,9 @@ UPTEST_VERSION = v0.5.0
 KUBECTL_VERSION = v1.24.3
 -include build/makelib/k8s_tools.mk
 
+# Custom targets for K8s tools
+kubectl-install: $(KUBECTL)
+
 # ====================================================================================
 # Setup Images
 
