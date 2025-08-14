@@ -12,6 +12,7 @@ import (
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
 	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
 	group "github.com/alekc/provider-minio/internal/controller/iam/group"
+	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
 	policyattachment "github.com/alekc/provider-minio/internal/controller/iam/policyattachment"
 	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	policy "github.com/alekc/provider-minio/internal/controller/policy/policy"
@@ -25,6 +26,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		bucket.Setup,
 		accesskey.Setup,
 		group.Setup,
+		groupmembership.Setup,
 		policyattachment.Setup,
 		user.Setup,
 		policy.Setup,
