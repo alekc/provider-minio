@@ -60,6 +60,7 @@ KIND_VERSION = v0.15.0
 UP_VERSION = v0.39.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
+KUBECTL_VERSION = v1.24.3
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -224,6 +225,22 @@ crddiff: $(UPTEST)
 		fi ; \
 	done
 	@$(OK) Checking breaking CRD schema changes
+
+crds.clean:
+	@$(INFO) Cleaning up CRDs
+	@for crd in $$(find package/crds -name '*.yaml'); do \
+		echo "Cleaning up $${crd}..." ; \
+		$(KUBECTL) delete -f "$${crd}" || true ; \
+	done
+	@$(OK) Cleaning up CRDs
+
+crds.install:
+	@$(INFO) Installing CRDs
+	@for crd in $$(find package/crds -name '*.yaml'); do \
+		echo "Installing $${crd}..." ; \
+		$(KUBECTL) apply -f "$${crd}" ; \
+	done
+	@$(OK) Installing CRDs
 
 schema-version-diff:
 	@$(INFO) Checking for native state schema version changes
