@@ -13,6 +13,7 @@ import (
 	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
 	group "github.com/alekc/provider-minio/internal/controller/iam/group"
 	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
+	grouppolicy "github.com/alekc/provider-minio/internal/controller/iam/grouppolicy"
 	policyattachment "github.com/alekc/provider-minio/internal/controller/iam/policyattachment"
 	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	policy "github.com/alekc/provider-minio/internal/controller/policy/policy"
@@ -27,6 +28,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		accesskey.Setup,
 		group.Setup,
 		groupmembership.Setup,
+		grouppolicy.Setup,
 		policyattachment.Setup,
 		user.Setup,
 		policy.Setup,

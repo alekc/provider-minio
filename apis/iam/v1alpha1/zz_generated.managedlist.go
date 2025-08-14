@@ -35,6 +35,15 @@ func (l *GroupMembershipList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this GroupPolicyList.
+func (l *GroupPolicyList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this PolicyAttachmentList.
 func (l *PolicyAttachmentList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))

@@ -16,6 +16,9 @@ func (tr *Group) Hub() {}
 func (tr *GroupMembership) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *GroupPolicy) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *PolicyAttachment) Hub() {}
 
 // Hub marks this type as a conversion hub.
