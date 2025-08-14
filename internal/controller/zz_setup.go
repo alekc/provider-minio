@@ -10,6 +10,7 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
+	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
 )
 
@@ -18,6 +19,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		bucket.Setup,
+		user.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

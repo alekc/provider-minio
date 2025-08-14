@@ -19,6 +19,7 @@ import "github.com/crossplane/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_s3_bucket": CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
+	"minio_iam_user":  CustomParameterAsIdentifier("name", []string{}),
 }
 
 // CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
