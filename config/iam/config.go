@@ -21,4 +21,6 @@ func Configure(p *config.Provider) {
 			TerraformName: "minio_iam_user",
 		}
 	})
+	p.AddResourceConfigurator("minio_iam_group", func(r *config.Resource) {
+	})
 }

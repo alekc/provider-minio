@@ -10,6 +10,9 @@ package v1alpha1
 func (tr *Accesskey) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *Group) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *PolicyAttachment) Hub() {}
 
 // Hub marks this type as a conversion hub.
