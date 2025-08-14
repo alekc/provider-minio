@@ -30,14 +30,14 @@ type PolicyAttachmentInitParameters struct {
 
 	// (String) Name of user
 	// Name of user
-	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/user/v1alpha1.User
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/iam/v1alpha1.User
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
-	// Reference to a User in user to populate userName.
+	// Reference to a User in iam to populate userName.
 	// +kubebuilder:validation:Optional
 	UserNameRef *v1.Reference `json:"userNameRef,omitempty" tf:"-"`
 
-	// Selector for a User in user to populate userName.
+	// Selector for a User in iam to populate userName.
 	// +kubebuilder:validation:Optional
 	UserNameSelector *v1.Selector `json:"userNameSelector,omitempty" tf:"-"`
 }
@@ -74,15 +74,15 @@ type PolicyAttachmentParameters struct {
 
 	// (String) Name of user
 	// Name of user
-	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/user/v1alpha1.User
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/iam/v1alpha1.User
 	// +kubebuilder:validation:Optional
 	UserName *string `json:"userName,omitempty" tf:"user_name,omitempty"`
 
-	// Reference to a User in user to populate userName.
+	// Reference to a User in iam to populate userName.
 	// +kubebuilder:validation:Optional
 	UserNameRef *v1.Reference `json:"userNameRef,omitempty" tf:"-"`
 
-	// Selector for a User in user to populate userName.
+	// Selector for a User in iam to populate userName.
 	// +kubebuilder:validation:Optional
 	UserNameSelector *v1.Selector `json:"userNameSelector,omitempty" tf:"-"`
 }

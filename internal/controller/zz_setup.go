@@ -10,10 +10,11 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
+	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
+	policyattachment "github.com/alekc/provider-minio/internal/controller/iam/policyattachment"
+	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	policy "github.com/alekc/provider-minio/internal/controller/policy/policy"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
-	policyattachment "github.com/alekc/provider-minio/internal/controller/user/policyattachment"
-	user "github.com/alekc/provider-minio/internal/controller/user/user"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -21,10 +22,11 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		bucket.Setup,
-		policy.Setup,
-		providerconfig.Setup,
+		accesskey.Setup,
 		policyattachment.Setup,
 		user.Setup,
+		policy.Setup,
+		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
