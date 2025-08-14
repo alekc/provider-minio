@@ -308,6 +308,66 @@ func (mg *GroupPolicyAttachment) SetWriteConnectionSecretToReference(r *xpv1.Sec
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this GroupUserAttachment.
+func (mg *GroupUserAttachment) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this GroupUserAttachment.
+func (mg *GroupUserAttachment) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this GroupUserAttachment.
+func (mg *GroupUserAttachment) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this GroupUserAttachment.
+func (mg *GroupUserAttachment) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetPublishConnectionDetailsTo of this GroupUserAttachment.
+func (mg *GroupUserAttachment) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this GroupUserAttachment.
+func (mg *GroupUserAttachment) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this GroupUserAttachment.
+func (mg *GroupUserAttachment) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this GroupUserAttachment.
+func (mg *GroupUserAttachment) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this GroupUserAttachment.
+func (mg *GroupUserAttachment) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this GroupUserAttachment.
+func (mg *GroupUserAttachment) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetPublishConnectionDetailsTo of this GroupUserAttachment.
+func (mg *GroupUserAttachment) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this GroupUserAttachment.
+func (mg *GroupUserAttachment) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this PolicyAttachment.
 func (mg *PolicyAttachment) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)

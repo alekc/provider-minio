@@ -15,6 +15,7 @@ import (
 	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
 	grouppolicy "github.com/alekc/provider-minio/internal/controller/iam/grouppolicy"
 	grouppolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/grouppolicyattachment"
+	groupuserattachment "github.com/alekc/provider-minio/internal/controller/iam/groupuserattachment"
 	policyattachment "github.com/alekc/provider-minio/internal/controller/iam/policyattachment"
 	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	policy "github.com/alekc/provider-minio/internal/controller/policy/policy"
@@ -31,6 +32,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		groupmembership.Setup,
 		grouppolicy.Setup,
 		grouppolicyattachment.Setup,
+		groupuserattachment.Setup,
 		policyattachment.Setup,
 		user.Setup,
 		policy.Setup,

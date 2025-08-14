@@ -44,4 +44,12 @@ func Configure(p *config.Provider) {
 			TerraformName: "minio_iam_policy",
 		}
 	})
+	p.AddResourceConfigurator("minio_iam_group_user_attachment", func(r *config.Resource) {
+		r.References["group_name"] = config.Reference{
+			TerraformName: "minio_iam_group",
+		}
+		r.References["user_name"] = config.Reference{
+			TerraformName: "minio_iam_user",
+		}
+	})
 }

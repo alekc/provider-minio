@@ -247,6 +247,80 @@ func (mg *GroupPolicyAttachment) ResolveReferences(ctx context.Context, c client
 	return nil
 }
 
+// ResolveReferences of this GroupUserAttachment.
+func (mg *GroupUserAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.GroupName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.GroupNameRef,
+		Selector:     mg.Spec.ForProvider.GroupNameSelector,
+		To: reference.To{
+			List:    &GroupList{},
+			Managed: &Group{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.GroupName")
+	}
+	mg.Spec.ForProvider.GroupName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.GroupNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.UserName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.UserNameRef,
+		Selector:     mg.Spec.ForProvider.UserNameSelector,
+		To: reference.To{
+			List:    &UserList{},
+			Managed: &User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.UserName")
+	}
+	mg.Spec.ForProvider.UserName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.UserNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.GroupName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.GroupNameRef,
+		Selector:     mg.Spec.InitProvider.GroupNameSelector,
+		To: reference.To{
+			List:    &GroupList{},
+			Managed: &Group{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.GroupName")
+	}
+	mg.Spec.InitProvider.GroupName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.GroupNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.UserName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.UserNameRef,
+		Selector:     mg.Spec.InitProvider.UserNameSelector,
+		To: reference.To{
+			List:    &UserList{},
+			Managed: &User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.UserName")
+	}
+	mg.Spec.InitProvider.UserName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.UserNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this PolicyAttachment.
 func (mg *PolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
