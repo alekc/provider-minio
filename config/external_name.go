@@ -6,10 +6,33 @@ package config
 
 import "github.com/crossplane/upjet/pkg/config"
 
+//func ExternalNameConfig() config.ExternalName {
+//	return config.ExternalName{
+//		SetIdentifierArgumentFn: config.NopSetIdentifierArgument,
+//		GetExternalNameFn:       config.IDAsExternalName,
+//		GetIDFn:                 BuildIdentifyingPropertiesLookupIDFn(lookupConfig),
+//		DisableNameInitializer:  true,
+//	}
+//}
+
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	"bucket": config.NameAsIdentifier,
+	"minio_s3_bucket": CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
+}
+
+// CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
+// keeps the parameter in the spec. This is useful when you want to be able to use the same bucket name in different
+// providers
+
+func CustomParameterAsIdentifier(param string, omittedFields []string) config.ExternalName {
+	e := config.NameAsIdentifier
+	e.SetIdentifierArgumentFn = func(base map[string]any, name string) {
+		base[param] = name
+	}
+	e.OmittedFields = omittedFields
+	e.IdentifierFields = []string{param}
+	return e
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

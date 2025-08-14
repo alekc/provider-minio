@@ -82,11 +82,6 @@ spec:
                       (String) Name of the bucket
                       Name of the bucket
                     type: string
-                  bucketPrefix:
-                    description: |-
-                      (String) Prefix of the bucket
-                      Prefix of the bucket
-                    type: string
                   forceDestroy:
                     description: |-
                       (Boolean) Force destroy the bucket (default: false)
@@ -120,16 +115,6 @@ spec:
                     description: |-
                       (String) Bucket's Access Control List (default: private)
                       Bucket's Access Control List (default: private)
-                    type: string
-                  bucket:
-                    description: |-
-                      (String) Name of the bucket
-                      Name of the bucket
-                    type: string
-                  bucketPrefix:
-                    description: |-
-                      (String) Prefix of the bucket
-                      Prefix of the bucket
                     type: string
                   forceDestroy:
                     description: |-
@@ -338,11 +323,6 @@ spec:
                     description: |-
                       (String) The bucket domain name
                       The bucket domain name
-                    type: string
-                  bucketPrefix:
-                    description: |-
-                      (String) Prefix of the bucket
-                      Prefix of the bucket
                     type: string
                   forceDestroy:
                     description: |-
