@@ -10,6 +10,7 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
+	policy "github.com/alekc/provider-minio/internal/controller/policy/policy"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
 	user "github.com/alekc/provider-minio/internal/controller/user/user"
 	userpolicyattachment "github.com/alekc/provider-minio/internal/controller/user/userpolicyattachment"
@@ -20,6 +21,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		bucket.Setup,
+		policy.Setup,
 		providerconfig.Setup,
 		user.Setup,
 		userpolicyattachment.Setup,

@@ -21,6 +21,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_s3_bucket":                  CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
 	"minio_iam_user":                   CustomParameterAsIdentifier("name", []string{}),
 	"minio_iam_user_policy_attachment": config.IdentifierFromProvider,
+	"minio_iam_policy":                 config.IdentifierFromProvider,
 }
 
 // CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
