@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	"context"
+	v1alpha1 "github.com/alekc/provider-minio/apis/policy/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
@@ -19,6 +20,22 @@ func (mg *UserPolicyAttachment) ResolveReferences(ctx context.Context, c client.
 
 	var rsp reference.ResolutionResponse
 	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.PolicyName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.PolicyNameRef,
+		Selector:     mg.Spec.ForProvider.PolicyNameSelector,
+		To: reference.To{
+			List:    &v1alpha1.PolicyList{},
+			Managed: &v1alpha1.Policy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.PolicyName")
+	}
+	mg.Spec.ForProvider.PolicyName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.PolicyNameRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.UserName),
@@ -35,6 +52,22 @@ func (mg *UserPolicyAttachment) ResolveReferences(ctx context.Context, c client.
 	}
 	mg.Spec.ForProvider.UserName = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.UserNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.PolicyName),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.PolicyNameRef,
+		Selector:     mg.Spec.InitProvider.PolicyNameSelector,
+		To: reference.To{
+			List:    &v1alpha1.PolicyList{},
+			Managed: &v1alpha1.Policy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.PolicyName")
+	}
+	mg.Spec.InitProvider.PolicyName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.PolicyNameRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.UserName),

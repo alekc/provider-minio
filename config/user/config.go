@@ -12,5 +12,8 @@ func Configure(p *config.Provider) {
 		r.References["user_name"] = config.Reference{
 			TerraformName: "minio_iam_user",
 		}
+		r.References["policy_name"] = config.Reference{
+			TerraformName: "minio_iam_policy",
+		}
 	})
 }

@@ -17,7 +17,16 @@ type UserPolicyAttachmentInitParameters struct {
 
 	// (String) Name of policy to attach to user
 	// Name of policy to attach to user
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/policy/v1alpha1.Policy
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
+
+	// Reference to a Policy in policy to populate policyName.
+	// +kubebuilder:validation:Optional
+	PolicyNameRef *v1.Reference `json:"policyNameRef,omitempty" tf:"-"`
+
+	// Selector for a Policy in policy to populate policyName.
+	// +kubebuilder:validation:Optional
+	PolicyNameSelector *v1.Selector `json:"policyNameSelector,omitempty" tf:"-"`
 
 	// (String) Name of user
 	// Name of user
@@ -51,8 +60,17 @@ type UserPolicyAttachmentParameters struct {
 
 	// (String) Name of policy to attach to user
 	// Name of policy to attach to user
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/policy/v1alpha1.Policy
 	// +kubebuilder:validation:Optional
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
+
+	// Reference to a Policy in policy to populate policyName.
+	// +kubebuilder:validation:Optional
+	PolicyNameRef *v1.Reference `json:"policyNameRef,omitempty" tf:"-"`
+
+	// Selector for a Policy in policy to populate policyName.
+	// +kubebuilder:validation:Optional
+	PolicyNameSelector *v1.Selector `json:"policyNameSelector,omitempty" tf:"-"`
 
 	// (String) Name of user
 	// Name of user
@@ -105,9 +123,8 @@ type UserPolicyAttachmentStatus struct {
 type UserPolicyAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.policyName) || (has(self.initProvider) && has(self.initProvider.policyName))",message="spec.forProvider.policyName is a required parameter"
-	Spec   UserPolicyAttachmentSpec   `json:"spec"`
-	Status UserPolicyAttachmentStatus `json:"status,omitempty"`
+	Spec              UserPolicyAttachmentSpec   `json:"spec"`
+	Status            UserPolicyAttachmentStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

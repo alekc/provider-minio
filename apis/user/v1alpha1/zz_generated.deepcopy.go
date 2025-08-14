@@ -275,6 +275,16 @@ func (in *UserPolicyAttachmentInitParameters) DeepCopyInto(out *UserPolicyAttach
 		*out = new(string)
 		**out = **in
 	}
+	if in.PolicyNameRef != nil {
+		in, out := &in.PolicyNameRef, &out.PolicyNameRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.PolicyNameSelector != nil {
+		in, out := &in.PolicyNameSelector, &out.PolicyNameSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.UserName != nil {
 		in, out := &in.UserName, &out.UserName
 		*out = new(string)
@@ -371,6 +381,16 @@ func (in *UserPolicyAttachmentParameters) DeepCopyInto(out *UserPolicyAttachment
 		in, out := &in.PolicyName, &out.PolicyName
 		*out = new(string)
 		**out = **in
+	}
+	if in.PolicyNameRef != nil {
+		in, out := &in.PolicyNameRef, &out.PolicyNameRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.PolicyNameSelector != nil {
+		in, out := &in.PolicyNameSelector, &out.PolicyNameSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.UserName != nil {
 		in, out := &in.UserName, &out.UserName
