@@ -1,0 +1,28 @@
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: UserPolicyAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/existing-userpolicyattachment
+  labels:
+    testing.upbound.io/example-name: existing-user-policy-attachment
+  name: developer
+spec:
+  forProvider:
+    policyName: readonly # Existing policy
+    userNameRef:
+      name: developer
+---
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/existing-userpolicyattachment
+  labels:
+    testing.upbound.io/example-name: existing-user-policy-attachment
+  name: developer
+spec:
+  forProvider:
+    forceDestroy: true
+    name: test
+    tags:
+      tag-key: tag-value
