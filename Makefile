@@ -146,7 +146,7 @@ generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # so we patch the docs to remove the error
 patch-docs: pull-docs
 	@$(INFO) Patching provider docs to remove error
-	patch-docs.sh
+	./patch-docs.sh
 	@$(OK) Patching provider docs to remove error
 
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
