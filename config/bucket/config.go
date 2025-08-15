@@ -7,4 +7,11 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("minio_s3_bucket", func(r *config.Resource) {
 		r.ShortGroup = "bucket"
 	})
+	p.AddResourceConfigurator("minio_s3_bucket_notification", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "Notification"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
 }

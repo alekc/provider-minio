@@ -10,6 +10,7 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
+	notification "github.com/alekc/provider-minio/internal/controller/bucket/notification"
 	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
 	group "github.com/alekc/provider-minio/internal/controller/iam/group"
 	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
@@ -33,6 +34,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		bucket.Setup,
+		notification.Setup,
 		accesskey.Setup,
 		group.Setup,
 		groupmembership.Setup,

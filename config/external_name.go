@@ -26,7 +26,6 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_iam_group_user_attachment":        config.IdentifierFromProvider,
 	"minio_iam_ldap_group_policy_attachment": config.IdentifierFromProvider,
 	"minio_iam_ldap_user_policy_attachment":  config.IdentifierFromProvider,
-	"minio_s3_bucket":                        CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
 	"minio_iam_user":                         CustomParameterAsIdentifier("name", []string{}),
 	"minio_iam_user_policy_attachment":       config.IdentifierFromProvider,
 	"minio_iam_policy":                       config.IdentifierFromProvider,
@@ -34,6 +33,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_ilm_policy":                       config.IdentifierFromProvider,
 	"minio_ilm_tier":                         config.IdentifierFromProvider,
 	"minio_kms_key":                          config.IdentifierFromProvider,
+	"minio_s3_bucket":                        CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
+	"minio_s3_bucket_notification":           config.IdentifierFromProvider,
 }
 
 // CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
