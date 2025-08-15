@@ -1,0 +1,31 @@
+apiVersion: ilm.minio.alekc.dev/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ilm/v1alpha1/policy
+  labels:
+    testing.upbound.io/example-name: bucket-lifecycle-rules
+  name: bucket-lifecycle-rules
+spec:
+  forProvider:
+    bucketSelector:
+      matchLabels:
+        testing.upbound.io/example-name: bucket
+    rule:
+    - expiration: 7d
+      id: expire-7d
+      status: Enabled
+
+---
+
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ilm/v1alpha1/policy
+  labels:
+    testing.upbound.io/example-name: bucket
+  name: bucket
+spec:
+  forProvider:
+    bucket: bucket
