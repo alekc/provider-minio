@@ -17,14 +17,14 @@ type LDAPUserPolicyAttachmentInitParameters struct {
 
 	// (String) Name of policy to attach to user
 	// Name of policy to attach to user
-	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/policy/v1alpha1.Policy
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/iam/v1alpha1.Policy
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
 
-	// Reference to a Policy in policy to populate policyName.
+	// Reference to a Policy in iam to populate policyName.
 	// +kubebuilder:validation:Optional
 	PolicyNameRef *v1.Reference `json:"policyNameRef,omitempty" tf:"-"`
 
-	// Selector for a Policy in policy to populate policyName.
+	// Selector for a Policy in iam to populate policyName.
 	// +kubebuilder:validation:Optional
 	PolicyNameSelector *v1.Selector `json:"policyNameSelector,omitempty" tf:"-"`
 
@@ -51,15 +51,15 @@ type LDAPUserPolicyAttachmentParameters struct {
 
 	// (String) Name of policy to attach to user
 	// Name of policy to attach to user
-	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/policy/v1alpha1.Policy
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/iam/v1alpha1.Policy
 	// +kubebuilder:validation:Optional
 	PolicyName *string `json:"policyName,omitempty" tf:"policy_name,omitempty"`
 
-	// Reference to a Policy in policy to populate policyName.
+	// Reference to a Policy in iam to populate policyName.
 	// +kubebuilder:validation:Optional
 	PolicyNameRef *v1.Reference `json:"policyNameRef,omitempty" tf:"-"`
 
-	// Selector for a Policy in policy to populate policyName.
+	// Selector for a Policy in iam to populate policyName.
 	// +kubebuilder:validation:Optional
 	PolicyNameSelector *v1.Selector `json:"policyNameSelector,omitempty" tf:"-"`
 

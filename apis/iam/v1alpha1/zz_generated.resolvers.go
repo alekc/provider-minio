@@ -8,7 +8,6 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/alekc/provider-minio/apis/policy/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
@@ -202,8 +201,8 @@ func (mg *GroupPolicyAttachment) ResolveReferences(ctx context.Context, c client
 		Reference:    mg.Spec.ForProvider.PolicyNameRef,
 		Selector:     mg.Spec.ForProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -234,8 +233,8 @@ func (mg *GroupPolicyAttachment) ResolveReferences(ctx context.Context, c client
 		Reference:    mg.Spec.InitProvider.PolicyNameRef,
 		Selector:     mg.Spec.InitProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -334,8 +333,8 @@ func (mg *LDAPGroupPolicyAttachment) ResolveReferences(ctx context.Context, c cl
 		Reference:    mg.Spec.ForProvider.PolicyNameRef,
 		Selector:     mg.Spec.ForProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -350,8 +349,8 @@ func (mg *LDAPGroupPolicyAttachment) ResolveReferences(ctx context.Context, c cl
 		Reference:    mg.Spec.InitProvider.PolicyNameRef,
 		Selector:     mg.Spec.InitProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -376,8 +375,8 @@ func (mg *LDAPUserPolicyAttachment) ResolveReferences(ctx context.Context, c cli
 		Reference:    mg.Spec.ForProvider.PolicyNameRef,
 		Selector:     mg.Spec.ForProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -392,8 +391,8 @@ func (mg *LDAPUserPolicyAttachment) ResolveReferences(ctx context.Context, c cli
 		Reference:    mg.Spec.InitProvider.PolicyNameRef,
 		Selector:     mg.Spec.InitProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -405,8 +404,8 @@ func (mg *LDAPUserPolicyAttachment) ResolveReferences(ctx context.Context, c cli
 	return nil
 }
 
-// ResolveReferences of this PolicyAttachment.
-func (mg *PolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this UserPolicyAttachment.
+func (mg *UserPolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -418,8 +417,8 @@ func (mg *PolicyAttachment) ResolveReferences(ctx context.Context, c client.Read
 		Reference:    mg.Spec.ForProvider.PolicyNameRef,
 		Selector:     mg.Spec.ForProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {
@@ -450,8 +449,8 @@ func (mg *PolicyAttachment) ResolveReferences(ctx context.Context, c client.Read
 		Reference:    mg.Spec.InitProvider.PolicyNameRef,
 		Selector:     mg.Spec.InitProvider.PolicyNameSelector,
 		To: reference.To{
-			List:    &v1alpha1.PolicyList{},
-			Managed: &v1alpha1.Policy{},
+			List:    &PolicyList{},
+			Managed: &Policy{},
 		},
 	})
 	if err != nil {

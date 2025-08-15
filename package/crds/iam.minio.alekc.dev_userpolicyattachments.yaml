@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: policyattachments.iam.minio.alekc.dev
+  name: userpolicyattachments.iam.minio.alekc.dev
 spec:
   group: iam.minio.alekc.dev
   names:
@@ -12,10 +12,10 @@ spec:
     - crossplane
     - managed
     - minio
-    kind: PolicyAttachment
-    listKind: PolicyAttachmentList
-    plural: policyattachments
-    singular: policyattachment
+    kind: UserPolicyAttachment
+    listKind: UserPolicyAttachmentList
+    plural: userpolicyattachments
+    singular: userpolicyattachment
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PolicyAttachment is the Schema for the PolicyAttachments API.
+        description: UserPolicyAttachment is the Schema for the UserPolicyAttachments
+          API.
         properties:
           apiVersion:
             description: |-
@@ -54,7 +55,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: PolicyAttachmentSpec defines the desired state of PolicyAttachment
+            description: UserPolicyAttachmentSpec defines the desired state of UserPolicyAttachment
             properties:
               deletionPolicy:
                 default: Delete
@@ -78,7 +79,7 @@ spec:
                       Name of policy to attach to user
                     type: string
                   policyNameRef:
-                    description: Reference to a Policy in policy to populate policyName.
+                    description: Reference to a Policy in iam to populate policyName.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -112,7 +113,7 @@ spec:
                     - name
                     type: object
                   policyNameSelector:
-                    description: Selector for a Policy in policy to populate policyName.
+                    description: Selector for a Policy in iam to populate policyName.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -250,7 +251,7 @@ spec:
                       Name of policy to attach to user
                     type: string
                   policyNameRef:
-                    description: Reference to a Policy in policy to populate policyName.
+                    description: Reference to a Policy in iam to populate policyName.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -284,7 +285,7 @@ spec:
                     - name
                     type: object
                   policyNameSelector:
-                    description: Selector for a Policy in policy to populate policyName.
+                    description: Selector for a Policy in iam to populate policyName.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -571,7 +572,8 @@ spec:
             - forProvider
             type: object
           status:
-            description: PolicyAttachmentStatus defines the observed state of PolicyAttachment.
+            description: UserPolicyAttachmentStatus defines the observed state of
+              UserPolicyAttachment.
             properties:
               atProvider:
                 properties:

@@ -9,8 +9,6 @@ import (
 	_ "embed"
 	"github.com/alekc/provider-minio/config/bucket"
 	"github.com/alekc/provider-minio/config/iam"
-	"github.com/alekc/provider-minio/config/policy"
-
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
@@ -39,7 +37,6 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		bucket.Configure,
 		iam.Configure,
-		policy.Configure,
 	} {
 		configure(pc)
 	}

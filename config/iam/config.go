@@ -7,7 +7,6 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("minio_iam_user", func(r *config.Resource) {
 	})
 	p.AddResourceConfigurator("minio_iam_user_policy_attachment", func(r *config.Resource) {
-		r.Kind = "PolicyAttachment"
 		r.References["user_name"] = config.Reference{
 			TerraformName: "minio_iam_user",
 		}
@@ -63,5 +62,9 @@ func Configure(p *config.Provider) {
 		r.References["policy_name"] = config.Reference{
 			TerraformName: "minio_iam_policy",
 		}
+	})
+	p.AddResourceConfigurator("minio_iam_policy", func(r *config.Resource) {
+	})
+	p.AddResourceConfigurator("minio_iam_service_account", func(r *config.Resource) {
 	})
 }

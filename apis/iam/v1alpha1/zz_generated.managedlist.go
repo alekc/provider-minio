@@ -80,8 +80,8 @@ func (l *LDAPUserPolicyAttachmentList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this PolicyAttachmentList.
-func (l *PolicyAttachmentList) GetItems() []resource.Managed {
+// GetItems of this PolicyList.
+func (l *PolicyList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -91,6 +91,15 @@ func (l *PolicyAttachmentList) GetItems() []resource.Managed {
 
 // GetItems of this UserList.
 func (l *UserList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this UserPolicyAttachmentList.
+func (l *UserPolicyAttachmentList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

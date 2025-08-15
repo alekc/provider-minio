@@ -14,18 +14,18 @@ import (
 	"github.com/crossplane/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this PolicyAttachment
-func (mg *PolicyAttachment) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this UserPolicyAttachment
+func (mg *UserPolicyAttachment) GetTerraformResourceType() string {
 	return "minio_iam_user_policy_attachment"
 }
 
-// GetConnectionDetailsMapping for this PolicyAttachment
-func (tr *PolicyAttachment) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this UserPolicyAttachment
+func (tr *UserPolicyAttachment) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this PolicyAttachment
-func (tr *PolicyAttachment) GetObservation() (map[string]any, error) {
+// GetObservation of this UserPolicyAttachment
+func (tr *UserPolicyAttachment) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -34,8 +34,8 @@ func (tr *PolicyAttachment) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this PolicyAttachment
-func (tr *PolicyAttachment) SetObservation(obs map[string]any) error {
+// SetObservation for this UserPolicyAttachment
+func (tr *UserPolicyAttachment) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -43,16 +43,16 @@ func (tr *PolicyAttachment) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this PolicyAttachment
-func (tr *PolicyAttachment) GetID() string {
+// GetID returns ID of underlying Terraform resource of this UserPolicyAttachment
+func (tr *UserPolicyAttachment) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this PolicyAttachment
-func (tr *PolicyAttachment) GetParameters() (map[string]any, error) {
+// GetParameters of this UserPolicyAttachment
+func (tr *UserPolicyAttachment) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -61,8 +61,8 @@ func (tr *PolicyAttachment) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this PolicyAttachment
-func (tr *PolicyAttachment) SetParameters(params map[string]any) error {
+// SetParameters for this UserPolicyAttachment
+func (tr *UserPolicyAttachment) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -70,8 +70,8 @@ func (tr *PolicyAttachment) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// GetInitParameters of this PolicyAttachment
-func (tr *PolicyAttachment) GetInitParameters() (map[string]any, error) {
+// GetInitParameters of this UserPolicyAttachment
+func (tr *UserPolicyAttachment) GetInitParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
 	if err != nil {
 		return nil, err
@@ -80,8 +80,8 @@ func (tr *PolicyAttachment) GetInitParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// GetInitParameters of this PolicyAttachment
-func (tr *PolicyAttachment) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
+// GetInitParameters of this UserPolicyAttachment
+func (tr *UserPolicyAttachment) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
 	params, err := tr.GetParameters()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get parameters for resource '%q'", tr.GetName())
@@ -110,10 +110,10 @@ func (tr *PolicyAttachment) GetMergedParameters(shouldMergeInitProvider bool) (m
 	return params, nil
 }
 
-// LateInitialize this PolicyAttachment using its observed tfState.
+// LateInitialize this UserPolicyAttachment using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *PolicyAttachment) LateInitialize(attrs []byte) (bool, error) {
-	params := &PolicyAttachmentParameters{}
+func (tr *UserPolicyAttachment) LateInitialize(attrs []byte) (bool, error) {
+	params := &UserPolicyAttachmentParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -124,6 +124,6 @@ func (tr *PolicyAttachment) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *PolicyAttachment) GetTerraformSchemaVersion() int {
+func (tr *UserPolicyAttachment) GetTerraformSchemaVersion() int {
 	return 0
 }

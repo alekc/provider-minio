@@ -86,7 +86,7 @@ spec:
                       Name of policy to attach to group
                     type: string
                   policyNameRef:
-                    description: Reference to a Policy in policy to populate policyName.
+                    description: Reference to a Policy in iam to populate policyName.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -120,7 +120,7 @@ spec:
                     - name
                     type: object
                   policyNameSelector:
-                    description: Selector for a Policy in policy to populate policyName.
+                    description: Selector for a Policy in iam to populate policyName.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -184,7 +184,7 @@ spec:
                       Name of policy to attach to group
                     type: string
                   policyNameRef:
-                    description: Reference to a Policy in policy to populate policyName.
+                    description: Reference to a Policy in iam to populate policyName.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -218,7 +218,7 @@ spec:
                     - name
                     type: object
                   policyNameSelector:
-                    description: Selector for a Policy in policy to populate policyName.
+                    description: Selector for a Policy in iam to populate policyName.
                     properties:
                       matchControllerRef:
                         description: |-
