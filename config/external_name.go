@@ -9,8 +9,43 @@ import "github.com/crossplane/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	"minio_accesskey":                        config.IdentifierFromProvider,
+	"minio_iam_group":                        config.IdentifierFromProvider,
+	"minio_iam_group_membership":             config.IdentifierFromProvider,
+	"minio_iam_group_policy":                 config.IdentifierFromProvider,
+	"minio_iam_group_policy_attachment":      config.IdentifierFromProvider,
+	"minio_iam_group_user_attachment":        config.IdentifierFromProvider,
+	"minio_iam_ldap_group_policy_attachment": config.IdentifierFromProvider,
+	"minio_iam_ldap_user_policy_attachment":  config.IdentifierFromProvider,
+	"minio_iam_user":                         CustomParameterAsIdentifier("name", []string{}),
+	"minio_iam_user_policy_attachment":       config.IdentifierFromProvider,
+	"minio_iam_policy":                       config.IdentifierFromProvider,
+	"minio_iam_service_account":              config.IdentifierFromProvider,
+	"minio_ilm_policy":                       config.IdentifierFromProvider,
+	"minio_ilm_tier":                         config.IdentifierFromProvider,
+	"minio_kms_key":                          config.IdentifierFromProvider,
+	"minio_s3_bucket":                        CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
+	"minio_s3_bucket_notification":           config.IdentifierFromProvider,
+	"minio_s3_bucket_policy":                 config.IdentifierFromProvider,
+	"minio_s3_bucket_replication":            config.IdentifierFromProvider,
+	"minio_s3_bucket_retention":              config.IdentifierFromProvider,
+	"minio_s3_bucket_server_side_encryption": config.IdentifierFromProvider,
+	"minio_s3_bucket_versioning":             config.IdentifierFromProvider,
+	"minio_s3_object":                        config.IdentifierFromProvider,
+}
+
+// CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
+// keeps the parameter in the spec. This is useful when you want to be able to use the same bucket name in different
+// providers
+
+func CustomParameterAsIdentifier(param string, omittedFields []string) config.ExternalName {
+	e := config.NameAsIdentifier
+	e.SetIdentifierArgumentFn = func(base map[string]any, name string) {
+		base[param] = name
+	}
+	e.OmittedFields = omittedFields
+	e.IdentifierFields = []string{param}
+	return e
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

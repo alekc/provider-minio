@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "template.upbound.io"
+	Group   = "minio.alekc.dev"
 	Version = "v1alpha1"
 )
 

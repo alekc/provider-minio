@@ -10,12 +10,14 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	"github.com/upbound/upjet-provider-template/config/null"
+	"github.com/alekc/provider-minio/config/bucket"
+	"github.com/alekc/provider-minio/config/iam"
+	"github.com/alekc/provider-minio/config/ilm"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "minio"
+	modulePath     = "github.com/alekc/provider-minio"
 )
 
 //go:embed schema.json
@@ -27,7 +29,7 @@ var providerMetadata string
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("template.upbound.io"),
+		ujconfig.WithRootGroup("minio.alekc.dev"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
@@ -36,7 +38,9 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		bucket.Configure,
+		iam.Configure,
+		ilm.Configure,
 	} {
 		configure(pc)
 	}

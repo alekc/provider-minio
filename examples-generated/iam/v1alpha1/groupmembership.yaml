@@ -1,0 +1,59 @@
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: GroupMembership
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupmembership
+  labels:
+    testing.upbound.io/example-name: developer
+  name: developer
+spec:
+  forProvider:
+    groupSelector:
+      matchLabels:
+        testing.upbound.io/example-name: developer
+    name: tf-testing-group-membership
+    usersRefs:
+    - name: user_one
+    - name: user_two
+
+---
+
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupmembership
+  labels:
+    testing.upbound.io/example-name: developer
+  name: developer
+spec:
+  forProvider:
+    name: developer
+
+---
+
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupmembership
+  labels:
+    testing.upbound.io/example-name: user_one
+  name: user-one
+spec:
+  forProvider:
+    name: test-user
+
+---
+
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupmembership
+  labels:
+    testing.upbound.io/example-name: user_two
+  name: user-two
+spec:
+  forProvider:
+    name: test-user-two

@@ -1,8 +1,8 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= upjet-provider-template
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+PROJECT_NAME ?= provider-minio
+PROJECT_REPO ?= github.com/alekc/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.5.7
 
@@ -10,12 +10,14 @@ export TERRAFORM_VERSION ?= 1.5.7
 # licensed under BSL, which is not permitted.
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
-export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/null
-export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-null
-export TERRAFORM_PROVIDER_VERSION ?= 3.2.2
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-null
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.1.0_x5
+export TERRAFORM_PROVIDER_SOURCE ?= aminueza/minio
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/aminueza/terraform-provider-minio
+# renovate: datasource=github-releases depName=aminueza/terraform-provider-minio
+export TERRAFORM_PROVIDER_VERSION ?= 3.6.3
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-minio
+#export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= ${TERRAFORM_PROVIDER_REPO}/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-minio_v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
@@ -58,7 +60,11 @@ KIND_VERSION = v0.15.0
 UP_VERSION = v0.39.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
+KUBECTL_VERSION = v1.24.3
 -include build/makelib/k8s_tools.mk
+
+# Custom targets for K8s tools
+kubectl-install: $(KUBECTL)
 
 # ====================================================================================
 # Setup Images
@@ -93,7 +99,7 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.upjet-provider-template: do.build.images
+xpkg.build.provider-minio: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
@@ -136,6 +142,13 @@ pull-docs:
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
+# there is an error in the provider schema that prevents the docs from being generated
+# so we patch the docs to remove the error
+patch-docs: pull-docs
+	@$(INFO) Patching provider docs to remove error
+	./patch-docs.sh
+	@$(OK) Patching provider docs to remove error
+
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================
 # Targets
@@ -170,6 +183,7 @@ submodules:
 run: go.build
 	@$(INFO) Running Crossplane locally out-of-cluster . . .
 	@# To see other arguments that can be provided, run the command with --help instead
+	@$(INFO) "local" $(GO_OUT_DIR)/provider --debug
 	UPBOUND_CONTEXT="local" $(GO_OUT_DIR)/provider --debug
 
 # ====================================================================================
@@ -222,6 +236,22 @@ crddiff: $(UPTEST)
 		fi ; \
 	done
 	@$(OK) Checking breaking CRD schema changes
+
+crds.clean:
+	@$(INFO) Cleaning up CRDs
+	@for crd in $$(find package/crds -name '*.yaml'); do \
+		echo "Cleaning up $${crd}..." ; \
+		$(KUBECTL) delete -f "$${crd}" || true ; \
+	done
+	@$(OK) Cleaning up CRDs
+
+crds.install:
+	@$(INFO) Installing CRDs
+	@for crd in $$(find package/crds -name '*.yaml'); do \
+		echo "Installing $${crd}..." ; \
+		$(KUBECTL) apply -f "$${crd}" ; \
+	done
+	@$(OK) Installing CRDs
 
 schema-version-diff:
 	@$(INFO) Checking for native state schema version changes
