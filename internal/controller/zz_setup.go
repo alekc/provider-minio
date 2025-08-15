@@ -24,6 +24,7 @@ import (
 	userpolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/userpolicyattachment"
 	policyilm "github.com/alekc/provider-minio/internal/controller/ilm/policy"
 	tier "github.com/alekc/provider-minio/internal/controller/ilm/tier"
+	key "github.com/alekc/provider-minio/internal/controller/kms/key"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
 )
 
@@ -46,6 +47,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		userpolicyattachment.Setup,
 		policyilm.Setup,
 		tier.Setup,
+		key.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

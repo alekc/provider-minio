@@ -13,6 +13,7 @@ import (
 	v1alpha1 "github.com/alekc/provider-minio/apis/bucket/v1alpha1"
 	v1alpha1iam "github.com/alekc/provider-minio/apis/iam/v1alpha1"
 	v1alpha1ilm "github.com/alekc/provider-minio/apis/ilm/v1alpha1"
+	v1alpha1kms "github.com/alekc/provider-minio/apis/kms/v1alpha1"
 	v1alpha1apis "github.com/alekc/provider-minio/apis/v1alpha1"
 	v1beta1 "github.com/alekc/provider-minio/apis/v1beta1"
 )
@@ -23,6 +24,7 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1iam.SchemeBuilder.AddToScheme,
 		v1alpha1ilm.SchemeBuilder.AddToScheme,
+		v1alpha1kms.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)
