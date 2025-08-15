@@ -6,15 +6,6 @@ package config
 
 import "github.com/crossplane/upjet/pkg/config"
 
-//func ExternalNameConfig() config.ExternalName {
-//	return config.ExternalName{
-//		SetIdentifierArgumentFn: config.NopSetIdentifierArgument,
-//		GetExternalNameFn:       config.IDAsExternalName,
-//		GetIDFn:                 BuildIdentifyingPropertiesLookupIDFn(lookupConfig),
-//		DisableNameInitializer:  true,
-//	}
-//}
-
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{

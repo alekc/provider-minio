@@ -7,10 +7,12 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+
+	ujconfig "github.com/crossplane/upjet/pkg/config"
+
 	"github.com/alekc/provider-minio/config/bucket"
 	"github.com/alekc/provider-minio/config/iam"
 	"github.com/alekc/provider-minio/config/ilm"
-	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
 const (
