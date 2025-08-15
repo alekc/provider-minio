@@ -30,6 +30,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_iam_user":                         CustomParameterAsIdentifier("name", []string{}),
 	"minio_iam_user_policy_attachment":       config.IdentifierFromProvider,
 	"minio_iam_policy":                       config.IdentifierFromProvider,
+	"minio_iam_service_account":              config.IdentifierFromProvider,
 }
 
 // CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but

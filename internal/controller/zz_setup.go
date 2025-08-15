@@ -19,6 +19,7 @@ import (
 	ldapgrouppolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/ldapgrouppolicyattachment"
 	ldapuserpolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/ldapuserpolicyattachment"
 	policy "github.com/alekc/provider-minio/internal/controller/iam/policy"
+	serviceaccount "github.com/alekc/provider-minio/internal/controller/iam/serviceaccount"
 	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	userpolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/userpolicyattachment"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
@@ -38,6 +39,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		ldapgrouppolicyattachment.Setup,
 		ldapuserpolicyattachment.Setup,
 		policy.Setup,
+		serviceaccount.Setup,
 		user.Setup,
 		userpolicyattachment.Setup,
 		providerconfig.Setup,

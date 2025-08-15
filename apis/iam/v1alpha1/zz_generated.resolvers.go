@@ -404,6 +404,48 @@ func (mg *LDAPUserPolicyAttachment) ResolveReferences(ctx context.Context, c cli
 	return nil
 }
 
+// ResolveReferences of this ServiceAccount.
+func (mg *ServiceAccount) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TargetUser),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TargetUserRef,
+		Selector:     mg.Spec.ForProvider.TargetUserSelector,
+		To: reference.To{
+			List:    &UserList{},
+			Managed: &User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TargetUser")
+	}
+	mg.Spec.ForProvider.TargetUser = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TargetUserRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TargetUser),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TargetUserRef,
+		Selector:     mg.Spec.InitProvider.TargetUserSelector,
+		To: reference.To{
+			List:    &UserList{},
+			Managed: &User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TargetUser")
+	}
+	mg.Spec.InitProvider.TargetUser = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TargetUserRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this UserPolicyAttachment.
 func (mg *UserPolicyAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
