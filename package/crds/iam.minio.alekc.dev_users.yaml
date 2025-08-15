@@ -115,8 +115,6 @@ spec:
                       (Boolean) When true, generates a new secret key for the user. Defaults to false.
                       Rotate Minio User Secret Key
                     type: boolean
-                required:
-                - name
                 type: object
               initProvider:
                 description: |-
@@ -140,6 +138,11 @@ spec:
                     description: When true, any group memberships will be removed
                       during deletion even if they cause errors
                     type: boolean
+                  name:
+                    description: |-
+                      (String) Name of the user
+                      Name of the user
+                    type: string
                   secretSecretRef:
                     description: (String, Sensitive) The user's secret key. If not
                       provided, one will be generated. Can be updated.
@@ -337,6 +340,11 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: UserStatus defines the observed state of User.
             properties:

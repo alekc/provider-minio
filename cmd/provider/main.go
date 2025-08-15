@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"time"
 
+	uberZap "go.uber.org/zap"
+
 	"github.com/crossplane/crossplane-runtime/pkg/certificates"
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
@@ -61,14 +63,13 @@ func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	zl := zap.New(zap.UseDevMode(*debug))
-	log := logging.NewLogrLogger(zl.WithName("provider-minio"))
+	zl := zap.New(zap.UseDevMode(false), zap.Level(uberZap.WarnLevel))
 	if *debug {
-		// The controller-runtime runs with a no-op logger by default. It is
-		// *very* verbose even at info level, so we only provide it a real
-		// logger when we're running in debug mode.
-		ctrl.SetLogger(zl)
+		zl = zap.New(zap.UseDevMode(true), zap.Level(uberZap.DebugLevel))
 	}
+	log := logging.NewLogrLogger(zl.WithName("provider-minio"))
+	// Always set the controller-runtime logger
+	ctrl.SetLogger(zl)
 
 	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "max-reconcile-rate", *maxReconcileRate)
 

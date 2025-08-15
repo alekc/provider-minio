@@ -48,6 +48,11 @@ func (in *BucketInitParameters) DeepCopyInto(out *BucketInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Bucket != nil {
+		in, out := &in.Bucket, &out.Bucket
+		*out = new(string)
+		**out = **in
+	}
 	if in.ForceDestroy != nil {
 		in, out := &in.ForceDestroy, &out.ForceDestroy
 		*out = new(bool)

@@ -39,12 +39,14 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 // providers
 
 func CustomParameterAsIdentifier(param string, omittedFields []string) config.ExternalName {
-	e := config.NameAsIdentifier
-	e.SetIdentifierArgumentFn = func(base map[string]any, name string) {
-		base[param] = name
+	e := config.ExternalName{
+		SetIdentifierArgumentFn: config.NopSetIdentifierArgument,
+		GetExternalNameFn:       config.IDAsExternalName,
+		GetIDFn:                 config.ExternalNameAsID,
+		DisableNameInitializer:  true,
+		OmittedFields:           omittedFields,
 	}
-	e.OmittedFields = omittedFields
-	e.IdentifierFields = []string{param}
+
 	return e
 }
 
