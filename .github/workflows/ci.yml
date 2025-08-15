@@ -13,13 +13,17 @@ env:
   GO_VERSION: '1.21'
   GOLANGCI_VERSION: 'v1.54.0'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
-  CROSSPLANE_REGORG: 'ghcr.io/${{ github.repository_owner }}/provider-minio'
+  CROSSPLANE_REGORG: 'ghcr.io/${{ github.repository_owner }}'
   UPBOUND_REGORG: 'xpkg.upbound.io/alekc'
 
   # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
   # step 'if env.XXX != ""', so we copy these to succinctly test whether
   # credentials have been provided before trying to run steps that need them.
   UPBOUND_MARKETPLACE_PUSH_ROBOT_USR: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   detect-noop:
