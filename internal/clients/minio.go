@@ -43,12 +43,12 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if configRef == nil {
 			return ps, errors.New(errNoProviderConfig)
 		}
-		pc := &v1beta1.ProviderConfig{}
+		pc := &miniov1beta1.ProviderConfig{}
 		if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
 			return ps, errors.Wrap(err, errGetProviderConfig)
 		}
 
-		t := resource.NewProviderConfigUsageTracker(client, &v1beta1.ProviderConfigUsage{})
+		t := resource.NewProviderConfigUsageTracker(client, &miniov1beta1.ProviderConfigUsage{})
 		if err := t.Track(ctx, mg); err != nil {
 			return ps, errors.Wrap(err, errTrackUsage)
 		}
