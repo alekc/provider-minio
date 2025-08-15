@@ -23,4 +23,6 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Run build
-        run: make xpkg.build.provider-minio
+        run:
+          make submodules
+          make xpkg.build.provider-minio
