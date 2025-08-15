@@ -145,7 +145,7 @@ jobs:
         run: make vendor vendor.check
 
       - name: Check Diff
-        run: make check-diff
+        run: make patch-docs && make check-diff
 
   unit-tests:
     runs-on: ubuntu-24.04
