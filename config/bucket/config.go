@@ -14,4 +14,12 @@ func Configure(p *config.Provider) {
 			TerraformName: "minio_s3_bucket",
 		}
 	})
+	p.AddResourceConfigurator("minio_s3_bucket_policy", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "Policy"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
+
 }

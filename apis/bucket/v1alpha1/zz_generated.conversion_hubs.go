@@ -11,3 +11,6 @@ func (tr *Bucket) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Notification) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Policy) Hub() {}

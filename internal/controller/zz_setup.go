@@ -11,6 +11,7 @@ import (
 
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
 	notification "github.com/alekc/provider-minio/internal/controller/bucket/notification"
+	policy "github.com/alekc/provider-minio/internal/controller/bucket/policy"
 	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
 	group "github.com/alekc/provider-minio/internal/controller/iam/group"
 	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
@@ -19,7 +20,7 @@ import (
 	groupuserattachment "github.com/alekc/provider-minio/internal/controller/iam/groupuserattachment"
 	ldapgrouppolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/ldapgrouppolicyattachment"
 	ldapuserpolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/ldapuserpolicyattachment"
-	policy "github.com/alekc/provider-minio/internal/controller/iam/policy"
+	policyiam "github.com/alekc/provider-minio/internal/controller/iam/policy"
 	serviceaccount "github.com/alekc/provider-minio/internal/controller/iam/serviceaccount"
 	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	userpolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/userpolicyattachment"
@@ -35,6 +36,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		bucket.Setup,
 		notification.Setup,
+		policy.Setup,
 		accesskey.Setup,
 		group.Setup,
 		groupmembership.Setup,
@@ -43,7 +45,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		groupuserattachment.Setup,
 		ldapgrouppolicyattachment.Setup,
 		ldapuserpolicyattachment.Setup,
-		policy.Setup,
+		policyiam.Setup,
 		serviceaccount.Setup,
 		user.Setup,
 		userpolicyattachment.Setup,
