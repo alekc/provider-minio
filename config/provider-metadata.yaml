@@ -1,9 +1,9 @@
 name: aminueza/minio
 resources:
-    Minio Resource - terraform-provider-minio:
+    Minio AccessKey Resource - terraform-provider-minio:
         subCategory: ""
-        name: Minio Resource - terraform-provider-minio
-        title: Minio Resource - terraform-provider-minio
+        name: Minio AccessKey Resource - terraform-provider-minio
+        title: Minio AccessKey Resource - terraform-provider-minio
         argumentDocs:
             access_key: (Optional) - The access key value. If omitted, MinIO generates one. Must be 8-20 characters when specified.
             create: '- (Default 5 minutes) How long to wait for an access key to be created.'
