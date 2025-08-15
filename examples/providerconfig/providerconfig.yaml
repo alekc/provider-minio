@@ -7,5 +7,5 @@ spec:
     source: Secret
     secretRef:
       name: crossplane-provider-config
-      namespace: default
+      namespace: crossplane-system
       key: credentials
