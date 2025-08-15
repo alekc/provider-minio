@@ -1,8 +1,8 @@
 apiVersion: bucket.minio.alekc.dev/v1alpha1
-kind: Versioning
+kind: Object
 metadata:
   annotations:
-    meta.upbound.io/example-id: bucket/v1alpha1/versioning
+    meta.upbound.io/example-id: bucket/v1alpha1/object
   labels:
     testing.upbound.io/example-name: txt_file
   name: txt-file
@@ -19,7 +19,7 @@ apiVersion: bucket.minio.alekc.dev/v1alpha1
 kind: Bucket
 metadata:
   annotations:
-    meta.upbound.io/example-id: bucket/v1alpha1/versioning
+    meta.upbound.io/example-id: bucket/v1alpha1/object
   labels:
     testing.upbound.io/example-name: state_terraform_s3
   name: state-terraform-s3

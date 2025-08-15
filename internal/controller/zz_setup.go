@@ -11,6 +11,7 @@ import (
 
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
 	notification "github.com/alekc/provider-minio/internal/controller/bucket/notification"
+	object "github.com/alekc/provider-minio/internal/controller/bucket/object"
 	policy "github.com/alekc/provider-minio/internal/controller/bucket/policy"
 	replication "github.com/alekc/provider-minio/internal/controller/bucket/replication"
 	retention "github.com/alekc/provider-minio/internal/controller/bucket/retention"
@@ -40,11 +41,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		bucket.Setup,
 		notification.Setup,
+		object.Setup,
 		policy.Setup,
 		replication.Setup,
 		retention.Setup,
 		serversideencryption.Setup,
-		versioning.Setup,
 		versioning.Setup,
 		accesskey.Setup,
 		group.Setup,

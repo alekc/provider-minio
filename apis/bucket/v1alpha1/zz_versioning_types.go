@@ -13,126 +13,84 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type VersioningInitParameters_2 struct {
+type VersioningConfigurationInitParameters struct {
+	ExcludeFolders *bool `json:"excludeFolders,omitempty" tf:"exclude_folders,omitempty"`
 
-	// (String) Name of the bucket
-	// Name of the bucket
-	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+	ExcludedPrefixes []*string `json:"excludedPrefixes,omitempty" tf:"excluded_prefixes,omitempty"`
 
-	// (String) Content of the object as a string. Use only one of content, content_base64, or source
-	// Content of the object as a string. Use only one of content, content_base64, or source
-	Content *string `json:"content,omitempty" tf:"content,omitempty"`
-
-	// encoded content of the object. Use only one of content, content_base64, or source
-	// Base64-encoded content of the object. Use only one of content, content_base64, or source
-	ContentBase64 *string `json:"contentBase64,omitempty" tf:"content_base64,omitempty"`
-
-	// (String) Content type of the object, in the form of a MIME type
-	// Content type of the object, in the form of a MIME type
-	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
-
-	// (String) ETag of the object
-	// ETag of the object
-	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
-
-	// (String) Name of the object
-	// Name of the object
-	ObjectName *string `json:"objectName,omitempty" tf:"object_name,omitempty"`
-
-	// (String) Path to the file that will be uploaded. Use only one of content, content_base64, or source
-	// Path to the file that will be uploaded. Use only one of content, content_base64, or source
-	Source *string `json:"source,omitempty" tf:"source,omitempty"`
-
-	// (String) Version ID of the object
-	// Version ID of the object
-	VersionID *string `json:"versionId,omitempty" tf:"version_id,omitempty"`
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
-type VersioningObservation_2 struct {
+type VersioningConfigurationObservation struct {
+	ExcludeFolders *bool `json:"excludeFolders,omitempty" tf:"exclude_folders,omitempty"`
 
-	// (String) Name of the bucket
+	ExcludedPrefixes []*string `json:"excludedPrefixes,omitempty" tf:"excluded_prefixes,omitempty"`
+
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+}
+
+type VersioningConfigurationParameters struct {
+
+	// +kubebuilder:validation:Optional
+	ExcludeFolders *bool `json:"excludeFolders,omitempty" tf:"exclude_folders,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ExcludedPrefixes []*string `json:"excludedPrefixes,omitempty" tf:"excluded_prefixes,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Status *string `json:"status" tf:"status,omitempty"`
+}
+
+type VersioningInitParameters struct {
+
 	// Name of the bucket
-	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/bucket/v1alpha1.Bucket
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
-	// (String) Content of the object as a string. Use only one of content, content_base64, or source
-	// Content of the object as a string. Use only one of content, content_base64, or source
-	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+	// Reference to a Bucket in bucket to populate bucket.
+	// +kubebuilder:validation:Optional
+	BucketRef *v1.Reference `json:"bucketRef,omitempty" tf:"-"`
 
-	// encoded content of the object. Use only one of content, content_base64, or source
-	// Base64-encoded content of the object. Use only one of content, content_base64, or source
-	ContentBase64 *string `json:"contentBase64,omitempty" tf:"content_base64,omitempty"`
+	// Selector for a Bucket in bucket to populate bucket.
+	// +kubebuilder:validation:Optional
+	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
 
-	// (String) Content type of the object, in the form of a MIME type
-	// Content type of the object, in the form of a MIME type
-	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+	VersioningConfiguration []VersioningConfigurationInitParameters `json:"versioningConfiguration,omitempty" tf:"versioning_configuration,omitempty"`
+}
 
-	// (String) ETag of the object
-	// ETag of the object
-	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+type VersioningObservation struct {
 
-	// (String) The ID of this resource.
+	// Name of the bucket
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (String) Name of the object
-	// Name of the object
-	ObjectName *string `json:"objectName,omitempty" tf:"object_name,omitempty"`
-
-	// (String) Path to the file that will be uploaded. Use only one of content, content_base64, or source
-	// Path to the file that will be uploaded. Use only one of content, content_base64, or source
-	Source *string `json:"source,omitempty" tf:"source,omitempty"`
-
-	// (String) Version ID of the object
-	// Version ID of the object
-	VersionID *string `json:"versionId,omitempty" tf:"version_id,omitempty"`
+	VersioningConfiguration []VersioningConfigurationObservation `json:"versioningConfiguration,omitempty" tf:"versioning_configuration,omitempty"`
 }
 
-type VersioningParameters_2 struct {
+type VersioningParameters struct {
 
-	// (String) Name of the bucket
 	// Name of the bucket
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/bucket/v1alpha1.Bucket
 	// +kubebuilder:validation:Optional
-	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
-	// (String) Content of the object as a string. Use only one of content, content_base64, or source
-	// Content of the object as a string. Use only one of content, content_base64, or source
+	// Reference to a Bucket in bucket to populate bucket.
 	// +kubebuilder:validation:Optional
-	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+	BucketRef *v1.Reference `json:"bucketRef,omitempty" tf:"-"`
 
-	// encoded content of the object. Use only one of content, content_base64, or source
-	// Base64-encoded content of the object. Use only one of content, content_base64, or source
+	// Selector for a Bucket in bucket to populate bucket.
 	// +kubebuilder:validation:Optional
-	ContentBase64 *string `json:"contentBase64,omitempty" tf:"content_base64,omitempty"`
+	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
 
-	// (String) Content type of the object, in the form of a MIME type
-	// Content type of the object, in the form of a MIME type
 	// +kubebuilder:validation:Optional
-	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
-
-	// (String) ETag of the object
-	// ETag of the object
-	// +kubebuilder:validation:Optional
-	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
-
-	// (String) Name of the object
-	// Name of the object
-	// +kubebuilder:validation:Optional
-	ObjectName *string `json:"objectName,omitempty" tf:"object_name,omitempty"`
-
-	// (String) Path to the file that will be uploaded. Use only one of content, content_base64, or source
-	// Path to the file that will be uploaded. Use only one of content, content_base64, or source
-	// +kubebuilder:validation:Optional
-	Source *string `json:"source,omitempty" tf:"source,omitempty"`
-
-	// (String) Version ID of the object
-	// Version ID of the object
-	// +kubebuilder:validation:Optional
-	VersionID *string `json:"versionId,omitempty" tf:"version_id,omitempty"`
+	VersioningConfiguration []VersioningConfigurationParameters `json:"versioningConfiguration,omitempty" tf:"versioning_configuration,omitempty"`
 }
 
 // VersioningSpec defines the desired state of Versioning
 type VersioningSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     VersioningParameters_2 `json:"forProvider"`
+	ForProvider     VersioningParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -143,20 +101,20 @@ type VersioningSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider VersioningInitParameters_2 `json:"initProvider,omitempty"`
+	InitProvider VersioningInitParameters `json:"initProvider,omitempty"`
 }
 
 // VersioningStatus defines the observed state of Versioning.
 type VersioningStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        VersioningObservation_2 `json:"atProvider,omitempty"`
+	AtProvider        VersioningObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Versioning is the Schema for the Versionings API.
+// Versioning is the Schema for the Versionings API. <no value>
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -165,8 +123,7 @@ type VersioningStatus struct {
 type Versioning struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.bucketName) || (has(self.initProvider) && has(self.initProvider.bucketName))",message="spec.forProvider.bucketName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.objectName) || (has(self.initProvider) && has(self.initProvider.objectName))",message="spec.forProvider.objectName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.versioningConfiguration) || (has(self.initProvider) && has(self.initProvider.versioningConfiguration))",message="spec.forProvider.versioningConfiguration is a required parameter"
 	Spec   VersioningSpec   `json:"spec"`
 	Status VersioningStatus `json:"status,omitempty"`
 }

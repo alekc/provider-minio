@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: versionings.bucket.minio.alekc.dev
+  name: objects.bucket.minio.alekc.dev
 spec:
   group: bucket.minio.alekc.dev
   names:
@@ -12,10 +12,10 @@ spec:
     - crossplane
     - managed
     - minio
-    kind: Versioning
-    listKind: VersioningList
-    plural: versionings
-    singular: versioning
+    kind: Object
+    listKind: ObjectList
+    plural: objects
+    singular: object
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Versioning is the Schema for the Versionings API. <no value>
+        description: Object is the Schema for the Objects API.
         properties:
           apiVersion:
             description: |-
@@ -54,7 +54,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: VersioningSpec defines the desired state of Versioning
+            description: ObjectSpec defines the desired state of Object
             properties:
               deletionPolicy:
                 default: Delete
@@ -72,96 +72,46 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  bucket:
-                    description: Name of the bucket
+                  bucketName:
+                    description: |-
+                      (String) Name of the bucket
+                      Name of the bucket
                     type: string
-                  bucketRef:
-                    description: Reference to a Bucket in bucket to populate bucket.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: |-
-                              Resolution specifies whether resolution of this reference is required.
-                              The default is 'Required', which means the reconcile will fail if the
-                              reference cannot be resolved. 'Optional' means this reference will be
-                              a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: |-
-                              Resolve specifies when this reference should be resolved. The default
-                              is 'IfNotPresent', which will attempt to resolve the reference only when
-                              the corresponding field is not present. Use 'Always' to resolve the
-                              reference on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  bucketSelector:
-                    description: Selector for a Bucket in bucket to populate bucket.
-                    properties:
-                      matchControllerRef:
-                        description: |-
-                          MatchControllerRef ensures an object with the same controller reference
-                          as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: |-
-                              Resolution specifies whether resolution of this reference is required.
-                              The default is 'Required', which means the reconcile will fail if the
-                              reference cannot be resolved. 'Optional' means this reference will be
-                              a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: |-
-                              Resolve specifies when this reference should be resolved. The default
-                              is 'IfNotPresent', which will attempt to resolve the reference only when
-                              the corresponding field is not present. Use 'Always' to resolve the
-                              reference on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  versioningConfiguration:
-                    items:
-                      properties:
-                        excludeFolders:
-                          type: boolean
-                        excludedPrefixes:
-                          items:
-                            type: string
-                          type: array
-                        status:
-                          type: string
-                      type: object
-                    type: array
+                  content:
+                    description: |-
+                      (String) Content of the object as a string. Use only one of content, content_base64, or source
+                      Content of the object as a string. Use only one of content, content_base64, or source
+                    type: string
+                  contentBase64:
+                    description: |-
+                      encoded content of the object. Use only one of content, content_base64, or source
+                      Base64-encoded content of the object. Use only one of content, content_base64, or source
+                    type: string
+                  contentType:
+                    description: |-
+                      (String) Content type of the object, in the form of a MIME type
+                      Content type of the object, in the form of a MIME type
+                    type: string
+                  etag:
+                    description: |-
+                      (String) ETag of the object
+                      ETag of the object
+                    type: string
+                  objectName:
+                    description: |-
+                      (String) Name of the object
+                      Name of the object
+                    type: string
+                  source:
+                    description: |-
+                      (String) Path to the file that will be uploaded. Use only one of content, content_base64, or source
+                      Path to the file that will be uploaded. Use only one of content, content_base64, or source
+                    type: string
+                  versionId:
+                    description: |-
+                      (String) Version ID of the object
+                      Version ID of the object
+                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -176,96 +126,46 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  bucket:
-                    description: Name of the bucket
+                  bucketName:
+                    description: |-
+                      (String) Name of the bucket
+                      Name of the bucket
                     type: string
-                  bucketRef:
-                    description: Reference to a Bucket in bucket to populate bucket.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: |-
-                              Resolution specifies whether resolution of this reference is required.
-                              The default is 'Required', which means the reconcile will fail if the
-                              reference cannot be resolved. 'Optional' means this reference will be
-                              a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: |-
-                              Resolve specifies when this reference should be resolved. The default
-                              is 'IfNotPresent', which will attempt to resolve the reference only when
-                              the corresponding field is not present. Use 'Always' to resolve the
-                              reference on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  bucketSelector:
-                    description: Selector for a Bucket in bucket to populate bucket.
-                    properties:
-                      matchControllerRef:
-                        description: |-
-                          MatchControllerRef ensures an object with the same controller reference
-                          as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: |-
-                              Resolution specifies whether resolution of this reference is required.
-                              The default is 'Required', which means the reconcile will fail if the
-                              reference cannot be resolved. 'Optional' means this reference will be
-                              a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: |-
-                              Resolve specifies when this reference should be resolved. The default
-                              is 'IfNotPresent', which will attempt to resolve the reference only when
-                              the corresponding field is not present. Use 'Always' to resolve the
-                              reference on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  versioningConfiguration:
-                    items:
-                      properties:
-                        excludeFolders:
-                          type: boolean
-                        excludedPrefixes:
-                          items:
-                            type: string
-                          type: array
-                        status:
-                          type: string
-                      type: object
-                    type: array
+                  content:
+                    description: |-
+                      (String) Content of the object as a string. Use only one of content, content_base64, or source
+                      Content of the object as a string. Use only one of content, content_base64, or source
+                    type: string
+                  contentBase64:
+                    description: |-
+                      encoded content of the object. Use only one of content, content_base64, or source
+                      Base64-encoded content of the object. Use only one of content, content_base64, or source
+                    type: string
+                  contentType:
+                    description: |-
+                      (String) Content type of the object, in the form of a MIME type
+                      Content type of the object, in the form of a MIME type
+                    type: string
+                  etag:
+                    description: |-
+                      (String) ETag of the object
+                      ETag of the object
+                    type: string
+                  objectName:
+                    description: |-
+                      (String) Name of the object
+                      Name of the object
+                    type: string
+                  source:
+                    description: |-
+                      (String) Path to the file that will be uploaded. Use only one of content, content_base64, or source
+                      Path to the file that will be uploaded. Use only one of content, content_base64, or source
+                    type: string
+                  versionId:
+                    description: |-
+                      (String) Version ID of the object
+                      Version ID of the object
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -435,33 +335,62 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.versioningConfiguration is a required parameter
+            - message: spec.forProvider.bucketName is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.versioningConfiguration)
-                || (has(self.initProvider) && has(self.initProvider.versioningConfiguration))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.bucketName)
+                || (has(self.initProvider) && has(self.initProvider.bucketName))'
+            - message: spec.forProvider.objectName is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.objectName)
+                || (has(self.initProvider) && has(self.initProvider.objectName))'
           status:
-            description: VersioningStatus defines the observed state of Versioning.
+            description: ObjectStatus defines the observed state of Object.
             properties:
               atProvider:
                 properties:
-                  bucket:
-                    description: Name of the bucket
+                  bucketName:
+                    description: |-
+                      (String) Name of the bucket
+                      Name of the bucket
+                    type: string
+                  content:
+                    description: |-
+                      (String) Content of the object as a string. Use only one of content, content_base64, or source
+                      Content of the object as a string. Use only one of content, content_base64, or source
+                    type: string
+                  contentBase64:
+                    description: |-
+                      encoded content of the object. Use only one of content, content_base64, or source
+                      Base64-encoded content of the object. Use only one of content, content_base64, or source
+                    type: string
+                  contentType:
+                    description: |-
+                      (String) Content type of the object, in the form of a MIME type
+                      Content type of the object, in the form of a MIME type
+                    type: string
+                  etag:
+                    description: |-
+                      (String) ETag of the object
+                      ETag of the object
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
-                  versioningConfiguration:
-                    items:
-                      properties:
-                        excludeFolders:
-                          type: boolean
-                        excludedPrefixes:
-                          items:
-                            type: string
-                          type: array
-                        status:
-                          type: string
-                      type: object
-                    type: array
+                  objectName:
+                    description: |-
+                      (String) Name of the object
+                      Name of the object
+                    type: string
+                  source:
+                    description: |-
+                      (String) Path to the file that will be uploaded. Use only one of content, content_base64, or source
+                      Path to the file that will be uploaded. Use only one of content, content_base64, or source
+                    type: string
+                  versionId:
+                    description: |-
+                      (String) Version ID of the object
+                      Version ID of the object
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.
