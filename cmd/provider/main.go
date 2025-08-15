@@ -6,10 +6,11 @@ package main
 
 import (
 	"context"
-	uberZap "go.uber.org/zap"
 	"os"
 	"path/filepath"
 	"time"
+
+	uberZap "go.uber.org/zap"
 
 	"github.com/crossplane/crossplane-runtime/pkg/certificates"
 
