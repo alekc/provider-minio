@@ -13,7 +13,7 @@ env:
   GO_VERSION: '1.21'
   GOLANGCI_VERSION: 'v1.54.0'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
-  CROSSPLANE_REGORG: 'ghcr.io/alekc'
+  CROSSPLANE_REGORG: 'ghcr.io/${{ github.repository_owner }}/provider-minio'
   UPBOUND_REGORG: 'xpkg.upbound.io/alekc'
 
   # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
