@@ -61,7 +61,6 @@ UP_VERSION = v0.39.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
 KUBECTL_VERSION = v1.24.3
-CROSSPLANE_VERSION = 2.0.2
 -include build/makelib/k8s_tools.mk
 
 # Custom targets for K8s tools
@@ -188,6 +187,7 @@ run: go.build
 
 # ====================================================================================
 # End to End Testing
+CROSSPLANE_VERSION = 1.20.1
 CROSSPLANE_NAMESPACE = upbound-system
 -include build/makelib/local.xpkg.mk
 -include build/makelib/controlplane.mk
