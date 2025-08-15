@@ -22,6 +22,8 @@ import (
 	serviceaccount "github.com/alekc/provider-minio/internal/controller/iam/serviceaccount"
 	user "github.com/alekc/provider-minio/internal/controller/iam/user"
 	userpolicyattachment "github.com/alekc/provider-minio/internal/controller/iam/userpolicyattachment"
+	policyilm "github.com/alekc/provider-minio/internal/controller/ilm/policy"
+	tier "github.com/alekc/provider-minio/internal/controller/ilm/tier"
 	providerconfig "github.com/alekc/provider-minio/internal/controller/providerconfig"
 )
 
@@ -42,6 +44,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		serviceaccount.Setup,
 		user.Setup,
 		userpolicyattachment.Setup,
+		policyilm.Setup,
+		tier.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
