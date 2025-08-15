@@ -116,6 +116,11 @@ spec:
                       (String) Bucket's Access Control List (default: private)
                       Bucket's Access Control List (default: private)
                     type: string
+                  bucket:
+                    description: |-
+                      (String) Name of the bucket
+                      Name of the bucket
+                    type: string
                   forceDestroy:
                     description: |-
                       (Boolean) Force destroy the bucket (default: false)
