@@ -142,6 +142,13 @@ pull-docs:
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
+# there is an error in the provider schema that prevents the docs from being generated
+# so we patch the docs to remove the error
+patch-docs: pull-docs
+	@$(INFO) Patching provider docs to remove error
+	patch-docs.sh
+	@$(OK) Patching provider docs to remove error
+
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================
 # Targets

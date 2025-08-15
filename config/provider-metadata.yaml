@@ -1,9 +1,9 @@
 name: aminueza/minio
 resources:
-    confluent_ksql_cluster Resource - terraform-provider-confluent:
+    Minio Resource - terraform-provider-minio:
         subCategory: ""
-        name: confluent_ksql_cluster Resource - terraform-provider-confluent
-        title: confluent_ksql_cluster Resource - terraform-provider-confluent
+        name: Minio Resource - terraform-provider-minio
+        title: Minio Resource - terraform-provider-minio
         argumentDocs:
             access_key: (Optional) - The access key value. If omitted, MinIO generates one. Must be 8-20 characters when specified.
             create: '- (Default 5 minutes) How long to wait for an access key to be created.'
