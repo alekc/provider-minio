@@ -23,3 +23,6 @@ func (tr *Retention) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *ServerSideEncryption) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Versioning) Hub() {}

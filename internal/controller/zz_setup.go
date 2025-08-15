@@ -15,6 +15,7 @@ import (
 	replication "github.com/alekc/provider-minio/internal/controller/bucket/replication"
 	retention "github.com/alekc/provider-minio/internal/controller/bucket/retention"
 	serversideencryption "github.com/alekc/provider-minio/internal/controller/bucket/serversideencryption"
+	versioning "github.com/alekc/provider-minio/internal/controller/bucket/versioning"
 	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
 	group "github.com/alekc/provider-minio/internal/controller/iam/group"
 	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
@@ -43,6 +44,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		replication.Setup,
 		retention.Setup,
 		serversideencryption.Setup,
+		versioning.Setup,
+		versioning.Setup,
 		accesskey.Setup,
 		group.Setup,
 		groupmembership.Setup,

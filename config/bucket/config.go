@@ -42,4 +42,18 @@ func Configure(p *config.Provider) {
 			TerraformName: "minio_s3_bucket",
 		}
 	})
+	p.AddResourceConfigurator("minio_s3_bucket_versioning", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "Versioning"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
+	p.AddResourceConfigurator("minio_s3_object", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "Versioning"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
 }

@@ -39,6 +39,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_s3_bucket_replication":            config.IdentifierFromProvider,
 	"minio_s3_bucket_retention":              config.IdentifierFromProvider,
 	"minio_s3_bucket_server_side_encryption": config.IdentifierFromProvider,
+	"minio_s3_bucket_versioning":             config.IdentifierFromProvider,
+	"minio_s3_object":                        config.IdentifierFromProvider,
 }
 
 // CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
