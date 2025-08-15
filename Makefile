@@ -61,6 +61,7 @@ UP_VERSION = v0.39.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
 KUBECTL_VERSION = v1.24.3
+CROSSPLANE_VERSION = 2.0.2
 -include build/makelib/k8s_tools.mk
 
 # Custom targets for K8s tools
@@ -103,7 +104,7 @@ xpkg.build.provider-minio: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP)
+build.init: $(UP) check-terraform-version
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema
