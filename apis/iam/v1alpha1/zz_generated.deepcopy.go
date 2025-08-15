@@ -2240,6 +2240,11 @@ func (in *UserInitParameters) DeepCopyInto(out *UserInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
 	if in.SecretSecretRef != nil {
 		in, out := &in.SecretSecretRef, &out.SecretSecretRef
 		*out = new(v1.SecretKeySelector)

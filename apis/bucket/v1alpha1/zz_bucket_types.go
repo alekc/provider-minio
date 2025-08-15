@@ -19,6 +19,10 @@ type BucketInitParameters struct {
 	// Bucket's Access Control List (default: private)
 	ACL *string `json:"acl,omitempty" tf:"acl,omitempty"`
 
+	// (String) Name of the bucket
+	// Name of the bucket
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
 	// (Boolean) Force destroy the bucket (default: false)
 	// Force destroy the bucket (default: false)
 	ForceDestroy *bool `json:"forceDestroy,omitempty" tf:"force_destroy,omitempty"`
