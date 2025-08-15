@@ -14,3 +14,12 @@ func (tr *Notification) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Policy) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Replication) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Retention) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ServerSideEncryption) Hub() {}

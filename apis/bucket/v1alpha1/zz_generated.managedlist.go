@@ -34,3 +34,30 @@ func (l *PolicyList) GetItems() []resource.Managed {
 	}
 	return items
 }
+
+// GetItems of this ReplicationList.
+func (l *ReplicationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RetentionList.
+func (l *RetentionList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this ServerSideEncryptionList.
+func (l *ServerSideEncryptionList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}

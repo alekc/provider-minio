@@ -12,6 +12,9 @@ import (
 	bucket "github.com/alekc/provider-minio/internal/controller/bucket/bucket"
 	notification "github.com/alekc/provider-minio/internal/controller/bucket/notification"
 	policy "github.com/alekc/provider-minio/internal/controller/bucket/policy"
+	replication "github.com/alekc/provider-minio/internal/controller/bucket/replication"
+	retention "github.com/alekc/provider-minio/internal/controller/bucket/retention"
+	serversideencryption "github.com/alekc/provider-minio/internal/controller/bucket/serversideencryption"
 	accesskey "github.com/alekc/provider-minio/internal/controller/iam/accesskey"
 	group "github.com/alekc/provider-minio/internal/controller/iam/group"
 	groupmembership "github.com/alekc/provider-minio/internal/controller/iam/groupmembership"
@@ -37,6 +40,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		bucket.Setup,
 		notification.Setup,
 		policy.Setup,
+		replication.Setup,
+		retention.Setup,
+		serversideencryption.Setup,
 		accesskey.Setup,
 		group.Setup,
 		groupmembership.Setup,

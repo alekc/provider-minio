@@ -21,5 +21,25 @@ func Configure(p *config.Provider) {
 			TerraformName: "minio_s3_bucket",
 		}
 	})
-
+	p.AddResourceConfigurator("minio_s3_bucket_replication", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "Replication"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
+	p.AddResourceConfigurator("minio_s3_bucket_retention", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "Retention"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
+	p.AddResourceConfigurator("minio_s3_bucket_server_side_encryption", func(r *config.Resource) {
+		r.ShortGroup = "bucket"
+		r.Kind = "ServerSideEncryption"
+		r.References["bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+		}
+	})
 }
