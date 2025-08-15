@@ -1,24 +1,18 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= provider-minio
-PROJECT_REPO ?= github.com/alekc/$(PROJECT_NAME)
+PROJECT_NAME ?= provider-ovh
+PROJECT_REPO ?= github.com/DanielVilaFalcon/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.5.7
+export TERRAFORM_VERSION ?= 1.2.1
 
-# Do not allow a version of terraform greater than 1.5.x, due to versions 1.6+ being
-# licensed under BSL, which is not permitted.
-TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
-
-export TERRAFORM_PROVIDER_SOURCE ?= aminueza/minio
-export TERRAFORM_PROVIDER_REPO ?= https://github.com/aminueza/terraform-provider-minio
-# renovate: datasource=github-releases depName=aminueza/terraform-provider-minio
-export TERRAFORM_PROVIDER_VERSION ?= 3.6.3
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-minio
-#export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= ${TERRAFORM_PROVIDER_REPO}/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-minio_v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_DOCS_PATH ?= docs/resources
+export TERRAFORM_PROVIDER_SOURCE ?= ovh/ovh
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/ovh/terraform-provider-ovh
+export TERRAFORM_PROVIDER_VERSION ?= 0.36.1
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-ovh
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-ovh_v0.36.1
+export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 
 PLATFORMS ?= linux_amd64 linux_arm64
@@ -46,8 +40,8 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.21
-GOLANGCILINT_VERSION ?= 1.54.0
+GO_REQUIRED_VERSION ?= 1.19
+GOLANGCILINT_VERSION ?= 1.50.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -57,29 +51,25 @@ GO_SUBDIRS += cmd internal apis
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.15.0
-UP_VERSION = v0.39.0
+UP_VERSION = v0.18.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
-KUBECTL_VERSION = v1.24.3
 -include build/makelib/k8s_tools.mk
-
-# Custom targets for K8s tools
-kubectl-install: $(KUBECTL)
 
 # ====================================================================================
 # Setup Images
 
-REGISTRY_ORGS ?= ghcr.io/alekc
+REGISTRY_ORGS ?= xpkg.upbound.io/upbound
 IMAGES = $(PROJECT_NAME)
 -include build/makelib/imagelight.mk
 
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= ghcr.io/alekc
+XPKG_REG_ORGS ?= xpkg.upbound.io/upbound
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
-XPKG_REG_ORGS_NO_PROMOTE ?= ghcr.io/alekc
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/upbound
 XPKGS = $(PROJECT_NAME)
 -include build/makelib/xpkg.mk
 
@@ -99,11 +89,11 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.provider-minio: do.build.images
+xpkg.build.provider-ovh: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP) check-terraform-version
+build.init: $(UP)
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema
@@ -111,12 +101,7 @@ TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
 TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
-check-terraform-version:
-ifneq ($(TERRAFORM_VERSION_VALID),1)
-	$(error invalid TERRAFORM_VERSION $(TERRAFORM_VERSION), must be less than 1.6.0 since that version introduced a not permitted BSL license))
-endif
-
-$(TERRAFORM): check-terraform-version
+$(TERRAFORM):
 	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
 	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
 	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
@@ -136,20 +121,13 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 pull-docs:
 	@if [ ! -d "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" ]; then \
   		mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" && \
-		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
+		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
-# there is an error in the provider schema that prevents the docs from being generated
-# so we patch the docs to remove the error
-patch-docs: pull-docs
-	@$(INFO) Patching provider docs to remove error
-	./patch-docs.sh
-	@$(OK) Patching provider docs to remove error
-
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # ====================================================================================
 # Targets
 
@@ -161,9 +139,6 @@ patch-docs: pull-docs
 # its location in CI so that we cache between builds.
 go.cachedir:
 	@go env GOCACHE
-
-go.mod.cachedir:
-	@go env GOMODCACHE
 
 # Generate a coverage report for cobertura applying exclusions on
 # - generated file
@@ -183,20 +158,18 @@ submodules:
 run: go.build
 	@$(INFO) Running Crossplane locally out-of-cluster . . .
 	@# To see other arguments that can be provided, run the command with --help instead
-	@$(INFO) "local" $(GO_OUT_DIR)/provider --debug
 	UPBOUND_CONTEXT="local" $(GO_OUT_DIR)/provider --debug
 
 # ====================================================================================
 # End to End Testing
-CROSSPLANE_VERSION = 1.16.0
 CROSSPLANE_NAMESPACE = upbound-system
 -include build/makelib/local.xpkg.mk
 -include build/makelib/controlplane.mk
 
 # This target requires the following environment variables to be set:
 # - UPTEST_EXAMPLE_LIST, a comma-separated list of examples to test
-#   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your resources appropriately. 
-#   You can check the basic implementation here: https://github.com/crossplane/uptest/blob/main/internal/templates/03-delete.yaml.tmpl.
+#   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your resources appropriately.
+#   You can check the basic implementation here: https://github.com/upbound/uptest/blob/main/internal/ovhs/01-delete.yaml.tmpl.
 # - UPTEST_CLOUD_CREDENTIALS (optional), multiple sets of AWS IAM User credentials specified as key=value pairs.
 #   The support keys are currently `DEFAULT` and `PEER`. So, an example for the value of this env. variable is:
 #   DEFAULT='[default]
@@ -206,7 +179,7 @@ CROSSPLANE_NAMESPACE = upbound-system
 #   aws_access_key_id = REDACTED
 #   aws_secret_access_key = REDACTED'
 #   The associated `ProviderConfig`s will be named as `default` and `peer`.
-# - UPTEST_DATASOURCE_PATH (optional), please see https://github.com/crossplane/uptest#injecting-dynamic-values-and-datasource
+# - UPTEST_DATASOURCE_PATH (optional), see https://github.com/upbound/uptest#injecting-dynamic-values-and-datasource
 uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
 	@$(INFO) running automated tests
 	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-conditions="Test" || $(FAIL)
@@ -236,22 +209,6 @@ crddiff: $(UPTEST)
 		fi ; \
 	done
 	@$(OK) Checking breaking CRD schema changes
-
-crds.clean:
-	@$(INFO) Cleaning up CRDs
-	@for crd in $$(find package/crds -name '*.yaml'); do \
-		echo "Cleaning up $${crd}..." ; \
-		$(KUBECTL) delete -f "$${crd}" || true ; \
-	done
-	@$(OK) Cleaning up CRDs
-
-crds.install:
-	@$(INFO) Installing CRDs
-	@for crd in $$(find package/crds -name '*.yaml'); do \
-		echo "Installing $${crd}..." ; \
-		$(KUBECTL) apply -f "$${crd}" ; \
-	done
-	@$(OK) Installing CRDs
 
 schema-version-diff:
 	@$(INFO) Checking for native state schema version changes
@@ -285,7 +242,3 @@ crossplane.help:
 help-special: crossplane.help
 
 .PHONY: crossplane.help help-special
-
-# TODO(negz): Update CI to use these targets.
-vendor: modules.download
-vendor.check: modules.check
