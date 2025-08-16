@@ -341,6 +341,6 @@ jobs:
           password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
       - name: Publish Artifacts to Upbound
-        if: startsWith(github.ref, 'refs/tags/')
+        #if: startsWith(github.ref, 'refs/tags/')
         run: |-
           make -j2 XPKG_REG_ORGS="${{ env.UPBOUND_REGORG }}" XPKG_REG_ORGS_NO_PROMOTE="${{ env.UPBOUND_REGORG }}" BRANCH_NAME="main" ${{ inputs.version != '' && format('VERSION={0}', inputs.version) || '' }} publish
