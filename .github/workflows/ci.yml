@@ -340,6 +340,10 @@ jobs:
           username: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
           password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
+      - name: Crossplane XPKG Login
+        #if: env.XPKG_ACCESS_ID != ''
+        run: "./crossplane xpkg login --account ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }} --token ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}"
+
       - name: Publish Artifacts to Upbound
         #if: startsWith(github.ref, 'refs/tags/')
         run: |-
