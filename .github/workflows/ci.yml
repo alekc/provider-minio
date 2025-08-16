@@ -259,10 +259,6 @@ jobs:
     if: needs.detect-noop.outputs.noop != 'true'
 
     steps:
-      - name: Install tree
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tree
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3
@@ -351,8 +347,8 @@ jobs:
       - name: Crossplane XPKG Login
         #if: env.XPKG_ACCESS_ID != ''
         run: |
-          ./cache/tools/up login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
-          ./cache/tools/up robot list
+          ./cache/tools/linux_x86_64/up-v0.39.0 login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
+          ./cache/tools/linux_x86_64/up-v0.39.0 robot list
           
 
       - name: Publish Artifacts to Upbound
