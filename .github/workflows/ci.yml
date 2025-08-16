@@ -347,8 +347,8 @@ jobs:
       - name: Crossplane XPKG Login
         #if: env.XPKG_ACCESS_ID != ''
         run: |
-          ./cache/tools/linux_x86_64/up-v0.39.0 login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
-          ./cache/tools/linux_x86_64/up-v0.39.0 robot list
+          ./.cache/tools/linux_x86_64/up-v0.39.0 login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
+          ./.cache/tools/linux_x86_64/up-v0.39.0 robot list
           
 
       - name: Publish Artifacts to Upbound
