@@ -259,8 +259,10 @@ jobs:
     if: needs.detect-noop.outputs.noop != 'true'
 
     steps:
-      - name: test tree
-        run: tree apis
+      - name: Install tree
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3
@@ -320,6 +322,7 @@ jobs:
           # We're using docker buildx, which doesn't actually load the images it
           # builds by default. Specifying --load does so.
           BUILD_ARGS: "--load"
+
       - name: test tree
         run: tree .cache
 
@@ -347,9 +350,17 @@ jobs:
 
       - name: Crossplane XPKG Login
         #if: env.XPKG_ACCESS_ID != ''
-        run: "./crossplane xpkg login --account ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }} --token ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}"
+        run: |
+          ./cache/tools/up login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
+          ./cache/tools/up robot list
+          
 
       - name: Publish Artifacts to Upbound
         #if: startsWith(github.ref, 'refs/tags/')
         run: |-
           make -j2 XPKG_REG_ORGS="${{ env.UPBOUND_REGORG }}" XPKG_REG_ORGS_NO_PROMOTE="${{ env.UPBOUND_REGORG }}" BRANCH_NAME="main" ${{ inputs.version != '' && format('VERSION={0}', inputs.version) || '' }} publish
+
+      - name: Cleanup Upbound config
+        if: always()
+        run: rm -f ~/.up/config.json
+
