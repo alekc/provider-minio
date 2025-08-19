@@ -47,18 +47,19 @@ NPROCS ?= 1
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
 GO_REQUIRED_VERSION ?= 1.21
-GOLANGCILINT_VERSION ?= 1.54.0
+GOLANGCILINT_VERSION ?= 1.64.8
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
-GO_SUBDIRS += cmd internal apis
+GO_SUBDIRS += cmd internal apis generate
 -include build/makelib/golang.mk
 
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.15.0
-UP_VERSION = v0.39.0
-UP_CHANNEL = stable
+ENVTEST_VERSION = 1.33.0
+KIND_VERSION = v0.29.0
+UP_VERSION = v0.40.0-0.rc.3
+UP_CHANNEL = alpha
 UPTEST_VERSION = v0.5.0
 KUBECTL_VERSION = v1.24.3
 -include build/makelib/k8s_tools.mk
@@ -127,6 +128,7 @@ $(TERRAFORM): check-terraform-version
 
 $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
+	@#rm -rf $(TERRAFORM_WORKDIR)
 	@mkdir -p $(TERRAFORM_WORKDIR)
 	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
@@ -183,7 +185,26 @@ submodules:
 run: go.build
 	@$(INFO) Running Crossplane locally out-of-cluster . . .
 	@# To see other arguments that can be provided, run the command with --help instead
-	UPBOUND_CONTEXT="local" $(GO_OUT_DIR)/provider --debug
+	UPBOUND_CONTEXT="local" $(GO_OUT_DIR)/provider --debug --enable-management-policies
+
+# ===================
+# Integration Testing
+
+test-integration: init-envtest ## Run integration tests
+	@mkdir -p $(GO_TEST_OUTPUT) || $(FAIL)
+	KUBEBUILDER_ASSETS=${KUBEBUILDER_ASSETS} go test -v -timeout 10m \
+		-covermode=atomic -coverpkg=./... -coverprofile=$(GO_TEST_OUTPUT)/integration.out ./tests/...
+
+init-envtest: setup-envtest
+	$(TOOLS_HOST_DIR)/setup-envtest use --bin-dir $(TOOLS_HOST_DIR) $(ENVTEST_VERSION)
+KUBEBUILDER_ASSETS = $(shell $(TOOLS_HOST_DIR)/setup-envtest use -p path --bin-dir $(TOOLS_HOST_DIR) $(ENVTEST_VERSION))
+
+setup-envtest:
+ifeq ("$(wildcard $(TOOLS_HOST_DIR)/setup-envtest)", "")
+	go get sigs.k8s.io/controller-runtime/tools/setup-envtest
+	GOBIN=$(TOOLS_HOST_DIR) go install sigs.k8s.io/controller-runtime/tools/setup-envtest
+endif
+SETUP_ENVTEST=$(TOOLS_HOST_DIR)/setup-envtest
 
 # ====================================================================================
 # End to End Testing
