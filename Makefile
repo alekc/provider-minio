@@ -1,8 +1,8 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= provider-minio
-PROJECT_REPO ?= github.com/alekc/$(PROJECT_NAME)
+PROJECT_NAME := provider-minio
+PROJECT_REPO := github.com/alekc/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.5.7
 
@@ -62,6 +62,7 @@ UP_VERSION = v0.40.0-0.rc.3
 UP_CHANNEL = alpha
 UPTEST_VERSION = v0.5.0
 KUBECTL_VERSION = v1.24.3
+HELM_VERSION = v3.18.0
 -include build/makelib/k8s_tools.mk
 
 # Custom targets for K8s tools
@@ -237,6 +238,15 @@ local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 	@$(KUBECTL) wait provider.pkg $(PROJECT_NAME) --for condition=Healthy --timeout 5m
 	@$(KUBECTL) -n upbound-system wait --for=condition=Available deployment --all --timeout=5m
 	@$(OK) running locally built provider
+
+deploy-minio:
+	@$(INFO) deploying minio operator
+	@#$(HELM) repo add minio https://operator.min.io/ --force-update
+	@#$(HELM) repo update
+	@$(HELM) upgrade --install minio-operator minio/operator --create-namespace --namespace minio-operator --wait --atomic --timeout 5m -f tests/helm-values/minio-operator.yaml
+	@$(HELM) upgrade --install minio-tenant minio/tenant --create-namespace --namespace minio --wait --atomic --timeout 5m -f tests/helm-values/minio.yaml
+	$(KUBECTL) -n minio wait --for condition=Ready pod/test-minio-pool-0-0 --timeout=300s;
+	@$(OK) deploying minio
 
 e2e: local-deploy uptest
 

@@ -1,0 +1,23 @@
+# Root key for MinIO Tenant Chart
+tenant:
+  name: test-minio
+  replicaCount: 1
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2025-04-22T22-12-26Z
+  configSecret:
+    name: myminio-env-configuration
+    accessKey: minio
+    secretKey: minio123
+  pools:
+    - servers: 1
+      ###
+      # Custom name for the pool
+      name: pool-0
+      ###
+      # The number of volumes attached per MinIO Tenant Pod / Server.
+      volumesPerServer: 3
+      ###
+      # The capacity per volume requested per MinIO Tenant Pod.
+      size: 10Gi
+  configuration:
