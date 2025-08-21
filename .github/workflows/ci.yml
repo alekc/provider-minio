@@ -11,7 +11,7 @@ on:
 env:
   # Common versions
   GO_VERSION: '1.21'
-  GOLANGCI_VERSION: 'v1.54.0'
+  GOLANGCI_VERSION: 'v1.64.8'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
   CROSSPLANE_REGORG: 'ghcr.io/${{ github.repository_owner }}'
   UPBOUND_REGORG: 'xpkg.upbound.io/alekc'
