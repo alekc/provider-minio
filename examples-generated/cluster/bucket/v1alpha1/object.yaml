@@ -1,0 +1,28 @@
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Object
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/object
+  labels:
+    testing.upbound.io/example-name: txt_file
+  name: txt-file
+spec:
+  forProvider:
+    bucketName: ${minio_s3_bucket.state_terraform_s3.bucket}
+    content: Lorem ipsum dolor sit amet.
+    contentType: text/plain
+    objectName: text.txt
+
+---
+
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/object
+  labels:
+    testing.upbound.io/example-name: state_terraform_s3
+  name: state-terraform-s3
+spec:
+  forProvider:
+    acl: public

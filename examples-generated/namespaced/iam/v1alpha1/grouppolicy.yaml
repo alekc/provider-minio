@@ -1,0 +1,43 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: GroupPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/grouppolicy
+  labels:
+    testing.upbound.io/example-name: test_policy
+  name: test-policy
+  namespace: upbound-system
+spec:
+  forProvider:
+    groupSelector:
+      matchLabels:
+        testing.upbound.io/example-name: developer
+    name: state-terraform-s3
+    policy: |
+      {
+        "Version":"2012-10-17",
+        "Statement": [
+          {
+            "Sid":"ListAllBucket",
+            "Effect": "Allow",
+            "Action": ["s3:PutObject"],
+            "Principal":"*",
+            "Resource": "arn:aws:s3:::state-terraform-s3/*"
+          }
+        ]
+      }
+
+---
+
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/grouppolicy
+  labels:
+    testing.upbound.io/example-name: developer
+  name: developer
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: developer

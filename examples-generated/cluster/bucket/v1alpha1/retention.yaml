@@ -1,0 +1,31 @@
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Retention
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/retention
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    bucketSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    mode: COMPLIANCE
+    unit: DAYS
+    validityPeriod: 30
+
+---
+
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/retention
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    forceDestroy: true
+    objectLocking: true
