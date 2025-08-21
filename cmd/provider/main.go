@@ -5,14 +5,17 @@ Copyright 2021 Upbound Inc.
 package main
 
 import (
-	"github.com/alecthomas/kingpin/v2"
 	"io"
-	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/alecthomas/kingpin/v2"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
+	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
+	"gi
 	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
@@ -50,7 +53,7 @@ func main() {
 		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
 
 		enableManagementPolicies = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
-		//pollStateMetricInterval = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
+		// pollStateMetricInterval = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))

@@ -50,21 +50,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errExtractCredentials)
 		}
 
-		//configRef := mg.GetProviderConfigReference()
-		//if configRef == nil {
-		//	return ps, errors.New(errNoProviderConfig)
-		//}
-		//pc := &miniov1beta1.ProviderConfig{}
-		//if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
-		//	return ps, errors.Wrap(err, errGetProviderConfig)
-		//}
-		//
-		//t := resource.NewProviderConfigUsageTracker(client, &miniov1beta1.ProviderConfigUsage{})
-		//if err := t.Track(ctx, mg); err != nil {
-		//	return ps, errors.Wrap(err, errTrackUsage)
-		//}
-		//
-
 		creds := map[string]string{}
 		if err := json.Unmarshal(data, &creds); err != nil {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)

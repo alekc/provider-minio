@@ -7,6 +7,7 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+
 	"github.com/alekc/provider-minio/config/cluster"
 	"github.com/alekc/provider-minio/config/common"
 	"github.com/alekc/provider-minio/config/namespaced"
@@ -49,7 +50,7 @@ func GetProvider() *ujconfig.Provider {
 func GetNamespacedProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithShortName("minio"),
-		ujconfig.WithRootGroup("minio.m.alekc.dev"), //m. for namespaced
+		ujconfig.WithRootGroup("minio.m.alekc.dev"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
