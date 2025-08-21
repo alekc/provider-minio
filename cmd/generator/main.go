@@ -35,9 +35,7 @@ func main() {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", *repoRoot))
 	}
 	pc := config.GetProvider()
-	kingpin.FatalIfError(err, "Cannot initialize the cluster-scoped provider configuration")
 	pns := config.GetNamespacedProvider()
-	kingpin.FatalIfError(err, "Cannot initialize the namespaced provider configuration")
 	dumpGeneratedResourceList(pc, generatedResourceList)
 	dumpSkippedResourcesCSV(pc, skippedResourcesCSV)
 	pipeline.Run(pc, pns, absRootDir)
