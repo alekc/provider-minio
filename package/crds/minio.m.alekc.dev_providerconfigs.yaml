@@ -11,7 +11,7 @@ spec:
     categories:
     - crossplane
     - provider
-    - palette
+    - minio
     kind: ProviderConfig
     listKind: ProviderConfigList
     plural: providerconfigs
