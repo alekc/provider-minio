@@ -1,0 +1,8 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/00-create-namespace.yaml
+  - files/00-create-provider-secret.yaml
+  - files/01-assert-namespaced-providerconfig.yaml
+assert:
+  - files/01-assert-namespaced-providerconfig.yaml

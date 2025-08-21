@@ -20,4 +20,3 @@ tenant:
       ###
       # The capacity per volume requested per MinIO Tenant Pod.
       size: 10Gi
-  configuration:

@@ -1,0 +1,35 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestAssert
+timeout: 10
+resourceRefs:
+  - apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+    kind: Bucket
+    name: test-bucket
+    namespace: test-namespaced
+    ref: bucket
+assertAll:
+  - celExpr: bucket.status.conditions.exists(c, c.type == "Synced" && c.status == "True")
+  - celExpr: bucket.status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+#  - group: bucket.minio.m.alekc.dev
+#    version: v1alpha1
+#    kind: Bucket
+#    name: test-bucket
+#    namespace: test-namespaced
+#    jsonPath: ".status.atProvider.acl"
+#    value: "private"
+#  - group: bucket.minio.m.alekc.dev
+#    version: v1alpha1
+#    kind: Bucket
+#    name: test-bucket
+#    namespace: test-namespaced
+#    # at least one Ready condition must be True
+#    jsonPath: ".status.conditions[?(@.type=='Ready')].status"
+#    value: "True"
+#  - group: bucket.minio.m.alekc.dev
+#    version: v1alpha1
+#    kind: Bucket
+#    name: test-bucket
+#    namespace: test-namespaced
+#    # optional: reason text
+#    jsonPath: ".status.conditions[?(@.type=='Ready')].reason"
+#    value: "Available"

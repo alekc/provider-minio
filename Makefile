@@ -62,6 +62,7 @@ UP_VERSION = v0.40.0-0.rc.3
 UP_CHANNEL = alpha
 UPTEST_VERSION = v0.5.0
 KUBECTL_VERSION = v1.24.3
+KUTTL_VERSION = 0.22.0
 HELM_VERSION = v3.18.0
 -include build/makelib/k8s_tools.mk
 
@@ -245,10 +246,15 @@ deploy-minio:
 	@#$(HELM) repo update
 	@$(HELM) upgrade --install minio-operator minio/operator --create-namespace --namespace minio-operator --wait --atomic --timeout 5m -f tests/helm-values/minio-operator.yaml
 	@$(HELM) upgrade --install minio-tenant minio/tenant --create-namespace --namespace minio --wait --atomic --timeout 5m -f tests/helm-values/minio.yaml
-	$(KUBECTL) -n minio wait --for condition=Ready pod/test-minio-pool-0-0 --timeout=300s;
+	@sleep 10
+	@$(KUBECTL) -n minio wait --for condition=Ready pod/test-minio-pool-0-0 --timeout=300s;
 	@$(OK) deploying minio
 
 e2e: local-deploy uptest
+custom-e2e: $(KUBECTL) $(KUTTL) local-deploy
+	@$(INFO) running e2e tests
+	@$(KUTTL) test tests/e2e/
+
 
 crddiff: $(UPTEST)
 	@$(INFO) Checking breaking CRD schema changes

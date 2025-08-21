@@ -78,6 +78,8 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			"minio_region",
 			"minio_api_version",
 			"minio_ssl",
+			"minio_insecure",
+			"minio_password",
 		}
 
 		ps.Configuration = map[string]any{}
@@ -85,11 +87,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			if v, ok := creds[k]; ok {
 				ps.Configuration[k] = v
 			}
-		}
-
-		// set environment variables for sensitive provider configuration
-		ps.ClientMetadata = map[string]string{
-			"minio_password": creds["minio_password"],
 		}
 
 		return ps, nil
