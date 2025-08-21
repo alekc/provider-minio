@@ -244,7 +244,7 @@ jobs:
         run: make vendor vendor.check
 
       - name: Deploying locally built provider package
-        run: make local-deploy
+        run: make custom-e2e
 
   publish-artifacts:
     runs-on: ubuntu-24.04
