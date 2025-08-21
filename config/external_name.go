@@ -4,7 +4,9 @@ Copyright 2022 Upbound Inc.
 
 package config
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	"github.com/crossplane/upjet/v2/pkg/config"
+)
 
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
@@ -17,14 +19,14 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_iam_group_user_attachment":        config.IdentifierFromProvider,
 	"minio_iam_ldap_group_policy_attachment": config.IdentifierFromProvider,
 	"minio_iam_ldap_user_policy_attachment":  config.IdentifierFromProvider,
-	"minio_iam_user":                         CustomParameterAsIdentifier("name", []string{}),
+	"minio_iam_user":                         config.NameAsIdentifier,
 	"minio_iam_user_policy_attachment":       config.IdentifierFromProvider,
 	"minio_iam_policy":                       config.IdentifierFromProvider,
 	"minio_iam_service_account":              config.IdentifierFromProvider,
 	"minio_ilm_policy":                       config.IdentifierFromProvider,
 	"minio_ilm_tier":                         config.IdentifierFromProvider,
 	"minio_kms_key":                          config.IdentifierFromProvider,
-	"minio_s3_bucket":                        CustomParameterAsIdentifier("bucket", []string{"bucket_prefix"}),
+	"minio_s3_bucket":                        config.ParameterAsIdentifier("bucket"),
 	"minio_s3_bucket_notification":           config.IdentifierFromProvider,
 	"minio_s3_bucket_policy":                 config.IdentifierFromProvider,
 	"minio_s3_bucket_replication":            config.IdentifierFromProvider,

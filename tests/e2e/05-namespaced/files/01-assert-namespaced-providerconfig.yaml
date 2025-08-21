@@ -1,0 +1,12 @@
+apiVersion: minio.m.alekc.dev/v1beta1
+kind: ProviderConfig
+metadata:
+  name: namespaced-provider
+  namespace: test-namespaced
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: provider-secret
+      namespace: test-namespaced
+      key: credentials

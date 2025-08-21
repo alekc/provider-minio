@@ -1,0 +1,12 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestAssert
+timeout: 120
+resourceRefs:
+  - apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+    kind: Bucket
+    name: test-bucket
+    namespace: test-namespaced
+    ref: bucket
+assertAll:
+  - celExpr: bucket.status.conditions.exists(c, c.type == "Synced" && c.status == "True")
+  - celExpr: bucket.status.conditions.exists(c, c.type == "Ready" && c.status == "True")

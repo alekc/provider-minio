@@ -1,0 +1,8 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/10-create-user.yaml
+assert:
+  - files/10-assert-user.yaml
+
+

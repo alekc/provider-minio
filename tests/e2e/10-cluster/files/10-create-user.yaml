@@ -1,0 +1,15 @@
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: User
+metadata:
+  name: cluster-user
+spec:
+  forProvider:
+    forceDestroy: true
+    tags:
+      tag-key: tag-value
+  providerConfigRef:
+    name: cluster-provider
+  writeConnectionSecretToRef:
+    name: test-user-secret
+    namespace: default
+
