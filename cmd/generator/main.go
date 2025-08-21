@@ -23,7 +23,7 @@ import (
 
 func main() {
 	var (
-		app                   = kingpin.New("generator", "Run Upjet code generation pipelines for provider-gcp").DefaultEnvars()
+		app                   = kingpin.New("generator", "Run Upjet code generation pipelines for provider-minio").DefaultEnvars()
 		repoRoot              = app.Arg("repo-root", "Root directory for the provider repository").Required().String()
 		skippedResourcesCSV   = app.Flag("skipped-resources-csv", "File path where a list of skipped (not-generated) Terraform resource names will be stored as a CSV").Envar("SKIPPED_RESOURCES_CSV").String()
 		generatedResourceList = app.Flag("generated-resource-list", "File path where a list of the generated resources will be stored.").Envar("GENERATED_RESOURCE_LIST").Default("../config/generated.lst").String()
