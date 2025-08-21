@@ -1,0 +1,43 @@
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: GroupUserAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupuserattachment
+  labels:
+    testing.upbound.io/example-name: developer
+  name: developer
+spec:
+  forProvider:
+    groupNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: group
+    userNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: user_one
+
+---
+
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupuserattachment
+  labels:
+    testing.upbound.io/example-name: developer
+  name: developer
+spec:
+  forProvider:
+    name: developer
+
+---
+
+apiVersion: iam.minio.alekc.dev/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: iam/v1alpha1/groupuserattachment
+  labels:
+    testing.upbound.io/example-name: user_one
+  name: user-one
+spec:
+  forProvider: {}

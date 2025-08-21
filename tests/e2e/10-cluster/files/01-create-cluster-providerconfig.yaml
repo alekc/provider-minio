@@ -1,0 +1,11 @@
+apiVersion: minio.alekc.dev/v1beta1
+kind: ProviderConfig
+metadata:
+  name: cluster-provider
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: cluster-provider-secret
+      namespace: default
+      key: credentials

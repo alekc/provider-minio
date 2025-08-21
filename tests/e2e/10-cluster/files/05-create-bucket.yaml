@@ -1,0 +1,10 @@
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  name: cluster-bucket
+spec:
+  forProvider:
+    acl: private
+    forceDestroy: true
+  providerConfigRef:
+    name: cluster-provider

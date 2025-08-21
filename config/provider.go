@@ -8,11 +8,11 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	ujconfig "github.com/crossplane/upjet/pkg/config"
+	"github.com/alekc/provider-minio/config/cluster"
+	"github.com/alekc/provider-minio/config/common"
+	"github.com/alekc/provider-minio/config/namespaced"
 
-	"github.com/alekc/provider-minio/config/bucket"
-	"github.com/alekc/provider-minio/config/iam"
-	"github.com/alekc/provider-minio/config/ilm"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 )
 
 const (
@@ -32,15 +32,35 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithRootGroup("minio.alekc.dev"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
+
+		ujconfig.WithDefaultResourceOptions(
+			ExternalNameConfigurations(),
+		))
+
+	for _, configure := range []func(provider *ujconfig.Provider){
+		cluster.Configure,
+		common.Configure,
+	} {
+		configure(pc)
+	}
+
+	pc.ConfigureResources()
+	return pc
+}
+func GetNamespacedProvider() *ujconfig.Provider {
+	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		ujconfig.WithShortName("minio"),
+		ujconfig.WithRootGroup("minio.m.alekc.dev"),
+		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		bucket.Configure,
-		iam.Configure,
-		ilm.Configure,
+		common.Configure,
+		namespaced.Configure,
 	} {
 		configure(pc)
 	}
