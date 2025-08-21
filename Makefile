@@ -241,8 +241,8 @@ local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 
 deploy-minio:
 	@$(INFO) deploying minio operator
-	@#$(HELM) repo add minio https://operator.min.io/ --force-update
-	@#$(HELM) repo update
+	@$(HELM) repo add minio https://operator.min.io/ --force-update
+	@$(HELM) repo update
 	@$(HELM) upgrade --install minio-operator minio/operator --create-namespace --namespace minio-operator --wait --atomic --timeout 5m -f tests/helm-values/minio-operator.yaml
 	@$(HELM) upgrade --install minio-tenant minio/tenant --create-namespace --namespace minio --wait --atomic --timeout 5m -f tests/helm-values/minio.yaml
 	@bash -c "\

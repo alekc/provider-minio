@@ -203,7 +203,7 @@ jobs:
           flags: unittests
           file: _output/tests/linux_amd64/coverage.txt
 
-  local-deploy:
+  e2e:
     runs-on: ubuntu-24.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
