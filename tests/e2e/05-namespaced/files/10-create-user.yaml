@@ -1,0 +1,15 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: User
+metadata:
+  name: test-user
+  namespace: test-namespaced
+spec:
+  forProvider:
+    forceDestroy: true
+    tags:
+      tag-key: tag-value
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  writeConnectionSecretToRef:
+    name: test-user-secret
