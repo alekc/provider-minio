@@ -2,10 +2,9 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestAssert
 timeout: 120
 resourceRefs:
-  - apiVersion: iam.minio.m.alekc.dev/v1alpha1
+  - apiVersion: iam.minio.alekc.dev/v1alpha1
     kind: User
-    name: test-user
-    namespace: test-namespaced
+    name: cluster-user
     ref: testUser
 assertAll:
   - celExpr: testUser.status.conditions.exists(c, c.type == "Synced" && c.status == "True")

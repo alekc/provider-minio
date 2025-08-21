@@ -251,7 +251,7 @@ deploy-minio:
 	@$(OK) deploying minio
 
 e2e: local-deploy uptest
-custom-e2e: $(KUBECTL) $(KUTTL) local-deploy
+custom-e2e: $(KUBECTL) $(KUTTL) local-deploy deploy-minio
 	@$(INFO) running e2e tests
 	@$(KUTTL) test tests/e2e/
 
