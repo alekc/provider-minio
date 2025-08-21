@@ -7,6 +7,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/alecthomas/kingpin/v2"
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
