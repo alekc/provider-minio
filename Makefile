@@ -246,8 +246,25 @@ deploy-minio:
 	@#$(HELM) repo update
 	@$(HELM) upgrade --install minio-operator minio/operator --create-namespace --namespace minio-operator --wait --atomic --timeout 5m -f tests/helm-values/minio-operator.yaml
 	@$(HELM) upgrade --install minio-tenant minio/tenant --create-namespace --namespace minio --wait --atomic --timeout 5m -f tests/helm-values/minio.yaml
-	@sleep 10
-	@$(KUBECTL) -n minio wait --for condition=Ready pod/test-minio-pool-0-0 --timeout=300s;
+	@bash -c "\
+	timeout=300; \
+	interval=5; \
+	elapsed=0; \
+	while [ \$$elapsed -lt \$$timeout ]; do \
+	    if $(KUBECTL) -n minio get pod/test-minio-pool-0-0 > /dev/null 2>&1; then \
+	        if $(KUBECTL) -n minio wait --for condition=Ready pod/test-minio-pool-0-0 --timeout=\$$((\$$timeout-\$$elapsed))s; then \
+	            exit 0; \
+	        else \
+	            echo \"ERROR: Minio pod test-minio-pool-0-0 did not become ready in time.\"; \
+	            exit 1; \
+	        fi; \
+	    fi; \
+	    sleep \$$interval; \
+	    elapsed=\$$((\$$elapsed + \$$interval)); \
+	done; \
+	echo \"ERROR: Minio pod test-minio-pool-0-0 did not appear within \$$timeout seconds.\"; \
+	exit 1; \
+	"
 	@$(OK) deploying minio
 
 e2e: local-deploy uptest
