@@ -8,6 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 	"github.com/alekc/provider-minio/config/cluster"
+	"github.com/alekc/provider-minio/config/common"
 	"github.com/alekc/provider-minio/config/namespaced"
 
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
@@ -37,6 +38,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		cluster.Configure,
+		common.Configure,
 	} {
 		configure(pc)
 	}
@@ -56,8 +58,7 @@ func GetNamespacedProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		//bucket.Configure,
-		//iam.Configure,
+		common.Configure,
 		namespaced.Configure,
 	} {
 		configure(pc)
