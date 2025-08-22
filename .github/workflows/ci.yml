@@ -12,7 +12,7 @@ env:
   # Common versions
   GO_VERSION: '1.21'
   # renovate: datasource=github-releases depName=golangci/golangci-lint
-  GOLANGCI_VERSION: 'v2.3.1'
+  GOLANGCI_VERSION: 'v2.4.0'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
   CROSSPLANE_REGORG: 'ghcr.io/${{ github.repository_owner }}'
   UPBOUND_REGORG: 'xpkg.upbound.io/alekc'
