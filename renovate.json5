@@ -1,33 +1,40 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "mergeConfidence:all-badges",
+    "config:recommended"
   ],
-// The maximum number of PRs to be created in parallel
   "prConcurrentLimit": 5,
-// The branches renovate should target
-  "baseBranches": ["main"],
-  "ignorePaths": ["design/**"],
-  "postUpdateOptions": ["gomodTidy"],
-// By default renovate will auto detect whether semantic commits have been used
-// in the recent history and comply with that, we explicitly disable it
+  "baseBranchPatterns": [
+    "main"
+  ],
+  "ignorePaths": [
+    "design/**"
+  ],
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
   "semanticCommits": "disabled",
-// All PRs should have a label
-  "labels": ["automated"],
-  "regexManagers": [
+  "labels": [
+    "automated"
+  ],
+  "customManagers": [
     {
-// We want a PR to bump Go versions used through env variables in any Github
-// Actions, taking it from the official Github repository.
-      "fileMatch": ["^\\.github\\/workflows\\/[^/]+\\.ya?ml$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github\\/workflows\\/[^/]+\\.ya?ml$/"
+      ],
       "matchStrings": [
         "GO_VERSION: '(?<currentValue>.*?)'\\n"
       ],
       "datasourceTemplate": "golang-version",
       "depNameTemplate": "golang"
-    }, {
-// We want a PR to bump golangci-lint versions used through env variables in
-// any Github Actions, taking it from the official Github repository tags.
-      "fileMatch": ["^\\.github\\/workflows\\/[^/]+\\.ya?ml$"],
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github\\/workflows\\/[^/]+\\.ya?ml$/"
+      ],
       "matchStrings": [
         "GOLANGCI_VERSION: '(?<currentValue>.*?)'\\n"
       ],
@@ -41,8 +48,8 @@
   },
   "packageRules": [
     {
-// We need to ignore k8s.io/client-go older versions as they switched to
-// semantic version and old tags are still available in the repo.
+      // We need to ignore k8s.io/client-go older versions as they switched to
+      // semantic version and old tags are still available in the repo.
       "matchDatasources": [
         "go"
       ],
@@ -61,9 +68,9 @@
         "patch",
         "digest"
       ],
-      "matchPackagePrefixes": [
-        "k8s.io",
-        "sigs.k8s.io"
+      "matchPackageNames": [
+        "k8s.io{/,}**",
+        "sigs.k8s.io{/,}**"
       ]
     }, {
 // We want dedicated PRs for each minor and major bumps to kubernetes related
@@ -75,9 +82,9 @@
         "major",
         "minor"
       ],
-      "matchPackagePrefixes": [
-        "k8s.io",
-        "sigs.k8s.io"
+      "matchPackageNames": [
+        "k8s.io{/,}**",
+        "sigs.k8s.io{/,}**"
       ]
     }, {
 // We want dedicated PRs for each bump to non-kubernetes Go dependencies, but
@@ -85,40 +92,34 @@
       "matchDatasources": [
         "go"
       ],
-      "matchPackagePatterns": [
-        "*"
-      ],
       "enabled": false,
-      "excludePackagePrefixes": [
-        "k8s.io",
-        "sigs.k8s.io"
-      ],
       "matchUpdateTypes": [
-        "major",
+        "major"
       ],
-    }, {
-// We want a single PR for all minor and patch bumps to non-kubernetes Go
-// dependencies, but only if there are known vulnerabilities in the current
-// version.
+      "matchPackageNames": [
+        "*",
+        "!k8s.io{/,}**",
+        "!sigs.k8s.io{/,}**"
+      ]
+    },
+    {
       "matchDatasources": [
         "go"
       ],
-      "matchPackagePatterns": [
-        "*"
-      ],
       "enabled": false,
-      "excludePackagePrefixes": [
-        "k8s.io",
-        "sigs.k8s.io"
-      ],
       "matchUpdateTypes": [
         "minor",
         "patch",
         "digest"
       ],
-      "groupName": "all non-major go dependencies"
-    }, {
-// We want a single PR for all minor and patch bumps of Github Actions
+      "groupName": "all non-major go dependencies",
+      "matchPackageNames": [
+        "*",
+        "!k8s.io{/,}**",
+        "!sigs.k8s.io{/,}**"
+      ]
+    },
+    {
       "matchDepTypes": [
         "action"
       ],
@@ -128,8 +129,8 @@
       ],
       "groupName": "all non-major github action",
       "pinDigests": true
-    },{
-// We want dedicated PRs for each major bump to Github Actions
+    },
+    {
       "matchDepTypes": [
         "action"
       ],
