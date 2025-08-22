@@ -333,8 +333,8 @@ jobs:
       - name: Login to upbound
         if: env.XPKG_MIRROR_ACCESS_ID != '' && startsWith(github.ref, 'refs/tags/')
         run: |
-          ./.cache/tools/linux_x86_64/up-v0.39.0 login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
-          ./.cache/tools/linux_x86_64/up-v0.39.0 robot list
+          ./.cache/tools/linux_x86_64/up-v0.40.0-0.rc.3 login --token=${{ secrets.XPKG_MIRROR_TOKEN }}
+          ./.cache/tools/linux_x86_64/up-v0.40.0-0.rc.3 robot list
 
       - name: Publish Artifacts to Upbound
         if: startsWith(github.ref, 'refs/tags/')
