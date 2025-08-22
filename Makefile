@@ -61,6 +61,7 @@ ENVTEST_VERSION = 1.33.0
 KIND_VERSION = v0.29.0
 UP_VERSION = v0.40.0-0.rc.3
 UP_CHANNEL = alpha
+# renovate: datasource=github-releases depName=kubernetes/kubectl
 KUBECTL_VERSION = v1.24.3
 KUTTL_VERSION = 0.22.0
 HELM_VERSION = v3.18.0
