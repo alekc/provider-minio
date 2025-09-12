@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-minio
 spec:
-  package: xpkg.crossplane.io/alekc/provider-minio:v1.0.1
+  package: xpkg.crossplane.io/alekc/provider-minio:v1.0.2
