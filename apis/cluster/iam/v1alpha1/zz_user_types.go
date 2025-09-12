@@ -46,6 +46,10 @@ type UserObservation struct {
 	// (String) The ID of this resource (same as name).
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) Name of the user
+	// Name of the user
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// (String) Current status of the user (enabled/disabled).
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
@@ -68,6 +72,11 @@ type UserParameters struct {
 	// When true, any group memberships will be removed during deletion even if they cause errors
 	// +kubebuilder:validation:Optional
 	ForceDestroy *bool `json:"forceDestroy,omitempty" tf:"force_destroy,omitempty"`
+
+	// (String) Name of the user
+	// Name of the user
+	// +kubebuilder:validation:Required
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// (String, Sensitive) The user's secret key. If not provided, one will be generated. Can be updated.
 	// +kubebuilder:validation:Optional

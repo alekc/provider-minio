@@ -109,6 +109,7 @@ metadata:
 spec:
   forProvider:
     forceDestroy: true
+    name: my-user
 
 ---
 
@@ -124,6 +125,7 @@ metadata:
 spec:
   forProvider:
     forceDestroy: true
+    name: my-user
     provider: ${minio.deployment_b}
 
 ---

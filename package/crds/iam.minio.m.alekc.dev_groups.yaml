@@ -73,6 +73,8 @@ spec:
                       (String) Name of the group
                       Name of the group
                     type: string
+                required:
+                - name
                 type: object
               initProvider:
                 description: |-
@@ -97,11 +99,6 @@ spec:
                       provider-managed members
                       delete group even if it has non-provider-managed members
                     type: boolean
-                  name:
-                    description: |-
-                      (String) Name of the group
-                      Name of the group
-                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -161,11 +158,6 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.name is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
-                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: GroupStatus defines the observed state of Group.
             properties:

@@ -56,4 +56,5 @@ metadata:
   name: test-user
   namespace: upbound-system
 spec:
-  forProvider: {}
+  forProvider:
+    name: test-user

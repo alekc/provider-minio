@@ -273,6 +273,10 @@ custom-e2e: $(KUBECTL) $(KUTTL) local-deploy deploy-minio
 	@$(INFO) running e2e tests
 	@$(KUTTL) test tests/e2e/
 
+# Run only KUTTL tests assuming the environment (provider, minio, etc.) is already set up
+custom-e2e-kuttl: $(KUBECTL) $(KUTTL)
+	@$(INFO) running kuttl-only e2e tests
+	@$(KUTTL) test tests/e2e/
 
 crddiff: $(UPTEST)
 	@$(INFO) Checking breaking CRD schema changes
@@ -338,8 +342,4 @@ crossplane.help:
 
 help-special: crossplane.help
 
-.PHONY: crossplane.help help-special
-
-# TODO(negz): Update CI to use these targets.
-vendor: modules.download
-vendor.check: modules.check
+.PHONY: crossplane.help help-special custom-e2e-kuttl

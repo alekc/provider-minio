@@ -27,10 +27,6 @@ type ServiceAccountInitParameters struct {
 	// Expiration of service account. Must be between NOW+15min & NOW+365d
 	Expiration *string `json:"expiration,omitempty" tf:"expiration,omitempty"`
 
-	// (String) Name of service account (32 bytes max), can't be cleared once set
-	// Name of service account (32 bytes max), can't be cleared once set
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
 	// (String) policy of service account as encoded JSON string
 	// policy of service account as encoded JSON string
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`

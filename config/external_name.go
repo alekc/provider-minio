@@ -12,19 +12,19 @@ import (
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_accesskey":                        config.IdentifierFromProvider,
-	"minio_iam_group":                        config.IdentifierFromProvider,
-	"minio_iam_group_membership":             config.IdentifierFromProvider,
-	"minio_iam_group_policy":                 config.IdentifierFromProvider,
+	"minio_iam_group":                        CustomParameterAsIdentifier("name", nil),
+	"minio_iam_group_membership":             CustomParameterAsIdentifier("name", []string{"name_prefix"}),
+	"minio_iam_group_policy":                 CustomIdentifierFromProvider([]string{"name_prefix"}),
 	"minio_iam_group_policy_attachment":      config.IdentifierFromProvider,
 	"minio_iam_group_user_attachment":        config.IdentifierFromProvider,
 	"minio_iam_ldap_group_policy_attachment": config.IdentifierFromProvider,
 	"minio_iam_ldap_user_policy_attachment":  config.IdentifierFromProvider,
-	"minio_iam_user":                         config.NameAsIdentifier,
+	"minio_iam_user":                         CustomParameterAsIdentifier("name", []string{"name_prefix"}),
 	"minio_iam_user_policy_attachment":       config.IdentifierFromProvider,
-	"minio_iam_policy":                       config.IdentifierFromProvider,
-	"minio_iam_service_account":              config.IdentifierFromProvider,
+	"minio_iam_policy":                       CustomIdentifierFromProvider([]string{"name_prefix"}),
+	"minio_iam_service_account":              CustomParameterAsIdentifier("name", nil),
 	"minio_ilm_policy":                       config.IdentifierFromProvider,
-	"minio_ilm_tier":                         config.IdentifierFromProvider,
+	"minio_ilm_tier":                         CustomParameterAsIdentifier("name", nil),
 	"minio_kms_key":                          config.IdentifierFromProvider,
 	"minio_s3_bucket":                        config.ParameterAsIdentifier("bucket"),
 	"minio_s3_bucket_notification":           config.IdentifierFromProvider,
@@ -39,16 +39,20 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 // CustomParameterAsIdentifier follows the same logic as ParameterAsIdentifier, but
 // keeps the parameter in the spec. This is useful when you want to be able to use the same bucket name in different
 // providers
-
 func CustomParameterAsIdentifier(param string, omittedFields []string) config.ExternalName {
-	e := config.ExternalName{
-		SetIdentifierArgumentFn: config.NopSetIdentifierArgument,
-		GetExternalNameFn:       config.IDAsExternalName,
-		GetIDFn:                 config.ExternalNameAsID,
-		DisableNameInitializer:  true,
-		OmittedFields:           omittedFields,
-	}
+	e := config.NameAsIdentifier
+	e.OmittedFields = omittedFields
+	e.IdentifierFields = []string{param}
 
+	return e
+}
+
+// CustomIdentifierFromProvider returns a config.ExternalName based on
+// config.IdentifierFromProvider, but allows specifying omitted fields.
+// This is useful for customizing which fields are excluded from the identifier.
+func CustomIdentifierFromProvider(omittedFields []string) config.ExternalName {
+	e := config.IdentifierFromProvider
+	e.OmittedFields = omittedFields
 	return e
 }
 

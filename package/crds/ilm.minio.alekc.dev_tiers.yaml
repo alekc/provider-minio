@@ -190,6 +190,8 @@ spec:
                     type: array
                   type:
                     type: string
+                required:
+                - name
                 type: object
               initProvider:
                 description: |-
@@ -287,8 +289,6 @@ spec:
                           type: object
                       type: object
                     type: array
-                  name:
-                    type: string
                   prefix:
                     type: string
                   region:
@@ -414,10 +414,6 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.bucket)
                 || (has(self.initProvider) && has(self.initProvider.bucket))'
-            - message: spec.forProvider.name is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
-                || (has(self.initProvider) && has(self.initProvider.name))'
             - message: spec.forProvider.type is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
