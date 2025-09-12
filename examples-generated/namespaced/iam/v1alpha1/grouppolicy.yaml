@@ -39,5 +39,4 @@ metadata:
   name: developer
   namespace: upbound-system
 spec:
-  forProvider:
-    name: developer
+  forProvider: {}

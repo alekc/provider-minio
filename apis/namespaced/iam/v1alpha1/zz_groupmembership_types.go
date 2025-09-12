@@ -29,10 +29,6 @@ type GroupMembershipInitParameters struct {
 	// +kubebuilder:validation:Optional
 	GroupSelector *v1.NamespacedSelector `json:"groupSelector,omitempty" tf:"-"`
 
-	// (String) Name of group membership
-	// Name of group membership
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
 	// (Set of String) Add user or list of users such as a group membership
 	// Add user or list of users such as a group membership
 	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/namespaced/iam/v1alpha1.User
@@ -57,10 +53,6 @@ type GroupMembershipObservation struct {
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (String) Name of group membership
-	// Name of group membership
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
 	// (Set of String) Add user or list of users such as a group membership
 	// Add user or list of users such as a group membership
 	// +listType=set
@@ -82,11 +74,6 @@ type GroupMembershipParameters struct {
 	// Selector for a Group in iam to populate group.
 	// +kubebuilder:validation:Optional
 	GroupSelector *v1.NamespacedSelector `json:"groupSelector,omitempty" tf:"-"`
-
-	// (String) Name of group membership
-	// Name of group membership
-	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (Set of String) Add user or list of users such as a group membership
 	// Add user or list of users such as a group membership
@@ -140,9 +127,8 @@ type GroupMembershipStatus struct {
 type GroupMembership struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	Spec   GroupMembershipSpec   `json:"spec"`
-	Status GroupMembershipStatus `json:"status,omitempty"`
+	Spec              GroupMembershipSpec   `json:"spec"`
+	Status            GroupMembershipStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

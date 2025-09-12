@@ -40,7 +40,6 @@ metadata:
   namespace: upbound-system
 spec:
   forProvider:
-    name: ReplicationToMyBucketPolicy
     policy: ${data.minio_iam_policy_document.replication_policy.json}
 
 ---
@@ -56,7 +55,6 @@ metadata:
   namespace: upbound-system
 spec:
   forProvider:
-    name: ReplicationToMyBucketPolicy
     policy: ${data.minio_iam_policy_document.replication_policy.json}
     provider: ${minio.deployment_b}
 
