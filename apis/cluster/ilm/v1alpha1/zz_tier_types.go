@@ -116,6 +116,8 @@ type TierInitParameters struct {
 
 	MinioConfig []MinioConfigInitParameters `json:"minioConfig,omitempty" tf:"minio_config,omitempty"`
 
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
@@ -171,8 +173,8 @@ type TierParameters struct {
 	// +kubebuilder:validation:Optional
 	MinioConfig []MinioConfigParameters `json:"minioConfig,omitempty" tf:"minio_config,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
@@ -224,6 +226,7 @@ type Tier struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.bucket) || (has(self.initProvider) && has(self.initProvider.bucket))",message="spec.forProvider.bucket is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
 	Spec   TierSpec   `json:"spec"`
 	Status TierStatus `json:"status,omitempty"`

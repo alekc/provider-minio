@@ -1,16 +1,21 @@
 apiVersion: bucket.minio.m.alekc.dev/v1alpha1
 kind: Bucket
 metadata:
-  name: test-bucket
+  name: namespaced-named-bucket
   namespace: test-namespaced
 spec:
   forProvider:
+    bucket: namespaced-named-bucket-custom
     acl: private
     forceDestroy: true
+    objectLocking: false
   providerConfigRef:
     kind: ProviderConfig
     name: namespaced-provider
 status:
   atProvider:
-    id: test-bucket
+    id: namespaced-named-bucket-custom
     acl: private
+    forceDestroy: true
+    objectLocking: false
+    bucket: namespaced-named-bucket-custom

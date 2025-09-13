@@ -1,0 +1,12 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Object
+metadata:
+  name: txt-file
+  namespace: upbound-system
+spec:
+  forProvider:
+    bucketName: state-terraform-s3
+    content: Lorem ipsum dolor sit amet.
+    contentType: text/plain
+    objectName: text.txt
+

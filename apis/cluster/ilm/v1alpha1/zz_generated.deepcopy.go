@@ -970,6 +970,11 @@ func (in *TierInitParameters) DeepCopyInto(out *TierInitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
 	if in.Prefix != nil {
 		in, out := &in.Prefix, &out.Prefix
 		*out = new(string)

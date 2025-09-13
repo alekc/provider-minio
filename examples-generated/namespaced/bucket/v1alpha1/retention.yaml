@@ -29,5 +29,6 @@ metadata:
   namespace: upbound-system
 spec:
   forProvider:
+    bucket: my-bucket
     forceDestroy: true
     objectLocking: true

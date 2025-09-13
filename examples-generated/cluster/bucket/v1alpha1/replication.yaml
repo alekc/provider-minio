@@ -19,7 +19,7 @@ spec:
       target:
       - accessKey: ${minio_iam_service_account.replication_in_b.access_key}
         bandwidthLimit: 100M
-        bucket: ${minio_s3_bucket.my_bucket_in_b.bucket}
+        bucket: state-terraform-s3
         host: ${var.minio_server_b}
         secretKeySecretRef:
           key: attribute.secret_key
@@ -172,7 +172,8 @@ metadata:
     testing.upbound.io/example-name: my_bucket_in_a
   name: my-bucket-in-a
 spec:
-  forProvider: {}
+  forProvider:
+    bucket: my-bucket
 
 ---
 
@@ -186,4 +187,5 @@ metadata:
   name: my-bucket-in-b
 spec:
   forProvider:
+    bucket: my-bucket
     provider: ${minio.deployment_b}

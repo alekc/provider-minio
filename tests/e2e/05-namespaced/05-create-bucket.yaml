@@ -1,8 +1,10 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
-  - files/05-create-bucket.yaml
+  - files/05-create-bucket-named.yaml
+  - files/05-create-bucket-nameless.yaml
 assert:
-  - files/05-assert-bucket.yaml
+  - files/05-assert-bucket-named.yaml
+  - files/05-assert-bucket-nameless.yaml
 
 

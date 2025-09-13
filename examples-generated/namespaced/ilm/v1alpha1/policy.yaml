@@ -29,4 +29,5 @@ metadata:
   name: bucket
   namespace: upbound-system
 spec:
-  forProvider: {}
+  forProvider:
+    bucket: bucket

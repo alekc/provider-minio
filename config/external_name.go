@@ -26,7 +26,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"minio_ilm_policy":                       config.IdentifierFromProvider,
 	"minio_ilm_tier":                         CustomParameterAsIdentifier("name", nil),
 	"minio_kms_key":                          config.IdentifierFromProvider,
-	"minio_s3_bucket":                        config.ParameterAsIdentifier("bucket"),
+	"minio_s3_bucket":                        CustomIdentifierFromProvider([]string{"bucket_prefix"}),
 	"minio_s3_bucket_notification":           config.IdentifierFromProvider,
 	"minio_s3_bucket_policy":                 config.IdentifierFromProvider,
 	"minio_s3_bucket_replication":            config.IdentifierFromProvider,
@@ -40,10 +40,13 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 // keeps the parameter in the spec. This is useful when you want to be able to use the same bucket name in different
 // providers
 func CustomParameterAsIdentifier(param string, omittedFields []string) config.ExternalName {
-	e := config.NameAsIdentifier
-	e.OmittedFields = omittedFields
-	e.IdentifierFields = []string{param}
-
+	e := config.ExternalName{
+		SetIdentifierArgumentFn: config.NopSetIdentifierArgument,
+		GetExternalNameFn:       config.IDAsExternalName,
+		GetIDFn:                 config.ExternalNameAsID,
+		DisableNameInitializer:  true,
+		OmittedFields:           omittedFields,
+	}
 	return e
 }
 
