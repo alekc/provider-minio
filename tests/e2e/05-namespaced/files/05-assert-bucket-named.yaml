@@ -8,7 +8,7 @@ spec:
     bucket: namespaced-named-bucket-custom
     acl: private
     forceDestroy: true
-    objectLocking: false
+    objectLocking: true
   providerConfigRef:
     kind: ProviderConfig
     name: namespaced-provider
@@ -17,5 +17,5 @@ status:
     id: namespaced-named-bucket-custom
     acl: private
     forceDestroy: true
-    objectLocking: false
+    objectLocking: true
     bucket: namespaced-named-bucket-custom

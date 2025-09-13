@@ -1,0 +1,28 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Replication
+metadata:
+  name: test-replication
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  forProvider:
+    bucketRef:
+      name: namespaced-nameless-bucket
+    rule:
+      - deleteMarkerReplication: true
+        deleteReplication: true
+        existingObjectReplication: true
+        metadataSync: true
+        target:
+          - accessKey: ${minio_iam_service_account.replication_in_b.access_key}
+            bandwidthLimit: 100M
+            bucket: state-terraform-s3
+            host: ${var.minio_server_b}
+            secretKeySecretRef:
+              key: attribute.secret_key
+              name: example-iam-service-account
+            secure: false
+
+

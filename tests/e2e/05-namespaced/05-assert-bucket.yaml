@@ -4,9 +4,16 @@ timeout: 120
 resourceRefs:
   - apiVersion: bucket.minio.m.alekc.dev/v1alpha1
     kind: Bucket
-    name: test-bucket
+    name: namespaced-named-bucket
     namespace: test-namespaced
-    ref: bucket
+    ref: namedBucket
+  - apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+    kind: Bucket
+    name: namespaced-nameless-bucket
+    namespace: test-namespaced
+    ref: namelessBucket
 assertAll:
-  - celExpr: bucket.status.conditions.exists(c, c.type == "Synced" && c.status == "True")
-  - celExpr: bucket.status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+  - celExpr: namedBucket.status.conditions.exists(c, c.type == "Synced" && c.status == "True")
+  - celExpr: namedBucket.status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+  - celExpr: namelessBucket.status.conditions.exists(c, c.type == "Synced" && c.status == "True")
+  - celExpr: namelessBucket.status.conditions.exists(c, c.type == "Ready" && c.status == "True")

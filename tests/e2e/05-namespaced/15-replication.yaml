@@ -1,0 +1,9 @@
+#apiVersion: kuttl.dev/v1beta1
+#kind: TestStep
+#apply:
+#  - file: files/15-create-replication.yaml
+#assert:
+#  - file: files/15-assert-replication.yaml
+#
+## todo: check link to other bucket in target
+## todo: check link in service account

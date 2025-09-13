@@ -1,0 +1,23 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Versioning
+metadata:
+  name: test-bucket-versioning
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  forProvider:
+    bucketRef:
+      name: namespaced-named-bucket
+    versioningConfiguration:
+      - status: "Enabled"
+        excludeFolders: false
+status:
+  atProvider:
+    id: namespaced-named-bucket-custom
+    bucket: namespaced-named-bucket-custom
+    versioningConfiguration:
+      - status: "Enabled"
+        excludeFolders: false
+
