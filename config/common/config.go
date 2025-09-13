@@ -71,6 +71,7 @@ func configureBucket(p *config.Provider) {
 		r.Kind = "Object"
 		r.References[bucketShortGroup] = config.Reference{
 			TerraformName: "minio_s3_bucket",
+			RefFieldName:  "bucket_name",
 		}
 	})
 }
