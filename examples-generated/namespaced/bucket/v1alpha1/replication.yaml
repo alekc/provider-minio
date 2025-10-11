@@ -18,9 +18,13 @@ spec:
       existingObjectReplication: true
       metadataSync: true
       target:
-      - accessKey: ${minio_iam_service_account.replication_in_b.access_key}
+      - accessKeySelector:
+          matchLabels:
+            testing.upbound.io/example-name: replication_in_b
         bandwidthLimit: 100M
-        bucket: state-terraform-s3
+        bucketSelector:
+          matchLabels:
+            testing.upbound.io/example-name: my_bucket_in_b
         host: ${var.minio_server_b}
         secretKeySecretRef:
           key: attribute.secret_key

@@ -1908,6 +1908,16 @@ func (in *TargetInitParameters) DeepCopyInto(out *TargetInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccessKeyRef != nil {
+		in, out := &in.AccessKeyRef, &out.AccessKeyRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccessKeySelector != nil {
+		in, out := &in.AccessKeySelector, &out.AccessKeySelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.BandwidthLimit != nil {
 		in, out := &in.BandwidthLimit, &out.BandwidthLimit
 		*out = new(string)
@@ -1917,6 +1927,16 @@ func (in *TargetInitParameters) DeepCopyInto(out *TargetInitParameters) {
 		in, out := &in.Bucket, &out.Bucket
 		*out = new(string)
 		**out = **in
+	}
+	if in.BucketRef != nil {
+		in, out := &in.BucketRef, &out.BucketRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.BucketSelector != nil {
+		in, out := &in.BucketSelector, &out.BucketSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DisableProxy != nil {
 		in, out := &in.DisableProxy, &out.DisableProxy
@@ -2063,6 +2083,16 @@ func (in *TargetParameters) DeepCopyInto(out *TargetParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccessKeyRef != nil {
+		in, out := &in.AccessKeyRef, &out.AccessKeyRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccessKeySelector != nil {
+		in, out := &in.AccessKeySelector, &out.AccessKeySelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.BandwidthLimit != nil {
 		in, out := &in.BandwidthLimit, &out.BandwidthLimit
 		*out = new(string)
@@ -2072,6 +2102,16 @@ func (in *TargetParameters) DeepCopyInto(out *TargetParameters) {
 		in, out := &in.Bucket, &out.Bucket
 		*out = new(string)
 		**out = **in
+	}
+	if in.BucketRef != nil {
+		in, out := &in.BucketRef, &out.BucketRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.BucketSelector != nil {
+		in, out := &in.BucketSelector, &out.BucketSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DisableProxy != nil {
 		in, out := &in.DisableProxy, &out.DisableProxy
