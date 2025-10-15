@@ -1,0 +1,139 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Replication
+metadata:
+  name: test-replication
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  forProvider:
+    bucketRef:
+      name: namespaced-named-bucket
+    rule:
+      - deleteMarkerReplication: true
+        deleteReplication: true
+        existingObjectReplication: true
+        metadataSync: true
+        target:
+          - accessKeySelector:
+              matchLabels:
+                testing.upbound.io/example-name: replication_in_b
+            bandwidthLimit: 100M
+            bucketSelector:
+              matchLabels:
+                testing.bucket.replication: yes
+            host: localhost
+            secretKeySecretRef:
+              key: attribute.secret_key
+              name: example-iam-service-account
+            secure: false
+---
+
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: ServiceAccount
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/replication
+  labels:
+    testing.upbound.io/example-name: replication_in_b
+  name: replication-in-b
+  namespace: upbound-system
+spec:
+  forProvider:
+    provider: ${minio.deployment_b}
+    targetUserSelector:
+      matchLabels:
+        testing.upbound.io/example-name: replication_in_b
+
+---
+
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/replication
+  labels:
+    testing.upbound.io/example-name: replication_in_a
+  name: replication-in-a
+  namespace: upbound-system
+spec:
+  forProvider:
+    forceDestroy: true
+    name: my-user
+
+---
+
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/replication
+  labels:
+    testing.upbound.io/example-name: replication_in_b
+  name: replication-in-b
+  namespace: upbound-system
+spec:
+  forProvider:
+    forceDestroy: true
+    name: my-user
+    provider: ${minio.deployment_b}
+
+---
+
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: UserPolicyAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/replication
+  labels:
+    testing.upbound.io/example-name: replication_in_a
+  name: replication-in-a
+  namespace: upbound-system
+spec:
+  forProvider:
+    policyNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: replication_in_a
+    userNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: replication_in_a
+
+---
+
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: UserPolicyAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/replication
+  labels:
+    testing.upbound.io/example-name: replication_in_b
+  name: replication-in-b
+  namespace: upbound-system
+spec:
+  forProvider:
+    policyNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: replication_in_b
+    provider: ${minio.deployment_b}
+    userNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: replication_in_b
+
+---
+
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/replication
+  labels:
+    testing.upbound.io/example-name: my_bucket_in_a
+  name: my-bucket-in-a
+  namespace: upbound-system
+spec:
+  forProvider:
+    bucket: my-bucket
+
+
+

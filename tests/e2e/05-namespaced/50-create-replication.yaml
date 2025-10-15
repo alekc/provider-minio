@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-  - files/50-create-replication.yaml
-assert:
-  - files/50-assert-replication.yaml

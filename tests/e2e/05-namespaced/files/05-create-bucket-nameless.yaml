@@ -3,6 +3,8 @@ kind: Bucket
 metadata:
   name: namespaced-nameless-bucket
   namespace: test-namespaced
+  labels:
+    testing.bucket.replication: "yes"
 spec:
   forProvider:
     acl: private
