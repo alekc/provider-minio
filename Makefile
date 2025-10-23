@@ -276,7 +276,7 @@ custom-e2e: $(KUBECTL) $(KUTTL) local-deploy deploy-minio
 # Run only KUTTL tests assuming the environment (provider, minio, etc.) is already set up
 custom-e2e-kuttl: $(KUBECTL) $(KUTTL)
 	@$(INFO) running kuttl-only e2e tests
-	@$(KUTTL) test tests/e2e/ --config tests/e2e/harness.yaml
+	@$(KUTTL) test tests/e2e/ --config tests/e2e/harness.yaml --timeout 10
 
 crddiff: $(UPTEST)
 	@$(INFO) Checking breaking CRD schema changes

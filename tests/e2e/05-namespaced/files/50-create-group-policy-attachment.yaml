@@ -1,0 +1,17 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: GroupPolicyAttachment
+metadata:
+  name: test-group-policy-attachment
+  namespace: test-namespaced
+spec:
+  forProvider:
+    groupNameRef:
+      name: test-group
+      namespace: test-namespaced
+    policyNameRef:
+      name: test-policy
+      namespace: test-namespaced
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+

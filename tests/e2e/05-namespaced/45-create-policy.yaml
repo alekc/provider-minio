@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/45-create-policy.yaml
+assert:
+  - files/45-assert-policy.yaml
+
