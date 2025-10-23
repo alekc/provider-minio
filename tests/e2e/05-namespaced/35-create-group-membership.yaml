@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/35-create-group-membership.yaml
+assert:
+  - files/35-assert-group-membership.yaml
+
