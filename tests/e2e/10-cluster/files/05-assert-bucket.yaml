@@ -4,6 +4,7 @@ metadata:
   name: cluster-bucket
 spec:
   forProvider:
+    bucket: cluster-bucket
     acl: private
     forceDestroy: true
   providerConfigRef:
