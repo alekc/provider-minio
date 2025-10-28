@@ -1,0 +1,28 @@
+apiVersion: minio.m.alekc.dev/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: minio-namespaced
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/bucket
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: "minio-credentials"
+      namespace: minio
+      key: crossplane
+---
+apiVersion: bucket.minio.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  annotations:
+    meta.upbound.io/example-id: bucket/v1alpha1/bucket
+  name: thanos
+spec:
+  forProvider:
+    acl: private
+    forceDestroy: true
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: minio-namespaced

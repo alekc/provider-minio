@@ -28,8 +28,7 @@ metadata:
   name: developer
   namespace: upbound-system
 spec:
-  forProvider:
-    name: developer
+  forProvider: {}
 
 ---
 
@@ -44,7 +43,6 @@ metadata:
   namespace: upbound-system
 spec:
   forProvider:
-    name: state-terraform-s3
     policy: |
       {
         "Version":"2012-10-17",

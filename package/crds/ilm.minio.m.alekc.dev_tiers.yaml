@@ -131,8 +131,6 @@ spec:
                     type: array
                   name:
                     type: string
-                  prefix:
-                    type: string
                   region:
                     type: string
                   s3Config:
@@ -246,8 +244,6 @@ spec:
                       type: object
                     type: array
                   name:
-                    type: string
-                  prefix:
                     type: string
                   region:
                     type: string
@@ -385,8 +381,6 @@ spec:
                       type: object
                     type: array
                   name:
-                    type: string
-                  prefix:
                     type: string
                   region:
                     type: string
