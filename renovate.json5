@@ -42,7 +42,7 @@
       "depNameTemplate": "golangci/golangci-lint"
     }
   ],
-// PackageRules disabled below should be enabled in case of vulnerabilities
+  // PackageRules disabled below should be enabled in case of vulnerabilities
   "vulnerabilityAlerts": {
     "enabled": true
   },
@@ -58,8 +58,8 @@
       ],
       "allowedVersions": "<1.0"
     }, {
-// We want a single PR for all the patches bumps of kubernetes related
-// dependencies, as most of the times these are all strictly related.
+      // We want a single PR for all the patches bumps of kubernetes related
+      // dependencies, as most of the times these are all strictly related.
       "matchDatasources": [
         "go"
       ],
@@ -73,8 +73,8 @@
         "sigs.k8s.io{/,}**"
       ]
     }, {
-// We want dedicated PRs for each minor and major bumps to kubernetes related
-// dependencies.
+      // We want dedicated PRs for each minor and major bumps to kubernetes related
+      // dependencies.
       "matchDatasources": [
         "go"
       ],
@@ -87,8 +87,8 @@
         "sigs.k8s.io{/,}**"
       ]
     }, {
-// We want dedicated PRs for each bump to non-kubernetes Go dependencies, but
-// only if there are known vulnerabilities in the current version.
+      // We want dedicated PRs for each bump to non-kubernetes Go dependencies, but
+      // only if there are known vulnerabilities in the current version.
       "matchDatasources": [
         "go"
       ],
@@ -120,20 +120,11 @@
       ]
     },
     {
+      // Group ALL GitHub Action updates (major, minor, patch, digest) into a single PR
       "matchDepTypes": [
         "action"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "groupName": "all non-major github action",
-      "pinDigests": true
-    },
-    {
-      "matchDepTypes": [
-        "action"
-      ],
+      "groupName": "all github actions",
       "pinDigests": true
     }
   ]
