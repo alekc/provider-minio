@@ -4,7 +4,7 @@
     "mergeConfidence:all-badges",
     "config:recommended"
   ],
-  "prConcurrentLimit": 5,
+  "prConcurrentLimit": 15,
   "baseBranchPatterns": [
     "main"
   ],
