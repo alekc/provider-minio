@@ -44,6 +44,14 @@ func configureBucket(p *config.Provider) {
 		r.References[bucketShortGroup] = config.Reference{
 			TerraformName: "minio_s3_bucket",
 		}
+		r.References["rule.target.bucket"] = config.Reference{
+			TerraformName: "minio_s3_bucket",
+			//RefFieldName:  "rule.target.bucket",
+		}
+		r.References["rule.target.access_key"] = config.Reference{
+			TerraformName: "minio_iam_service_account",
+			//RefFieldName:  "rule.target.bucket",
+		}
 	})
 	p.AddResourceConfigurator("minio_s3_bucket_retention", func(r *config.Resource) {
 		r.ShortGroup = bucketShortGroup
@@ -71,6 +79,7 @@ func configureBucket(p *config.Provider) {
 		r.Kind = "Object"
 		r.References[bucketShortGroup] = config.Reference{
 			TerraformName: "minio_s3_bucket",
+			RefFieldName:  "bucket_name",
 		}
 	})
 }

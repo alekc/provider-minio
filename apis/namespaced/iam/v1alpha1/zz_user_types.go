@@ -23,6 +23,10 @@ type UserInitParameters struct {
 	// When true, any group memberships will be removed during deletion even if they cause errors
 	ForceDestroy *bool `json:"forceDestroy,omitempty" tf:"force_destroy,omitempty"`
 
+	// (String) Name of the user
+	// Name of the user
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// (String, Sensitive) The user's secret key. If not provided, one will be generated. Can be updated.
 	SecretSecretRef *v1.LocalSecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
 
@@ -47,6 +51,10 @@ type UserObservation struct {
 	// (String) The ID of this resource (same as name).
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) Name of the user
+	// Name of the user
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// (String) Current status of the user (enabled/disabled).
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
@@ -69,6 +77,11 @@ type UserParameters struct {
 	// When true, any group memberships will be removed during deletion even if they cause errors
 	// +kubebuilder:validation:Optional
 	ForceDestroy *bool `json:"forceDestroy,omitempty" tf:"force_destroy,omitempty"`
+
+	// (String) Name of the user
+	// Name of the user
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (String, Sensitive) The user's secret key. If not provided, one will be generated. Can be updated.
 	// +kubebuilder:validation:Optional
@@ -121,8 +134,9 @@ type UserStatus struct {
 type User struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              UserSpec   `json:"spec"`
-	Status            UserStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   UserSpec   `json:"spec"`
+	Status UserStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

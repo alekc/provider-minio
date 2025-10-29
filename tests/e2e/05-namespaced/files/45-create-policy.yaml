@@ -1,0 +1,25 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: Policy
+metadata:
+  name: test-policy
+  namespace: test-namespaced
+spec:
+  forProvider:
+    name: test-policy-namespaced
+    policy: |
+      {
+        "Version":"2012-10-17",
+        "Statement": [
+          {
+            "Sid":"ListAllBucket",
+            "Effect": "Allow",
+            "Action": ["s3:PutObject"],
+            "Principal":"*",
+            "Resource": "arn:aws:s3:::state-terraform-s3/*"
+          }
+        ]
+      }
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+

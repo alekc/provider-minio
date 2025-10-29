@@ -271,8 +271,12 @@ deploy-minio:
 e2e: local-deploy uptest
 custom-e2e: $(KUBECTL) $(KUTTL) local-deploy deploy-minio
 	@$(INFO) running e2e tests
-	@$(KUTTL) test tests/e2e/
+	@$(KUTTL) test tests/e2e/ --config tests/e2e/harness.yaml
 
+# Run only KUTTL tests assuming the environment (provider, minio, etc.) is already set up
+custom-e2e-kuttl: $(KUBECTL) $(KUTTL)
+	@$(INFO) running kuttl-only e2e tests
+	@$(KUTTL) test tests/e2e/ --config tests/e2e/harness.yaml --timeout 10
 
 crddiff: $(UPTEST)
 	@$(INFO) Checking breaking CRD schema changes
@@ -307,6 +311,31 @@ crds.install:
 	done
 	@$(OK) Installing CRDs
 
+clean-namespaced: $(KUBECTL)
+	@$(INFO) Cleaning up namespaced objects and removing finalizers in test-namespaced namespace
+	@if $(KUBECTL) get namespace test-namespaced > /dev/null 2>&1; then \
+		echo "Found test-namespaced namespace, cleaning up objects..." ; \
+		for resource in $$($(KUBECTL) api-resources --namespaced=true --verbs=list -o name | grep -E '\.(minio\..*\.dev)$$'); do \
+			echo "Checking resource type: $$resource" ; \
+			objects=$$($(KUBECTL) get $$resource -n test-namespaced -o name 2>/dev/null || true); \
+			if [ -n "$$objects" ]; then \
+				echo "Removing finalizers from $$resource objects..." ; \
+				for obj in $$objects; do \
+					echo "  Processing $$obj" ; \
+					$(KUBECTL) patch $$obj -n test-namespaced --type='merge' -p='{"metadata":{"finalizers":[]}}' 2>/dev/null || true ; \
+				done ; \
+			fi ; \
+		done ; \
+		echo "Deleting all minio resources in test-namespaced namespace..." ; \
+		$(KUBECTL) delete all,secrets,configmaps --all -n test-namespaced --ignore-not-found=true || true ; \
+		for resource in $$($(KUBECTL) api-resources --namespaced=true --verbs=list -o name | grep -E '\.(minio\..*\.dev)$$'); do \
+			$(KUBECTL) delete $$resource --all -n test-namespaced --ignore-not-found=true || true ; \
+		done ; \
+	else \
+		echo "test-namespaced namespace not found, nothing to clean" ; \
+	fi
+	@$(OK) Cleaning up namespaced objects and removing finalizers in test-namespaced namespace
+
 schema-version-diff:
 	@$(INFO) Checking for native state schema version changes
 	@export PREV_PROVIDER_VERSION=$$(git cat-file -p "${GITHUB_BASE_REF}:Makefile" | sed -nr 's/^export[[:space:]]*TERRAFORM_PROVIDER_VERSION[[:space:]]*:=[[:space:]]*(.+)/\1/p'); \
@@ -338,8 +367,4 @@ crossplane.help:
 
 help-special: crossplane.help
 
-.PHONY: crossplane.help help-special
-
-# TODO(negz): Update CI to use these targets.
-vendor: modules.download
-vendor.check: modules.check
+.PHONY: crossplane.help help-special custom-e2e-kuttl

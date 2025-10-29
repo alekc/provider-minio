@@ -1,0 +1,15 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: GroupUserAttachment
+metadata:
+  name: test-group-user-attachment
+  namespace: test-namespaced
+spec:
+  forProvider:
+    groupNameRef:
+      name: test-group
+    userNameRef:
+      name: test-user
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+

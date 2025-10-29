@@ -63,11 +63,6 @@ spec:
                       (String) Name of the policy. Conflicts with name_prefix.
                       Name of the policy. Conflicts with `name_prefix`.
                     type: string
-                  namePrefix:
-                    description: |-
-                      (String) Prefix to the generated policy name. Do not use with name.
-                      Prefix to the generated policy name. Do not use with `name`.
-                    type: string
                   policy:
                     description: |-
                       (String) Policy JSON string
@@ -91,11 +86,6 @@ spec:
                     description: |-
                       (String) Name of the policy. Conflicts with name_prefix.
                       Name of the policy. Conflicts with `name_prefix`.
-                    type: string
-                  namePrefix:
-                    description: |-
-                      (String) Prefix to the generated policy name. Do not use with name.
-                      Prefix to the generated policy name. Do not use with `name`.
                     type: string
                   policy:
                     description: |-
@@ -178,11 +168,6 @@ spec:
                     description: |-
                       (String) Name of the policy. Conflicts with name_prefix.
                       Name of the policy. Conflicts with `name_prefix`.
-                    type: string
-                  namePrefix:
-                    description: |-
-                      (String) Prefix to the generated policy name. Do not use with name.
-                      Prefix to the generated policy name. Do not use with `name`.
                     type: string
                   policy:
                     description: |-

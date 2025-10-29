@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/25-create-bucket-policy.yaml
+assert:
+  - files/25-assert-bucket-policy.yaml
+

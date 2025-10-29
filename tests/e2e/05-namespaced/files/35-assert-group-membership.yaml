@@ -1,0 +1,20 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: GroupMembership
+metadata:
+  name: test-group-membership
+  namespace: test-namespaced
+spec:
+  forProvider:
+    name: test-namespaced-group-membership
+    group: TestGroupNamespaced
+    users:
+      - CustomUserNamespaced
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+status:
+  atProvider:
+    group: TestGroupNamespaced
+    id: test-namespaced-group-membership
+    users:
+      - CustomUserNamespaced

@@ -1,0 +1,26 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: GroupPolicy
+metadata:
+  name: test-group-policy
+  namespace: test-namespaced
+spec:
+  forProvider:
+    groupRef:
+      name: test-group
+    name: test-group-policy
+    policy: |
+      {
+        "Version":"2012-10-17",
+        "Statement": [
+          {
+            "Sid":"ListAllBucket",
+            "Effect": "Allow",
+            "Action": ["s3:GetObject", "s3:PutObject"],
+            "Resource": "arn:aws:s3:::test-bucket/*"
+          }
+        ]
+      }
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+

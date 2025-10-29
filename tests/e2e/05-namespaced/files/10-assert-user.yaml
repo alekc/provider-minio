@@ -13,7 +13,7 @@ status:
   atProvider:
     disableUser: false
     forceDestroy: true
-    id: test-user
+    id: CustomUserNamespaced
     status: enabled
     tags:
       tag-key: tag-value

@@ -1,0 +1,14 @@
+apiVersion: iam.minio.m.alekc.dev/v1alpha1
+kind: Group
+metadata:
+  name: test-group
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+status:
+  atProvider:
+    id: TestGroupNamespaced
+    name: TestGroupNamespaced
+

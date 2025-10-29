@@ -1,0 +1,15 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Bucket
+metadata:
+  name: namespaced-nameless-bucket
+  namespace: test-namespaced
+  labels:
+    testing.bucket.replication: "yes"
+spec:
+  forProvider:
+    acl: private
+    forceDestroy: false
+    objectLocking: true
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider

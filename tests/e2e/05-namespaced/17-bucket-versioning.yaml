@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/17-create-bucket-versioning.yaml
+assert:
+  - files/17-assert-bucket-versioning.yaml
+

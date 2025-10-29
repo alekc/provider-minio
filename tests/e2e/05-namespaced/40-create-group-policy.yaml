@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/40-create-group-policy.yaml
+assert:
+  - files/40-assert-group-policy.yaml
+

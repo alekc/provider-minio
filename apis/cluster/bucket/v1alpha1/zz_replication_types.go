@@ -210,7 +210,16 @@ type TargetInitParameters struct {
 
 	// (String) Access key for the replication service account in the target MinIO
 	// Access key for the replication service account in the target MinIO
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/cluster/iam/v1alpha1.ServiceAccount
 	AccessKey *string `json:"accessKey,omitempty" tf:"access_key,omitempty"`
+
+	// Reference to a ServiceAccount in iam to populate accessKey.
+	// +kubebuilder:validation:Optional
+	AccessKeyRef *v1.Reference `json:"accessKeyRef,omitempty" tf:"-"`
+
+	// Selector for a ServiceAccount in iam to populate accessKey.
+	// +kubebuilder:validation:Optional
+	AccessKeySelector *v1.Selector `json:"accessKeySelector,omitempty" tf:"-"`
 
 	// (String) Maximum bandwidth in byte per second that MinIO can used when syncronysing this target. Minimum is 100MB
 	// Maximum bandwidth in byte per second that MinIO can used when syncronysing this target. Minimum is 100MB
@@ -218,7 +227,16 @@ type TargetInitParameters struct {
 
 	// (String) Name of the bucket on which to setup replication rules
 	// The name of the existing target bucket to replicate into
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/cluster/bucket/v1alpha1.Bucket
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
+	// Reference to a Bucket in bucket to populate bucket.
+	// +kubebuilder:validation:Optional
+	BucketRef *v1.Reference `json:"bucketRef,omitempty" tf:"-"`
+
+	// Selector for a Bucket in bucket to populate bucket.
+	// +kubebuilder:validation:Optional
+	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
 
 	// (Boolean) Disable proxy for this target
 	// Disable proxy for this target
@@ -314,8 +332,17 @@ type TargetParameters struct {
 
 	// (String) Access key for the replication service account in the target MinIO
 	// Access key for the replication service account in the target MinIO
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/cluster/iam/v1alpha1.ServiceAccount
 	// +kubebuilder:validation:Optional
-	AccessKey *string `json:"accessKey" tf:"access_key,omitempty"`
+	AccessKey *string `json:"accessKey,omitempty" tf:"access_key,omitempty"`
+
+	// Reference to a ServiceAccount in iam to populate accessKey.
+	// +kubebuilder:validation:Optional
+	AccessKeyRef *v1.Reference `json:"accessKeyRef,omitempty" tf:"-"`
+
+	// Selector for a ServiceAccount in iam to populate accessKey.
+	// +kubebuilder:validation:Optional
+	AccessKeySelector *v1.Selector `json:"accessKeySelector,omitempty" tf:"-"`
 
 	// (String) Maximum bandwidth in byte per second that MinIO can used when syncronysing this target. Minimum is 100MB
 	// Maximum bandwidth in byte per second that MinIO can used when syncronysing this target. Minimum is 100MB
@@ -324,8 +351,17 @@ type TargetParameters struct {
 
 	// (String) Name of the bucket on which to setup replication rules
 	// The name of the existing target bucket to replicate into
+	// +crossplane:generate:reference:type=github.com/alekc/provider-minio/apis/cluster/bucket/v1alpha1.Bucket
 	// +kubebuilder:validation:Optional
-	Bucket *string `json:"bucket" tf:"bucket,omitempty"`
+	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
+	// Reference to a Bucket in bucket to populate bucket.
+	// +kubebuilder:validation:Optional
+	BucketRef *v1.Reference `json:"bucketRef,omitempty" tf:"-"`
+
+	// Selector for a Bucket in bucket to populate bucket.
+	// +kubebuilder:validation:Optional
+	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
 
 	// (Boolean) Disable proxy for this target
 	// Disable proxy for this target

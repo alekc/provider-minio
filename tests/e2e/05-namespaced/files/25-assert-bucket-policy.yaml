@@ -1,0 +1,33 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Policy
+metadata:
+  name: test-bucket-policy
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  forProvider:
+    bucketRef:
+      name: namespaced-named-bucket
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+              "s3:GetObject"
+            ],
+            "Resource": [
+              "arn:aws:s3:::namespaced-named-bucket-custom/public/*"
+            ]
+          }
+        ]
+      }
+status:
+  atProvider:
+    id: namespaced-named-bucket-custom
+    bucket: namespaced-named-bucket-custom
+

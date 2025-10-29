@@ -19,10 +19,6 @@ type PolicyInitParameters struct {
 	// Name of the policy. Conflicts with `name_prefix`.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Prefix to the generated policy name. Do not use with name.
-	// Prefix to the generated policy name. Do not use with `name`.
-	NamePrefix *string `json:"namePrefix,omitempty" tf:"name_prefix,omitempty"`
-
 	// (String) Policy JSON string
 	// Policy JSON string
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
@@ -37,10 +33,6 @@ type PolicyObservation struct {
 	// Name of the policy. Conflicts with `name_prefix`.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Prefix to the generated policy name. Do not use with name.
-	// Prefix to the generated policy name. Do not use with `name`.
-	NamePrefix *string `json:"namePrefix,omitempty" tf:"name_prefix,omitempty"`
-
 	// (String) Policy JSON string
 	// Policy JSON string
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
@@ -52,11 +44,6 @@ type PolicyParameters struct {
 	// Name of the policy. Conflicts with `name_prefix`.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// (String) Prefix to the generated policy name. Do not use with name.
-	// Prefix to the generated policy name. Do not use with `name`.
-	// +kubebuilder:validation:Optional
-	NamePrefix *string `json:"namePrefix,omitempty" tf:"name_prefix,omitempty"`
 
 	// (String) Policy JSON string
 	// Policy JSON string

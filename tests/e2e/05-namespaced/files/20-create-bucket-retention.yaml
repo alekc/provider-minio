@@ -1,0 +1,16 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Retention
+metadata:
+  name: test-bucket-retention
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  forProvider:
+    bucketRef:
+      name: namespaced-named-bucket
+    mode: COMPLIANCE
+    unit: DAYS
+    validityPeriod: 30
+

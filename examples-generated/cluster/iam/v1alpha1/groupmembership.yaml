@@ -41,7 +41,8 @@ metadata:
     testing.upbound.io/example-name: user_one
   name: user-one
 spec:
-  forProvider: {}
+  forProvider:
+    name: test-user
 
 ---
 
@@ -54,4 +55,5 @@ metadata:
     testing.upbound.io/example-name: user_two
   name: user-two
 spec:
-  forProvider: {}
+  forProvider:
+    name: test-user-two

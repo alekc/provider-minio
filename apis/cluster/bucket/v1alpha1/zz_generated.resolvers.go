@@ -8,6 +8,7 @@ package v1alpha1
 
 import (
 	"context"
+	v1alpha1 "github.com/alekc/provider-minio/apis/cluster/iam/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
@@ -125,6 +126,48 @@ func (mg *Replication) ResolveReferences(ctx context.Context, c client.Reader) e
 	mg.Spec.ForProvider.Bucket = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BucketRef = rsp.ResolvedReference
 
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Rule); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.Rule[i3].Target); i4++ {
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Rule[i3].Target[i4].AccessKey),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.Rule[i3].Target[i4].AccessKeyRef,
+				Selector:     mg.Spec.ForProvider.Rule[i3].Target[i4].AccessKeySelector,
+				To: reference.To{
+					List:    &v1alpha1.ServiceAccountList{},
+					Managed: &v1alpha1.ServiceAccount{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.ForProvider.Rule[i3].Target[i4].AccessKey")
+			}
+			mg.Spec.ForProvider.Rule[i3].Target[i4].AccessKey = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.ForProvider.Rule[i3].Target[i4].AccessKeyRef = rsp.ResolvedReference
+
+		}
+	}
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Rule); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.Rule[i3].Target); i4++ {
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Rule[i3].Target[i4].Bucket),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.Rule[i3].Target[i4].BucketRef,
+				Selector:     mg.Spec.ForProvider.Rule[i3].Target[i4].BucketSelector,
+				To: reference.To{
+					List:    &BucketList{},
+					Managed: &Bucket{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.ForProvider.Rule[i3].Target[i4].Bucket")
+			}
+			mg.Spec.ForProvider.Rule[i3].Target[i4].Bucket = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.ForProvider.Rule[i3].Target[i4].BucketRef = rsp.ResolvedReference
+
+		}
+	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Bucket),
 		Extract:      reference.ExternalName(),
@@ -141,6 +184,49 @@ func (mg *Replication) ResolveReferences(ctx context.Context, c client.Reader) e
 	}
 	mg.Spec.InitProvider.Bucket = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BucketRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Rule); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.Rule[i3].Target); i4++ {
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Rule[i3].Target[i4].AccessKey),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.Rule[i3].Target[i4].AccessKeyRef,
+				Selector:     mg.Spec.InitProvider.Rule[i3].Target[i4].AccessKeySelector,
+				To: reference.To{
+					List:    &v1alpha1.ServiceAccountList{},
+					Managed: &v1alpha1.ServiceAccount{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.InitProvider.Rule[i3].Target[i4].AccessKey")
+			}
+			mg.Spec.InitProvider.Rule[i3].Target[i4].AccessKey = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.InitProvider.Rule[i3].Target[i4].AccessKeyRef = rsp.ResolvedReference
+
+		}
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Rule); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.Rule[i3].Target); i4++ {
+			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Rule[i3].Target[i4].Bucket),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.Rule[i3].Target[i4].BucketRef,
+				Selector:     mg.Spec.InitProvider.Rule[i3].Target[i4].BucketSelector,
+				To: reference.To{
+					List:    &BucketList{},
+					Managed: &Bucket{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.InitProvider.Rule[i3].Target[i4].Bucket")
+			}
+			mg.Spec.InitProvider.Rule[i3].Target[i4].Bucket = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.InitProvider.Rule[i3].Target[i4].BucketRef = rsp.ResolvedReference
+
+		}
+	}
 
 	return nil
 }
