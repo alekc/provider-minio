@@ -339,27 +339,46 @@ jobs:
 #        run: make publish BRANCH_NAME=main
 #
       - name: Publish Artifacts to GitHub
+        id: publish
         run: |-
-          # Extract version tag from metadata-action output
-          # Prefer explicit input version, then metadata version, then extract from tags array
+          make -j2 XPKG_REG_ORGS="${{ env.CROSSPLANE_REGORG }}" XPKG_REG_ORGS_NO_PROMOTE="${{ env.CROSSPLANE_REGORG }}" BRANCH_NAME="main" ${{ inputs.version != '' && format('VERSION={0}', inputs.version) || '' }} publish
+          # Capture the VERSION used for publishing
+          echo "published_version=$(make VERSION=${{ inputs.version != '' && inputs.version || '' }} version 2>/dev/null | grep VERSION= | cut -d= -f2 || echo '')" >> $GITHUB_OUTPUT
+
+      - name: Tag and Push Published Image with Metadata Tags
+        run: |-
+          IMAGE_NAME="${{ env.CROSSPLANE_REGORG }}/${{ github.event.repository.name }}"
+          # Get the published version - try inputs.version first, then determine from git
           if [ -n "${{ inputs.version }}" ]; then
-            VERSION_TAG="${{ inputs.version }}"
-          elif [ -n "${{ steps.meta.outputs.version }}" ]; then
-            VERSION_TAG="${{ steps.meta.outputs.version }}"
+            PUBLISHED_TAG="${{ inputs.version }}"
           else
-            # Extract first tag from JSON array using jq
-            TAGS_JSON="${{ steps.meta.outputs.tags }}"
-            VERSION_TAG=$(echo "$TAGS_JSON" | jq -r '.[0]' 2>/dev/null || echo "")
-            # Fallback to PR number or tag name
-            if [ -z "$VERSION_TAG" ] || [ "$VERSION_TAG" = "null" ]; then
-              if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-                VERSION_TAG="pr-${{ github.event.pull_request.number }}"
-              elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
-                VERSION_TAG="${GITHUB_REF#refs/tags/}"
-              fi
+            # Extract version from git (matching Makefile logic)
+            if [ -z "$(git tag)" ]; then
+              PUBLISHED_TAG="v0.0.0-$(git rev-list HEAD --count)-g$(git describe --dirty --always | sed 's/-/./2' | sed 's/-/./2' | sed 's/-/./2')"
+            else
+              PUBLISHED_TAG=$(git describe --dirty --always --tags | sed 's|.*/||' | sed 's/-/./2' | sed 's/-/./2' | sed 's/-/./2')
             fi
           fi
-          make -j2 XPKG_REG_ORGS="${{ env.CROSSPLANE_REGORG }}" XPKG_REG_ORGS_NO_PROMOTE="${{ env.CROSSPLANE_REGORG }}" BRANCH_NAME="main" VERSION="$VERSION_TAG" publish
+          SOURCE_IMAGE="${IMAGE_NAME}:${PUBLISHED_TAG}"
+          
+          # Extract tags from metadata output and push each one
+          METADATA_TAGS="${{ steps.meta.outputs.tags }}"
+          if [ -n "${METADATA_TAGS}" ]; then
+            echo "Source image: ${SOURCE_IMAGE}"
+            echo "Metadata tags: ${METADATA_TAGS}"
+            for TAG_STRING in ${METADATA_TAGS}; do
+              # TAG_STRING format: registry/org/repo:tag
+              # Extract just the tag part (after the colon)
+              TAG=$(echo "${TAG_STRING}" | cut -d: -f2)
+              TARGET_IMAGE="${IMAGE_NAME}:${TAG}"
+              if [ "${TARGET_IMAGE}" != "${SOURCE_IMAGE}" ]; then
+                echo "Creating tag ${TARGET_IMAGE} from ${SOURCE_IMAGE}"
+                docker buildx imagetools create -t "${TARGET_IMAGE}" "${SOURCE_IMAGE}"
+              fi
+            done
+          else
+            echo "No metadata tags found to apply"
+          fi
 
       - name: Login to upbound
         if: env.XPKG_MIRROR_ACCESS_ID != '' && startsWith(github.ref, 'refs/tags/')
