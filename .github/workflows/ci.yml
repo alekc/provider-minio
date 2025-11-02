@@ -326,7 +326,7 @@ jobs:
 
       - name: Generate metadata
         id: meta
-        uses: docker/metadata-action@818d4d78f3fc6a4e4f4241ad669d3c8b1be1e5d5 # v5
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.CROSSPLANE_REGORG }}/${{ github.event.repository.name }}
           tags: |
