@@ -324,12 +324,42 @@ jobs:
           name: output
           path: _output/**
 
+      - name: Generate metadata
+        id: meta
+        uses: docker/metadata-action@818d4d78f3fc6a4e4f4241ad669d3c8b1be1e5d5 # v5
+        with:
+          images: ${{ env.CROSSPLANE_REGORG }}/${{ github.event.repository.name }}
+          tags: |
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
 #      - name: Publish Artifacts
 #        run: make publish BRANCH_NAME=main
 #
       - name: Publish Artifacts to GitHub
         run: |-
-          make -j2 XPKG_REG_ORGS="${{ env.CROSSPLANE_REGORG }}" XPKG_REG_ORGS_NO_PROMOTE="${{ env.CROSSPLANE_REGORG }}" BRANCH_NAME="main" ${{ inputs.version != '' && format('VERSION={0}', inputs.version) || '' }} publish
+          # Extract version tag from metadata-action output
+          # Prefer explicit input version, then metadata version, then extract from tags array
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION_TAG="${{ inputs.version }}"
+          elif [ -n "${{ steps.meta.outputs.version }}" ]; then
+            VERSION_TAG="${{ steps.meta.outputs.version }}"
+          else
+            # Extract first tag from JSON array using jq
+            TAGS_JSON="${{ steps.meta.outputs.tags }}"
+            VERSION_TAG=$(echo "$TAGS_JSON" | jq -r '.[0]' 2>/dev/null || echo "")
+            # Fallback to PR number or tag name
+            if [ -z "$VERSION_TAG" ] || [ "$VERSION_TAG" = "null" ]; then
+              if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+                VERSION_TAG="pr-${{ github.event.pull_request.number }}"
+              elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+                VERSION_TAG="${GITHUB_REF#refs/tags/}"
+              fi
+            fi
+          fi
+          make -j2 XPKG_REG_ORGS="${{ env.CROSSPLANE_REGORG }}" XPKG_REG_ORGS_NO_PROMOTE="${{ env.CROSSPLANE_REGORG }}" BRANCH_NAME="main" VERSION="$VERSION_TAG" publish
 
       - name: Login to upbound
         if: env.XPKG_MIRROR_ACCESS_ID != '' && startsWith(github.ref, 'refs/tags/')
