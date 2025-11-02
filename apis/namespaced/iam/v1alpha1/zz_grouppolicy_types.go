@@ -33,10 +33,6 @@ type GroupPolicyInitParameters struct {
 	// Name of the policy.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) Prefix to the generated policy name. Do not use with name.
-	// Prefix to the generated policy name. Do not use with `name`.
-	NamePrefix *string `json:"namePrefix,omitempty" tf:"name_prefix,omitempty"`
-
 	// (String) Policy JSON string
 	// Policy JSON string
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
@@ -54,10 +50,6 @@ type GroupPolicyObservation struct {
 	// (String) Name of the policy.
 	// Name of the policy.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// (String) Prefix to the generated policy name. Do not use with name.
-	// Prefix to the generated policy name. Do not use with `name`.
-	NamePrefix *string `json:"namePrefix,omitempty" tf:"name_prefix,omitempty"`
 
 	// (String) Policy JSON string
 	// Policy JSON string
@@ -84,11 +76,6 @@ type GroupPolicyParameters struct {
 	// Name of the policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// (String) Prefix to the generated policy name. Do not use with name.
-	// Prefix to the generated policy name. Do not use with `name`.
-	// +kubebuilder:validation:Optional
-	NamePrefix *string `json:"namePrefix,omitempty" tf:"name_prefix,omitempty"`
 
 	// (String) Policy JSON string
 	// Policy JSON string

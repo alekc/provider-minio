@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/55-create-group-user-attachment.yaml
+assert:
+  - files/55-assert-group-user-attachment.yaml
+

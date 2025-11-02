@@ -1,0 +1,13 @@
+#apiVersion: kuttl.dev/v1beta1
+#kind: TestAssert
+#timeout: 120
+#resourceRefs:
+#  - apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+#    kind: Replication
+#    name: test-replication
+#    namespace: test-namespaced
+#    ref: testReplication
+#assertAll:
+#  - celExpr: testReplication.status.conditions.exists(c, c.type == "Synced" && c.status == "True")
+#  - celExpr: testReplication.status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+#

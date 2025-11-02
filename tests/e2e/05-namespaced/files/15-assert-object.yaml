@@ -1,0 +1,17 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Object
+metadata:
+  name: txt-file
+  namespace: test-namespaced
+spec:
+  forProvider:
+    bucketName: namespaced-named-bucket-custom
+    content: Lorem ipsum dolor sit amet.
+    contentType: text/plain
+    objectName: text.txt
+status:
+  atProvider:
+    bucketName: namespaced-named-bucket-custom
+    id: text.txt
+    objectName: text.txt
+

@@ -17,9 +17,13 @@ spec:
       existingObjectReplication: true
       metadataSync: true
       target:
-      - accessKey: ${minio_iam_service_account.replication_in_b.access_key}
+      - accessKeySelector:
+          matchLabels:
+            testing.upbound.io/example-name: replication_in_b
         bandwidthLimit: 100M
-        bucket: ${minio_s3_bucket.my_bucket_in_b.bucket}
+        bucketSelector:
+          matchLabels:
+            testing.upbound.io/example-name: my_bucket_in_b
         host: ${var.minio_server_b}
         secretKeySecretRef:
           key: attribute.secret_key
@@ -104,6 +108,7 @@ metadata:
 spec:
   forProvider:
     forceDestroy: true
+    name: my-user
 
 ---
 
@@ -118,6 +123,7 @@ metadata:
 spec:
   forProvider:
     forceDestroy: true
+    name: my-user
     provider: ${minio.deployment_b}
 
 ---
@@ -170,7 +176,8 @@ metadata:
     testing.upbound.io/example-name: my_bucket_in_a
   name: my-bucket-in-a
 spec:
-  forProvider: {}
+  forProvider:
+    bucket: my-bucket
 
 ---
 
@@ -184,4 +191,5 @@ metadata:
   name: my-bucket-in-b
 spec:
   forProvider:
+    bucket: my-bucket
     provider: ${minio.deployment_b}

@@ -27,5 +27,6 @@ metadata:
   name: example
 spec:
   forProvider:
+    bucket: my-bucket
     forceDestroy: true
     objectLocking: true

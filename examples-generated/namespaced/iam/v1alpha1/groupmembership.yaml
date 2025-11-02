@@ -44,7 +44,8 @@ metadata:
   name: user-one
   namespace: upbound-system
 spec:
-  forProvider: {}
+  forProvider:
+    name: test-user
 
 ---
 
@@ -58,4 +59,5 @@ metadata:
   name: user-two
   namespace: upbound-system
 spec:
-  forProvider: {}
+  forProvider:
+    name: test-user-two

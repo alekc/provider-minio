@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+  - files/15-create-object.yaml
+assert:
+  - files/15-assert-object.yaml
+

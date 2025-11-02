@@ -12,7 +12,7 @@ status:
   atProvider:
     disableUser: false
     forceDestroy: true
-    id: cluster-user
+    id: ClusterUserCustom
     status: enabled
     tags:
       tag-key: tag-value

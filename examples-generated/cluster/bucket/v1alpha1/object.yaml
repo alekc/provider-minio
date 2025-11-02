@@ -8,7 +8,7 @@ metadata:
   name: txt-file
 spec:
   forProvider:
-    bucketName: ${minio_s3_bucket.state_terraform_s3.bucket}
+    bucketName: state-terraform-s3
     content: Lorem ipsum dolor sit amet.
     contentType: text/plain
     objectName: text.txt
@@ -26,3 +26,4 @@ metadata:
 spec:
   forProvider:
     acl: public
+    bucket: state-terraform-s3

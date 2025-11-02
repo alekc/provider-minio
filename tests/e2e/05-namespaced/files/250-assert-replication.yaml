@@ -1,0 +1,26 @@
+apiVersion: bucket.minio.m.alekc.dev/v1alpha1
+kind: Replication
+metadata:
+  name: test-replication
+  namespace: test-namespaced
+spec:
+  providerConfigRef:
+    kind: ProviderConfig
+    name: namespaced-provider
+  bucket: test-bucket
+  rules:
+    - id: rule-1
+      status: Enabled
+      destination:
+        bucket: test-destination-bucket
+        storageClass: STANDARD
+      filter:
+        prefix: ""
+        tags: {}
+      deleteMarkerReplication:
+        status: Disabled
+status:
+  atProvider:
+    id: test-replication
+    status: enabled
+
