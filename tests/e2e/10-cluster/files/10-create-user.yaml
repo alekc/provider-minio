@@ -4,6 +4,7 @@ metadata:
   name: cluster-user
 spec:
   forProvider:
+    name: test-user-internal
     forceDestroy: true
     tags:
       tag-key: tag-value

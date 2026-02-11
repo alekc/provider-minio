@@ -23,10 +23,6 @@ type GroupInitParameters struct {
 	// provider-managed members
 	// delete group even if it has non-provider-managed members
 	ForceDestroy *bool `json:"forceDestroy,omitempty" tf:"force_destroy,omitempty"`
-
-	// (String) Name of the group
-	// Name of the group
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type GroupObservation struct {
@@ -45,10 +41,6 @@ type GroupObservation struct {
 
 	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// (String) Name of the group
-	// Name of the group
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type GroupParameters struct {
@@ -62,11 +54,6 @@ type GroupParameters struct {
 	// delete group even if it has non-provider-managed members
 	// +kubebuilder:validation:Optional
 	ForceDestroy *bool `json:"forceDestroy,omitempty" tf:"force_destroy,omitempty"`
-
-	// (String) Name of the group
-	// Name of the group
-	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 // GroupSpec defines the desired state of Group
@@ -105,9 +92,8 @@ type GroupStatus struct {
 type Group struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	Spec   GroupSpec   `json:"spec"`
-	Status GroupStatus `json:"status,omitempty"`
+	Spec              GroupSpec   `json:"spec"`
+	Status            GroupStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

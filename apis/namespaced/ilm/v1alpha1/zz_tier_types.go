@@ -119,8 +119,6 @@ type TierInitParameters struct {
 
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
-
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
 	S3Config []S3ConfigInitParameters `json:"s3Config,omitempty" tf:"s3_config,omitempty"`
@@ -144,8 +142,6 @@ type TierObservation struct {
 	MinioConfig []MinioConfigObservation `json:"minioConfig,omitempty" tf:"minio_config,omitempty"`
 
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
@@ -176,9 +172,6 @@ type TierParameters struct {
 
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// +kubebuilder:validation:Optional
-	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`

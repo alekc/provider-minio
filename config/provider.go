@@ -30,11 +30,11 @@ var providerMetadata string
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithRootGroup("minio.alekc.dev"),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		ujconfig.WithIncludeList(ExternalNameConfigured(false)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 
 		ujconfig.WithDefaultResourceOptions(
-			ExternalNameConfigurations(),
+			ExternalNameConfigurations(false),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -51,10 +51,10 @@ func GetNamespacedProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithShortName("minio"),
 		ujconfig.WithRootGroup("minio.m.alekc.dev"),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		ujconfig.WithIncludeList(ExternalNameConfigured(true)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
-			ExternalNameConfigurations(),
+			ExternalNameConfigurations(true),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){

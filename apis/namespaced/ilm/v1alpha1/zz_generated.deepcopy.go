@@ -975,11 +975,6 @@ func (in *TierInitParameters) DeepCopyInto(out *TierInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Prefix != nil {
-		in, out := &in.Prefix, &out.Prefix
-		*out = new(string)
-		**out = **in
-	}
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
 		*out = new(string)
@@ -1090,11 +1085,6 @@ func (in *TierObservation) DeepCopyInto(out *TierObservation) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Prefix != nil {
-		in, out := &in.Prefix, &out.Prefix
-		*out = new(string)
-		**out = **in
-	}
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
 		*out = new(string)
@@ -1165,11 +1155,6 @@ func (in *TierParameters) DeepCopyInto(out *TierParameters) {
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
-	if in.Prefix != nil {
-		in, out := &in.Prefix, &out.Prefix
 		*out = new(string)
 		**out = **in
 	}
