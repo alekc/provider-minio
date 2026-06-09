@@ -12,4 +12,4 @@ on:
 
 jobs:
   backport:
-    uses: upbound/official-providers-ci/.github/workflows/provider-backport.yml@standard-runners
+    uses: upbound/official-providers-ci/.github/workflows/provider-backport.yml@cd6215984633723be29e7709f39e3a83aaeb0baf # standard-runners

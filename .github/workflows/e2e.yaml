@@ -6,7 +6,7 @@ on:
 
 jobs:
   e2e:
-    uses: upbound/official-providers-ci/.github/workflows/pr-comment-trigger.yml@standard-runners
+    uses: upbound/official-providers-ci/.github/workflows/pr-comment-trigger.yml@cd6215984633723be29e7709f39e3a83aaeb0baf # standard-runners
     secrets:
       UPTEST_CLOUD_CREDENTIALS: ${{ secrets.UPTEST_CLOUD_CREDENTIALS }}
       UPTEST_DATASOURCE: ${{ secrets.UPTEST_DATASOURCE }}
